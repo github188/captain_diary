@@ -13,7 +13,7 @@
 
 
 
---  if your PC file is out of update ,behind the version of server end. you must click 'remote -> fectch from ' to update your PC files.
+--  if your PC file is out of update ,behind the version of server end. you must click 'remote -> fectch from -> origin' to update your PC files  in the Git UI .   then merge - local merge
 
 
 
