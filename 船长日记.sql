@@ -3,6 +3,9 @@
 --  10.1。16  add by huanglei
 
 
+--  you need commit first ,and then push
+
+
 
 
 
