@@ -8,6 +8,8 @@
 
 -- first rescan ,then state changed ,then sign off ,then commit , then push
 
+-- how to use the github to learn new skills with those big nius , and learn with them.
+
 
 
 
