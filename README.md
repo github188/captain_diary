@@ -1,5 +1,6 @@
 
-腾讯云。开发者实验室  https://www.qcloud.com/developer/labs/list   这个有点意思 闲来无事可以来休闲一下
+腾讯云。开发者实验室  https://www.qcloud.com/developer/labs/list   这个有点意思 闲来无事可以来休闲一下，可以按照顺序来逐个反复训练一番，完了之后，自己买一台服务器搭建起来玩一下，记得一定要详细learn diary。不然白learn，没有沉淀。
+
 
 
 
