@@ -55,6 +55,28 @@ Usage /usr/local/bin/boot2docker {init|start|up|save|pause|stop|restart|status|i
 sudo docker -d
 这时可执行
 boot2docker ssh，输入密码  tcuser 进到该虚拟机的控制台下，如果要用户名的话请输入docker
+----------------docker 容器如何保存的问题---------------------------------
+docker@boot2docker:~$ docker commit 333 firstimage
+Error response from daemon: no such id: 333
+docker@boot2docker:~$ docker commit 95 firstimage
+5b77581b4fe23eca67861812faddd73ef65138895dd463886713cfe864db0b1f
+docker@boot2docker:~$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+firstimage          latest              5b77581b4fe2        18 seconds ago      196.8 MB
+<none>              <none>              0dfba43b710d        8 minutes ago       196.8 MB
+huanglei/java       latest              5e4fe3a1a14a        8 months ago        562 MB
+centos              latest              9baab0af79c4        9 months ago        196.8 MB
+docker@boot2docker:~$ ls
+log.log
+docker@boot2docker:~$ docker run -it firstimage /bin/bash
+[root@0b5eca8df298 /]# ls
+123.txt            dev   lib         media  proc  sbin  tmp
+anaconda-post.log  etc   lib64       mnt    root  srv   usr
+bin                home  lost+found  opt    run   sys   var
+[root@0b5eca8df298 /]# cat 123.txt 
+xvv
+[root@0b5eca8df298 /]# 
+-- 讲两点：1.提交的时候 只需要提交众多镜像中能区分出唯一性的id的前几个字母或者数字即可；2.镜像名如果与现有重复，则覆盖，不重复，则创建新的镜像。
 
 
 
