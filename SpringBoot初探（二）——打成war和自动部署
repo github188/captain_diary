@@ -1,0 +1,337 @@
+SpringBoot初探（二）——打成war和自动部署
+标签： springbootwarspring
+2015-12-22 12:13 9055人阅读 评论(0) 收藏 举报
+ 分类： SpringBoot（1）  
+版权声明：本文为博主原创文章，未经博主允许不得转载。
+目录(?)[+]
+上一篇Sping Boot 初探(一)— 一分钟构建SpringWeb我们用SpringBoot开发了一个非常简单的HelloWorld，这篇主要讲一下在上一篇的基础上如何打成war放到自已的tomcat上跑以及开发的时候如何实现热。 
+上一个示例代码 git://code.csdn.net/u010317202/springbootsamples.git
+
+打成war包
+
+一般的war结构大致是这样的
+
+└── META-INFO
+└── WEB-INFO 
+    └── lib   #一些依赖的jar包 
+    └── classes #classpath目录 
+    └── web.xml  
+    └── 其它配置文件、属性文件等  
+└── 其它资源文件
+1
+2
+3
+4
+5
+6
+7
+1
+2
+3
+4
+5
+6
+7
+Servlet 3.0之后可以使用注释定义Servlet和过滤器，就无需在web部署描述符(web.xml)中建立Servlet/过滤器配置了，tomcat7.0以上版本支持Servlet 3.0。
+
+pom.xml
+
+    <!-- ... -->
+    <packaging>war</packaging>
+    <!-- ... -->
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!-- 这里指定打包的时候不再需要tomcat相关的包 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- ... -->
+    </dependencies>
+    <build>
+        <plugins>
+            <!-- ... -->
+            <!-- maven打包的时候告诉maven不需要web.xml,否刚会报找不到web.xml错误 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+app.java
+
+/** 
+ * Hello world! 
+ * 
+ */  
+@EnableAutoConfiguration    //这个注解可以根据你依赖的包自动生成相关配置
+@ComponentScan   //这两个注解可以使用SpringBootApplication替代  
+public class App extends SpringBootServletInitializer
+{  
+    public static void main( String[] args )  
+    {  
+        SpringApplication.run(App.class, args);  
+    }  
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        // TODO Auto-generated method stub
+        return builder.sources(App.class);
+    }
+} 
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+SpringBoot提供了一种以编码的方式初始化Web配置。通过继承SpringBootServletInitializer类 spring Boot应用能够使用嵌入的Spring上下文来注册配置，这个Spring上下文是在容器初始化的时候创建的。
+
+运行
+
+运行mvn clean package spring-boot:repackage打包，最后在target目录下面生成一个HelloWord-0.1.0.war包。 
+这个命令先用maven打包，然后会根据Boot的一些配置再打包。
+
+加入静态文件和jsp
+
+静态文件
+
+By default Spring Boot will serve static content from a directory called /static (or /public or /resources or /META-INF/resources) in the classpath or from the root of the ServletContext.
+默认情况下SpringBoot会从根目录、classpath中的以上目录作为静态文件目录。 
+可以通过此配置修改静态文件路径：
+
+#spring.resources.static-locations=classpath:/static/
+1
+1
+SpringBoot默认加载的配置文件是 application.properties 
+所以你要修改一些默认配置只要calsspath目录建一个application.properties配置文件，并把配置写在文件中就会生效。
+
+JSP
+
+在pom.xml中加入相关依赖:
+
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+1
+2
+3
+4
+5
+6
+7
+8
+9
+1
+2
+3
+4
+5
+6
+7
+8
+9
+jsp页面一般放在maven的默认目录src/main/webapp中，当然也可以入到上面的静态文件中，如果你将来运行的是一个jar包，就不建议放到这个目录了。 
+还可以使用这些配置修改jsp的一些属性：
+
+spring.mvc.view.prefix=/views/ # Spring MVC view prefix.
+spring.mvc.view.suffix=.jsp # Spring MVC view suffix.
+1
+2
+1
+2
+最终的路径如图: 
+
+
+application.properties的配置：
+
+spring.mvc.view.prefix: /views/
+spring.mvc.view.suffix: .jsp
+#spring.resources.static-locations=classpath:/static/  #默认支持的就有这个目录
+1
+2
+3
+1
+2
+3
+HelloController.Java
+
+@RestController   //或者使用Controller  
+public class HelloController {  
+    @RequestMapping("hello")  
+    @ResponseBody  
+    public String hello(@RequestParam(defaultValue="world") String name){  
+        return "hello 11"+name+"!";  
+    }
+
+    @RequestMapping("hello2")  
+    public ModelAndView hellojsp(@RequestParam(defaultValue="world") String name,Model m){
+        m.addAttribute("text", "hello "+name);
+        return new ModelAndView("hello");  
+    }
+}  
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+这里如果使用@RestController，返回一个字符串它默认会以一下字符串的形式返回，不会作为一个视图，需要显示的返回一个ModelAndView。 
+在jsp页面就可以使用${text}显示值了。
+
+加入log4j
+
+最后的pom.xml https://code.csdn.net/u010317202/springbootsamples/tree/0.2.0-war/HelloWorld/pom.xml
+
+log4j.properties
+
+log4j.rootLogger=INFO,Console
+
+log4j.appender.Console=org.apache.log4j.ConsoleAppender
+log4j.appender.Console.Target=System.out
+log4j.appender.Console.layout=org.apache.log4j.PatternLayout
+log4j.appender.Console.layout.ConversionPattern=[%p][%d{yyyy-MM-dd HH\:mm\:ss,SSS}][%c]%m%n
+1
+2
+3
+4
+5
+6
+1
+2
+3
+4
+5
+6
+重新打包，放到tomcat的webapp目录就可以运行了，访问的时候要加war的名字 http://localhost:8080/HelloWord-0.1.0/hello2。 
+全部代码在https://code.csdn.net/u010317202/springbootsamples/tree/0.2.0-war
