@@ -1,0 +1,15 @@
+deepvps晚上Google好久没有结果。后来问了猫哥，猫哥果然高人，三言两语就给解决了。现在简单记录如下，方便后面出现问题的同学查看。
+在SSH里面依次输入下面的命令：
+1，下载最新的yum-3.2.28.tar.gz并解压
+wget http://yum.baseurl.org/download/3.2/yum-3.2.28.tar.gz
+tar xvf yum-3.2.28.tar.gz
+
+2，进入目录，运行安装
+cd yum-3.2.28
+yummain.py install yum
+结果提示错误： CRITICAL:yum.cli:Config Error: Error accessing file for config file:///etc/
+后来经猫哥提醒，原来是缺少配置文件。在etc目录下面新建yum.conf文件，然后再次运行 yummain.py install yum，顺利完成安装。
+3，最后更新系统，全部搞定，收工。^_^
+yum check-update
+yum update
+yum clean all
