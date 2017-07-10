@@ -1,0 +1,9 @@
+1. 直接拿到主干代码，clone到本地，然后在本地修改，直接提交到主干
+准备阶段:进入要存放代码的文件夹
+  1)   git clone http://10.101.90.189/team2/jst-alipay.git
+  输入用户名  密码 就会下载了  然后修改几个文件
+  2）  git add .
+  3) git commit .  点表示当前路径所有文件
+  4） git push origin master  提交成功  
+  
+  每个阶段文件的状态 可以用 git status 来看 颜色不同
