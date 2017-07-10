@@ -1,0 +1,19 @@
+ Maven编译时跳过Test
+2013-09-03 16:47 7922人阅读 评论(0) 收藏 举报
+ 分类： 其他（2）  
+  在使用Maven编译项目时发现，可能在Test中写了一些有问题的代码，但是，由于写的代码比较多，所以不愿意去找具体的错误，反正Test中的代码不会影响项目的正常运行。于是想在编译时跳过对Test部分的编译。
+
+        但是自己却不知道怎样去在编译时跳过Test部分的编译，请教了利宾同学，原来Mavan中可以使用这样的命令参数来岁实现这样的功能。
+
+        其实命令也挺简单的，但是你不知道就是不知道！；）
+
+        具体命令如下：
+       
+java 代码
+ 
+mvn install -Dmaven.test.skip=true  
+
+        只是在后面加上参数 -Dmaven.test.skip=true
+        maven clean spring-boot:repackage -Dmaven.test.skip=true
+        
+        
