@@ -1,0 +1,65 @@
+
+
+最近在使用 GitLab 的 Merge Requests 功能进行 Code Review 。操作流程是这样的：
+
+1）开发人员A要给一个项目增加一个新功能，先在这个项目上创建一个 Git 分支。
+
+2）开发完成后，git push 到这个分支。
+
+3）然后在 Merge Requests 中创建一个 Merge Request ，然后指定开发人员B进行 Code Review。
+
+4）开发人员B在 Code Review 中发出现了问题，需要开发人员A修改代码。
+
+5）开发人员A修改好代码并 push 到这个分支。
+
+6）开发人员B继续进行 Code Review，如果没发现问题，就“Accept Merge Request”将这个分支合并到主干上。
+
+我们在 Code Review 的过程中，在第 5-6 步遇到了一个奇怪问题：开发人员A在 push 到分支之后，开发人员B在 Code Review 时在 Merge Request 中看不到最新的 Commit。
+
+
+
+如上图，在 Merge Request 中只看到 6 个 Commits ，实际却有 7 个，而在 GitLab 的 Commits 页面也能看到 7 个。
+
+当时束手无策。后来，关闭这个 Merge Request ，重新创建新的 Merge Request，才看到最新的 Commit 。但是再次 git commit 并 push 之后，依然看不到最新的 commit 。
+
+这个问题影响了 Code Review 的正常进行，很是郁闷。今天着手解决这个问题，先尝试将 GitLab 升级至最新版（服务器操作系统是 CentOS）。
+
+升级步骤如下：
+
+1）在 https://packages.gitlab.com/gitlab/gitlab-ce 找到最新 GitLab 的 rpm 包下载地址，并用 wget 下载下来。
+
+2）停止 GitLab 相关服务：
+
+sudo gitlab-ctl stop unicorn
+sudo gitlab-ctl stop sidekiq
+sudo gitlab-ctl stop nginx
+如果想备份数据库，可以使用下面的命令：
+
+sudo gitlab-rake gitlab:backup:create
+3）安装新版 GitLab
+
+sudo rpm -Uvh gitlab-x.x.x_xxx.rpm
+4）刷新配置并重启 GitLab
+
+sudo gitlab-ctl reconfigure
+sudo gitlab-ctl restart
+升级之后，问题依旧。。。
+
+之后，试了试 2 个检查 GitLab 状态的命令：
+
+sudo gitlab-ctl status
+sudo gitlab-rake gitlab:check SANITIZE=true
+第1个命令执行后，显示状态都正常。
+
+第2个命令执行后，出现下面的错误：
+
+2/9 ... rake aborted!
+Errno::ENOENT: No such file or directory @ realpath_rec - /gitlab/repos/repositories/CNBlogsMsg.git/hooks
+一看到 hooks ，眼前一亮。hooks 文件夹不存在，这样每次 git push 操作，GitLab 根本不知道（GitLab 是通过 hooks 文件夹中的脚本获知每次 push 操作的）。所以，Merge Request 中自然就看不到最新的 Commits 。
+
+那为什么 hooks 文件夹不存在呢？突然想到，这个项目的代码库是迁移到 GitLab 中的（详见在服务器端将现有Git项目导入GitLab），不是在 GitLab 中创建的，自然就没有 GitLab 所需的 hooks 文件夹。然后看了一下其他在 GitLab 中创建的项目，果然有 hooks 文件夹。
+
+知道了原因，解决起来就很简单了——从其他项目中将 hooks 文件夹复制到这个项目。
+
+重新 git push 之后，最新的 Commit 就现身了。
+
