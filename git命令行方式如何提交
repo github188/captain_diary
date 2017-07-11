@@ -34,5 +34,5 @@ git merge other-branch  常用
 git rebase other-branch
 两者的区别自己可以研究。上面的那个较常用，下面的命令容易出错，非专业认识勿用。
 
-  
+  如果分支有提交到主干master的代码，那么网页右侧会出现create new pull request 的按钮 
   
