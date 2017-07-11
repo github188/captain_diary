@@ -36,3 +36,6 @@ git rebase other-branch
 
   如果分支有提交到主干master的代码，那么网页右侧会出现create new pull request 的按钮 
   
+  如果你拿ecplipe里面的插件来操作gitlab，那就更方便了快捷，新建一个分支，直接在team-> switch To -> new Branch就可以了 ，剩下的时候就是如何，
+  分支合并master，这个在网页上操作很容易，有冲突，在网页上就能选择ours ，还是theirs的代码，很轻松create a pull request就行了。
+  
