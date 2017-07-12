@@ -1,3 +1,6 @@
+
+java -jar -Dspring.profiles.active=test -Xms1024m -Xmx2048m -XX:PermSize=256M -XX:MaxPermSize=512m market-mgr.jar
+(何文发给我，启动springboot包)
  Java 内存模型及GC原理
  看这个   油菜也 有彩页   http://blog.csdn.net/ithomer/article/details/6252552
  
@@ -104,34 +107,4 @@ class Test {
 
 七、GC程序交互
 程序如何与GC进行交互呢？ Java2增强了内存管理功能，增加了一个java.lang.ref包，详见我的开源项目：src-jdk1.7.0_02
-其中定义了三种引用类。这三种引用类分别为：SoftReference、 WeakReference、 PhantomReference
-通过使用这些引用类，程序员可以在一定程度与GC进行交互，以便改善GC的工作效率，这些引用类的引用强度介于可达对象和不可达对象之间。
-创建一个引用对象也非常容易，例如：如果你需要创建一个Soft Reference对象，那么首先创建一个对象，并采用普通引用方式（可达对象）；然后再创建一个SoftReference引用该对象；最后将普通引用设置为null。通过这种方式，这个对象就只有一个Soft Reference引用。同时，我们称这个对象为Soft Reference 对象。
-Soft Reference的主要特点是据有较强的引用功能。只有当内存不够的时候，才进行回收这类内存，因此在内存足够的时候，它们通常不被回收。另外，这些引用对象还能保证在Java抛出OutOfMemory 异常之前，被设置为null。它可以用于实现一些常用图片的缓存，实现Cache的功能，保证最大限度的使用内存而不引起OutOfMemory。以下给出这种引用类型的使用伪代码：
-[java] view plain copy print?
-// 申请一个图像对象  
-　Image image=new Image();       // 创建Image对象  
-　…  
-　// 使用 image  
-　…  
-　// 使用完了image，将它设置为soft 引用类型，并且释放强引用；  
-　SoftReference sr=new SoftReference(image);  
-　image=null;  
-　…  
-　// 下次使用时  
-　if (sr!=null)   
-    image=sr.get();  
-　else{  
-　       image=new Image();  //由于GC由于低内存，已释放image，因此需要重新装载；  
-　       sr=new SoftReference(image);  
-　}  
-Weak引用对象与Soft引用对象的最大不同就在于：GC在进行回收时，需要通过算法检查是否回收Soft引用对象，而对于Weak引用对象，GC总是进行回收。Weak引用对象更容易、更快被GC回收。虽然，GC在运行时一定回收Weak对象，但是复杂关系的Weak对象群常常需要好几次GC的运行才能完成。Weak引用对象常常用于Map结构中，引用数据量较大的对象，一旦该对象的强引用为null时，GC能够快速地回收该对象空间。
-Phantom引用的用途较少，主要用于辅助finalize函数的使用。Phantom对象指一些对象，它们执行完了finalize函数，并为不可达对象，但是它们还没有被GC回收。这种对象可以辅助finalize进行一些后期的回收工作，我们通过覆盖Reference的clear()方法，增强资源回收机制的灵活性。
-
-八、Java编程建议
-根据GC的工作原理，我们可以通过一些技巧和方式，让GC运行更加有效率，更加符合应用程序的要求。一些关于程序设计的几点建议：
-1）最基本的建议就是尽早释放无用对象的引用。大多数程序员在使用临时变量的时候，都是让引用变量在退出活动域（scope）后，自动设置为 null.我们在使用这种方式时候，必须特别注意一些复杂的对象图，例如数组，队列，树，图等，这些对象之间有相互引用关系较为复杂。对于这类对象，GC 回收它们一般效率较低。如果程序允许，尽早将不用的引用对象赋为null，这样可以加速GC的工作。
-2）尽量少用finalize函数。finalize函数是Java提供给程序员一个释放对象或资源的机会。但是，它会加大GC的工作量，因此尽量少采用finalize方式回收资源。
-3）如果需要使用经常使用的图片，可以使用soft应用类型。它可以尽可能将图片保存在内存中，供程序调用，而不引起OutOfMemory.
-4）注意集合数据类型，包括数组，树，图，链表等数据结构，这些数据结构对GC来说，回收更为复杂。另外，注意一些全局的变量，以及一些静态变量。这些变量往往容易引起悬挂对象（dangling reference），造成内存浪费。
-5）当程序有一定的等待时间，程序员可以手动执行System.gc()，通知GC运行，但是Java语言规范并不保证GC一定会执行。使用增量式GC可以缩短Java程序的暂停时间。
+其中定义了三种引用类。这三种引用类
