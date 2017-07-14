@@ -1,0 +1,17 @@
+jquery ajax 怎么获得返回的response headers？？
+
+0
+
+[已解决问题] 浏览: 10777次
+jquery ajax 怎么获得返回的response headers？？
+jquery koi的主页 koi | 初学一级 | 园豆：5
+提问于：2013-09-11 10:31
+< > 找找看 分享
+最佳答案
+0
+jqXHR有个getResponseHeader()方法，参考代码：
+$.ajax({
+    success: function(data, status, xhr) { 
+        console.log(xhr.getResponseHeader("Content-Type"));
+    }
+});
