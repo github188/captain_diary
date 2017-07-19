@@ -1,0 +1,28 @@
+ Spring Boot系列教程五：使用properties配置文件实现多环境配置
+标签： spring bootproperties多环境配置
+2017-01-09 21:09 10648人阅读 评论(4) 收藏 举报
+ 分类： Spring boot教程（9）  
+版权声明：本文为CSDN博主蜗牛201原创文章，未经博主允许不得转载。联系方式：731342182@qq.com
+
+目录(?)[+]
+一.前言
+实际项目开发过程中会用到多个环境，比如dev，test，product环境，不同的环境可能使用不同参数，为便于部署提高效率，本篇主要通过properties配置文件来实现多环境的配置。
+
+二.多环境配置实现
+分别创建application-dev.properties，application-test.properties，application-pro.properties配置文件，分别代表dev，test和product环境的配置文件。
+
+
+
+主配置文件application.properties中添加配置激活选项，例如激活dev环境的配置为：
+
+spring.profiles.active=dev
+
+这时application-dev.properties配置文件生效，如果主配置文件application.properties和dev配置文件application-dev.properties中有相同的配置信息，那么application-dev.properties中的生效。
+
+
+三.运行jar指定配置文件
+启动指定dev配置文件生效
+Java  -jar  *.jar   --spring.profiles.active=dev
+
+
+
