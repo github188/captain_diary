@@ -2,7 +2,7 @@
 ***
 1. good good see this article,
 2. seriouly to to,
-3. good luck for you to meet goot thing.
+3. good luck for you to meet goot thing.   
 read this script when you are not so busy.
 
 
