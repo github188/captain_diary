@@ -1,2 +1,15 @@
 it is really good thing, it is a bright light point during the interview.
 可以直接向安卓，ios手机打包，这还真方便了。
+
+
+Hbuilder用自有证书打包 ios App上架AppStore流程
+144  作者 Xslogan 关注
+2016.10.26 14:58* 字数 2277 阅读 9153评论 24喜欢 12赞赏 1
+最近在用Hbuilder做跨平台开发，经过一番研究终于在苹果商店上架成功了一款产品！这款产品就很简单，直接用hbuilder打包好，然后上传到商店即可。这里参照ios app提交应用商店 这篇文章结合hbuilder，从应用打包，到提交到苹果商店的流程详细介绍一下，希望对有需要的哥哥姐姐们有帮助、
+
+一、打包：
+
+应用写好了之后就可以打包了，hbuilder云打包很简单，但是你想要发布到应用商店的话是需要自有证书的，
+
+看简书：
+http://www.jianshu.com/p/665c1d67adde 
