@@ -1,5 +1,5 @@
- captain_diary
- ============
+# captain_diary
+
 ***
 1. good good see this article,
 2. seriouly to to,
@@ -34,3 +34,5 @@ read this script when you are not so busy.
 嗯嗯嗯
 
 坚持每天写点东西  沾满那个绿色方格
+
+现在发现一个很严重的问题，所有跟框架相关的东西，都是蒙的，这个事情没有看穿。以后的技术如何理解呢，头发都掉光了。
