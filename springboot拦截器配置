@@ -1,0 +1,43 @@
+真是的，rtm，害得我今天礼拜天没吃啥东西吗，在这里搞了大半天，原来是Application.java没有让在最外层，导致
+连接器怎么配置都没用
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::        (v1.4.0.RELEASE)
+
+2017-07-23 15:06:13.000  INFO 11504 --- [           main] com.hl.Application                       : Starting Application on PC-20160220FPSE with PID 11504 (C:\Users\Administrator\git\springboot\target\classes started by Administrator in C:\Users\Administrator\git\springboot)
+2017-07-23 15:06:13.002  INFO 11504 --- [           main] com.hl.Application                       : The following profiles are active: dev
+2017-07-23 15:06:13.061  INFO 11504 --- [           main] ationConfigEmbeddedWebApplicationContext : Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@34b7ac2f: startup date [Sun Jul 23 15:06:13 CST 2017]; root of context hierarchy
+2017-07-23 15:06:14.609  INFO 11504 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat initialized with port(s): 9080 (http)
+2017-07-23 15:06:14.625  INFO 11504 --- [           main] o.apache.catalina.core.StandardService   : Starting service Tomcat
+2017-07-23 15:06:14.628  INFO 11504 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.4
+2017-07-23 15:06:14.775  INFO 11504 --- [ost-startStop-1] o.a.c.c.C.[.[localhost].[/springboot]    : Initializing Spring embedded WebApplicationContext
+2017-07-23 15:06:14.775  INFO 11504 --- [ost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 1717 ms
+2017-07-23 15:06:14.905  INFO 11504 --- [ost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'dispatcherServlet' to [/]
+2017-07-23 15:06:14.908  INFO 11504 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
+2017-07-23 15:06:15.030  INFO 11504 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/{value}],methods=[GET]}" onto public java.lang.String com.hl.HomeController.demo(java.lang.String,com.hl.entity.Entity,java.lang.String)
+2017-07-23 15:06:15.032  INFO 11504 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/demo],methods=[GET]}" onto public java.lang.String com.hl.HomeController.demo()
+2017-07-23 15:06:15.032  INFO 11504 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/profile]}" onto public java.lang.String com.hl.HomeController.testProfile()
+2017-07-23 15:06:15.038  INFO 11504 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2017-07-23 15:06:15.043  INFO 11504 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2017-07-23 15:06:15.100  INFO 11504 --- [           main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@34b7ac2f: startup date [Sun Jul 23 15:06:13 CST 2017]; root of context hierarchy
+2017-07-23 15:06:15.395  INFO 11504 --- [           main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2017-07-23 15:06:15.448  INFO 11504 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 9080 (http)
+2017-07-23 15:06:15.452  INFO 11504 --- [           main] com.hl.Application                       : Started Application in 2.805 seconds (JVM running for 3.078)
+2017-07-23 15:06:37.248  INFO 11504 --- [nio-9080-exec-1] o.a.c.c.C.[.[localhost].[/springboot]    : Initializing Spring FrameworkServlet 'dispatcherServlet'
+2017-07-23 15:06:37.249  INFO 11504 --- [nio-9080-exec-1] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization started
+2017-07-23 15:06:37.264  INFO 11504 --- [nio-9080-exec-1] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization completed in 15 ms
+2017-07-23 15:06:37.280  INFO 11504 --- [nio-9080-exec-1] com.hl.interceptor.MyInterceptor         : preHandle MyInterceptor HandlerInterceptor(MyInterceptor.preHandle) !!!
+____________________pre_________________________
+2017-07-23 15:06:37.287  INFO 11504 --- [nio-9080-exec-1] com.hl.HomeController                    : ~~~read from application(-*).properties,aaa:121
+2017-07-23 15:06:37.307  INFO 11504 --- [nio-9080-exec-1] com.hl.interceptor.MyInterceptor         : postHandle !!!
+____________________post_________________________
+2017-07-23 15:06:37.307  INFO 11504 --- [nio-9080-exec-1] com.hl.interceptor.MyInterceptor         : afterCompletion HandlerInterceptor(TokenInterceptor.preHandle) excute success !!!
+____________________afterCompletion_________________________
+
+
+
