@@ -5,6 +5,21 @@ application-dev.properties里面配置了aaa = 111;
 application.properties里面配置了aaa = 121,spring.profiles.active=dev;这个时候回优先读取application-dev.properties里面配置的配置，
 除非-dev里面没有，才会读application.properties里面配置。
 application.properties里面配置可以在controller中通过如下代码来获取：
+自定义属性及加载
+-------------------
+首先自定义属性如下
+
+com.bluecoffee.space.author=bluecoffee    
+com.bluecoffee.space.title=Spring Boot基础教程
+通过@Value("${属性名}")注解来加载对应的配置属性,如下所示
+
+    @Value("${com.bluecoffee.space.author}")
+    private String blogAuthor;
+
+    @Value("${com.bluecoffee.space.title}")
+    private String blogTitle;
+
+
 ------
 @Autowired
     private Environment env;
