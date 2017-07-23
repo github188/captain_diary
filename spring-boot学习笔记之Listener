@@ -1,0 +1,59 @@
+spring-boot学习笔记之Listener
+144  作者 linking12 关注
+2016.01.20 13:57* 字数 343 阅读 3567评论 0喜欢 0
+spring－boot扩展了spring的ApplicationContextEvent，提供了四种事件
+
+ApplicationStartedEvent ：spring boot启动开始时执行的事件
+ApplicationEnvironmentPreparedEvent：spring boot 对应Enviroment已经准备完毕，但此时上下文context还没有创建。
+ApplicationPreparedEvent：spring boot上下文context创建完成，但此时spring中的bean是没有完全加载完成的。
+ApplicationFailedEvent：spring boot启动异常时执行事件
+* 硬编码注册Listener
+
+@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication application = new SpringApplication(Application.class);
+        application.addListeners(new ApplicationListenerEnvironmentPrepared());
+        application.addListeners(new ApplicationListenerFailed());
+        application.addListeners(new ApplicationListenerPrepared());
+        application.addListeners(new ApplicationListenerStarted());
+        application.run(args);
+    }
+}
+public class ApplicationListenerEnvironmentPrepared implements ApplicationListener<ApplicationEnvironmentPreparedEvent> {
+    @Override
+    public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
+        System.out.println(getClass().getSimpleName());
+    }
+}
+public class ApplicationListenerFailed implements ApplicationListener<ApplicationFailedEvent> {
+    @Override
+    public void onApplicationEvent(ApplicationFailedEvent event) {
+        System.out.println(getClass().getSimpleName());
+    }
+
+}
+public class ApplicationListenerPrepared implements ApplicationListener<ApplicationPreparedEvent> {
+    @Override
+    public void onApplicationEvent(ApplicationPreparedEvent event) {
+        System.out.println(getClass().getSimpleName());
+    }
+
+}
+public class ApplicationListenerStarted implements ApplicationListener<ApplicationStartedEvent> {
+    @Override
+    public void onApplicationEvent(ApplicationStartedEvent event) {
+        System.out.println(getClass().getSimpleName());
+    }
+
+}
+
+硬编码方式注册Listener结果
+* 配置文件注册Listener
+
+context.listener.classes=org.mingyu.study.listener.ApplicationListenerStarted,org.mingyu.study.listener.ApplicationListenerEnvironmentPrepared,org.mingyu.study.listener.ApplicationListenerFailed,org.mingyu.study.listener.ApplicationListenerPrepared
+
+配置文件注册Listener结果
+如果是使用配置文件来注册的话，ApplicationStartedEvent这种事件是监听不到的，因为配置文件加载代表着spring-boot已经启动，不过其他两种事件已经足够给项目上使用了，推荐还是使用配置文件的方式来注册Listener
+
+ 日记本
