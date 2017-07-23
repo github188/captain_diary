@@ -1,0 +1,38 @@
+多环境配置
+
+我们知道在研发过程中，从开发-测试-上线，至少也有3个环境，实际上仅测试阶段可能还会有SIT、UAT阶段，然后每个环境的配置都不一样，比如数据库配置、Redis配置、分布式消息组件配置等。如果在打包环节来进行修改配置的话，非常容易出错。
+
+对于多环境的配置，有非常多的项目构建工具，原理基本上都是通过配置多份不同环境的配置文件，再通过打包命令指定需要打包的内容之后进行区分打包，Spring Boot同样也支持。
+
+在Spring Boot中多环境配置文件名需要满足application-{profile}.properties的格式，其中{profile}对应你的环境标识，比如：
+
+application-dev.properties：开发环境
+application-test.properties：测试环境
+application-prod.properties：生产环境
+至于哪个具体的配置文件会被加载，需要在application.properties文件中通过spring.profiles.active属性来设置，其值对应{profile}值。
+
+如：spring.profiles.active=prod就会加载application-prod.properties配置文件内容
+
+下面，以不同环境配置不同的服务端口为例，进行测试:
+
+针对各环境新建不同的配置文件application-dev.properties、application-test.properties、application-prod.properties
+
+在这三个文件均都设置不同的server.port属性，如：dev环境设置为1111，test环境设置为2222，prod环境设置为3333
+
+application.properties中设置spring.profiles.active=dev，就是说默认以dev环境设置
+
+测试不同配置的加载
+
+执行java -jar xxx.jar，可以观察到服务端口被设置为1111，也就是默认的开发环境（dev）
+执行java -jar xxx.jar --spring.profiles.active=test，可以观察到服务端口被设置为2222，也就是测试环境的配置（test）
+执行java -jar xxx.jar --spring.profiles.active=prod，可以观察到服务端口被设置为3333，也就是生产环境的配置（prod）
+按照上面的实验，可以如下总结多环境的配置思路：
+
+application.properties中配置通用内容，并设置spring.profiles.active=dev，以开发环境为默认配置
+application-{profile}.properties中配置各个环境不同的内容
+通过java -jar xxx.jar --spring.profiles.active={}方式去激活不同环境的配置
+
+作者：蓝色的咖啡
+链接：http://www.jianshu.com/p/dce0c3ab3014
+來源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
