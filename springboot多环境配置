@@ -1,9 +1,19 @@
 多环境配置
+要注意，总结application在springboot工程的位置。
 有这样一种情况：
 application-dev.properties里面配置了aaa = 111;
 application.properties里面配置了aaa = 121,spring.profiles.active=dev;这个时候回优先读取application-dev.properties里面配置的配置，
 除非-dev里面没有，才会读application.properties里面配置。
-
+application.properties里面配置可以在controller中通过如下代码来获取：
+------
+@Autowired
+    private Environment env;
+        
+    @RequestMapping("/testProfile")
+    public String testProfile(){
+        return env.getProperty("aaa");
+    }
+----------
 我们知道在研发过程中，从开发-测试-上线，至少也有3个环境，实际上仅测试阶段可能还会有SIT、UAT阶段，然后每个环境的配置都不一样，比如数据库配置、Redis配置、分布式消息组件配置等。如果在打包环节来进行修改配置的话，非常容易出错。
 
 对于多环境的配置，有非常多的项目构建工具，原理基本上都是通过配置多份不同环境的配置文件，再通过打包命令指定需要打包的内容之后进行区分打包，Spring Boot同样也支持。
