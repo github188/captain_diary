@@ -1,0 +1,41 @@
+(1)     先说jquery, 使用 jQuery 库的话，只需要同时绑定 oninput 和 onpropertychange 两个事件就可以了，示例代码：
+
+$('#username').bind('input propertychange', function() {
+    $('#content').html($(this).val().length + ' characters');
+});
+
+(2)　 对于JS原生写法而言， oninput 是 HTML5 的标准事件，对于检测 textarea, input:text, input:password 和 input:search 这几个元素通过用户界面发生的内容变化非常有用，在内容修改后立即被触发，不像 onchange 事件需要失去焦点才触发。oninput 事件在主流浏览器的兼容情况如下：
+ 
+
+　　
+
+　　从上面表格可以看出，oninput 事件在 IE9 以下版本不支持，需要使用 IE 特有的 onpropertychange 事件替代，这个事件在用户界面改变或者使用脚本直接修改内容两种情况下都会触发，有以下几种情况：
+
+修改了 input:checkbox 或者 input:radio 元素的选择中状态， checked 属性发生变化。
+修改了 input:text 或者 textarea 元素的值，value 属性发生变化。
+修改了 select 元素的选中项，selectedIndex 属性发生变化。
+　　在监听到 onpropertychange 事件后，可以使用 event 的 propertyName 属性来获取发生变化的属性名称。
+
+　　集合 oninput & onpropertychange 监听输入框内容变化的示例代码如下：
+
+ 
+ <head>
+    <script type="text/javascript">
+    // Firefox, Google Chrome, Opera, Safari, Internet Explorer from version 9
+        function OnInput (event) {
+            alert ("The new content: " + event.target.value);
+        }
+    // Internet Explorer
+        function OnPropChanged (event) {
+            if (event.propertyName.toLowerCase () == "value") {
+                alert ("The new content: " + event.srcElement.value);
+            }
+        }
+    </script>
+</head>
+<body>
+    Please modify the contents of the text field.
+    <input type="text" oninput="OnInput (event)" onpropertychange="OnPropChanged (event)" value="Text field" />
+</body>    
+
+http://blog.163.com/lgh_2002/blog/static/44017526201341511112874/
