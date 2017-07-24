@@ -1,3 +1,8 @@
+几个组合注解关注一下：@RestController @GetMapping  @PostMapping @PutMapping
+还有几个常用注解  @Controller @Value @RequestMapping  @PathVariable @RequestParams
+
+
+
 # springroot入门开始学
 ***
 一个一个练习开始练习
