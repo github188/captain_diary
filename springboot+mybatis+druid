@@ -1,6 +1,6 @@
  
  spring-boot 注解配置mybatis+druid（新手上路）   
- .   唯一的缺憾：没有用mapper.xml文件
+ .   唯一的缺憾：没有用mapper.xml文件 还要加个多数据源配置
 
 标签： sprinb-bootmybatisdruid  
 
