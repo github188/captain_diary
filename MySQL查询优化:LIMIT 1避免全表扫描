@@ -1,0 +1,55 @@
+
+MySQL查询优化:LIMIT 1避免全表扫描   oracle里面加 rownum=1 是否可以避免全表扫描？
+
+[日期：2013-03-30] 来源：blog.csdn.net/xiao__gui  作者：叉叉哥 [字体：大 中 小]  
+
+在某些情况下，如果明知道查询结果只有一个，SQL语句中使用LIMIT 1会提高查询效率。
+
+例如下面的用户表(主键id,邮箱,密码)：
+
+create table t_user(
+id int primary key auto_increment,
+email varchar(255),
+password varchar(255)
+);
+
+每个用户的email是唯一的，如果用户使用email作为用户名登陆的话，就需要查询出email对应的一条记录。
+
+SELECT * FROM t_user WHERE email=?;
+
+上面的语句实现了查询email对应的一条用户信息，但是由于email这一列没有加索引，会导致全表扫描，效率会很低。
+
+SELECT * FROM t_user WHERE email=? LIMIT 1;
+
+加上LIMIT 1，只要找到了对应的一条记录，就不会继续向下扫描了，效率会大大提高。
+
+LIMIT 1适用于查询结果为1条（也可能为0）会导致全表扫描的的SQL语句。
+
+如果email是索引的话，就不需要加上LIMIT 1，如果是根据主键查询一条记录也不需要LIMIT 1，主键也是索引。
+例如：
+SELECT * FROM t_user WHERE id=?;
+就不需要写成：
+SELECT * FROM t_user WHERE id=? LIMIT 1;
+二者效率没有区别。
+附上我做的实验：
+
+存储过程生成100万条数据：
+
+BEGIN
+DECLARE i INT;
+START TRANSACTION;
+SET i=0;
+WHILE i<1000000 DO
+ INSERT INTO t_user VALUES(NULL,CONCAT(i+1,'@xxg.com'),i+1);
+ SET i=i+1;
+END WHILE;
+COMMIT;
+END
+
+查询语句
+
+SELECT * FROM t_user WHERE email='222@xxg.com'; 耗时0.56 s
+
+SELECT * FROM t_user WHERE email='222@xxg.com' LIMIT 1; 耗时0.00 s
+
+本篇文章来源于 Linux公社网站(www.linuxidc.com)  原文链接：http://www.linuxidc.com/Linux/2013-03/81974.htm
