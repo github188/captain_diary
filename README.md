@@ -2,8 +2,8 @@
 
 ***
 1. good good see this article,
-2. seriouly to to,
-3. good luck for you to meet goot thing.   
+2. seriouly to say,要有
+3. good luck for you to meet goot thing.  环境代入感。 
 read this script when you are not so busy.
 
 
