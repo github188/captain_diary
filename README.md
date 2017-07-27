@@ -28,7 +28,7 @@ read this script when you are not so busy.
 
 我理解的springboot  跟人家理解的有差距  看看完整的springboot是怎么玩的
 
-点解 publish 就提交到云端了？  试试看
+点击 publish 就提交到云端了？  试试看
 
 
 嗯嗯嗯
