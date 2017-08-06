@@ -2,3 +2,17 @@
 这个很重要  不像svn那么方便  特别是有代码冲突的时候
 直接pull会报错
 需要先将本地代码提交commit到本地仓库，然后再从远端pull，然后解决冲突，就可以了
+
+这是个很有意思的事  一般人不会
+1.选中工程名，右键-team-pull,若有冲突，会提示checkout conflict with 哪些files,同时会有"向下箭头 1"出现，表示远端该分支下有一次commit的
+代码未更新到本地。
+2.将本地代码commit到本地仓库中。
+3.选中工程名，team - merge ,mergeoptions选中第二个 No commits .....
+4.手动解决冲突文件
+5.选中修改文件-右键-add to index（本地缓存区），非常重要不能省略。
+6.commit,(commit message 出现 merge ..... 同时向下箭头消失，向上箭头加1)
+7.commit & push 即可。
+
+
+如果出现向下箭头消失，向上箭头后面的数字大于1，commit & push又不成功，可以考虑，将代码add to index，再试一次。
+ 
