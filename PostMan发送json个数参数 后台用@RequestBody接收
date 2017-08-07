@@ -1,0 +1,25 @@
+PostMan发送json个数参数 后台用@RequestBody接收
+    1. Post http请求方式；
+    2. Content-Type 为 application/json ；
+    3. body里面选中raw，下拉选项选择json（application/json）；
+    4. 下方编辑区输入{"appId":"1645285811190497300","appKey":"d7106fee5abdbbdcaf339931d8c26262","thirdUserId":"1122334455666658","systemType":"02",
+	"sign":"f9743a7f39c06d17659e5fe81238e69a","mobile":"137985357658","userId":"12345678958","regChannel":"JTC"
+}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
