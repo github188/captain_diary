@@ -1,5 +1,6 @@
 tail -500 就是查看末尾500行
 head -500  查看开头500行
+nohup java -jar -Dspring.profiles.active=dev -Xms1024m -Xmx1024m -XX:PermSize=256M -XX:MaxPermSize=512m member.jar 2>&1 & 
 
 
 
