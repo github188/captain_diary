@@ -2,6 +2,9 @@ tail -500 就是查看末尾500行
 head -500  查看开头500行
 nohup java -jar -Dspring.profiles.active=dev -Xms1024m -Xmx1024m -XX:PermSize=256M -XX:MaxPermSize=512m member.jar 2>&1 & 
 
+文本中搜索含某些字符串的行显示出来，用grep  grep 要搜索的内容 文件名称   
+如果返回 Binary file nohup.out matches  grep 加 -a  要搜索的内容 文件名称   很好用
+
 
 
 1.目录操作  
