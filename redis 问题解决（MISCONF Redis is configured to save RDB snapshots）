@@ -1,0 +1,21 @@
+redis 问题解决（MISCONF Redis is configured to save RDB snapshots）
+标签： redis
+2013-10-20 14:57 9886人阅读 评论(0) 收藏 举报
+ 分类： redis nosql
+版权声明：本文为博主原创文章，未经博主允许不得转载。
+
+
+
+
+(error) MISCONF Redis is configured to save RDB snapshots, but is currently not able to persist on disk. Commands that may modify the data set are disabled. Please check Redis logs for details about the error.
+ 
+使用如下命令解决：
+config set stop-writes-on-bgsave-error no
+
+[plain] view plain copy
+set 'name' 'shenhui'  
+-MISCONF Redis is configured to save RDB snapshots, but is currently not able to persist on disk. Commands that may modify the data set are disabled. Please check Redis logs for details about the error.  
+config set stop-writes-on-bgsave-error no  
++OK  
+set 'name' 'shenhui'  
++OK  
