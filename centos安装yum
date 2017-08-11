@@ -13,3 +13,5 @@ yummain.py install yum
 yum check-update
 yum update
 yum clean all
+
+再继续安装git    yum -y install git
