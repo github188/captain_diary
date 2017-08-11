@@ -1,0 +1,154 @@
+Redis事务 这篇文章好在可以教会你，让你熟习使用redis的自带客户端，非常好用
+　　Redis中的事务(transaction)是一组命令的集合。事务同命令一样都是Redis最小的执行单位，一个事务中的命令要么都执行，要么都不执行。Redis事务的实现需要用到 MULTI 和 EXEC 两个命令，事务开始的时候先向Redis服务器发送 MULTI 命令，然后依次发送需要在本次事务中处理的命令，最后再发送 EXEC 命令表示事务命令结束。
+
+　　举个例子，使用redis-cli连接redis，然后在命令行工具中输入如下命令：　　
+
+
+
+　　从输出中可以看到，当输入MULTI命令后，服务器返回OK表示事务开始成功，然后依次输入需要在本次事务中执行的所有命令，每次输入一个命令服务器并不会马上执行，而是返回”QUEUED”，这表示命令已经被服务器接受并且暂时保存起来，最后输入EXEC命令后，本次事务中的所有命令才会被依次执行，可以看到最后服务器一次性返回了三个OK，这里返回的结果与发送的命令是按顺序一一对应的，这说明这次事务中的命令全都执行成功了。
+
+　　再举个例子，在命令行工具中输入如下命令：　　
+
+
+
+　　和前面的例子一样，先输入MULTI最后输入EXEC表示中间的命令属于一个事务，不同的是中间输入的命令有一个错误(set写成了sett)，这样因为有一个错误的命令导致事务中的其他命令都不执行了(通过后续的get命令可以验证)，可见事务中的所有命令是同呼吸共命运的。
+
+　　如果客户端在发送EXEC命令之前断线了，则服务器会清空事务队列，事务中的所有命令都不会被执行。而一旦客户端发送了EXEC命令之后，事务中的所有命令都会被执行，即使此后客户端断线也没关系，因为服务器已经保存了事务中的所有命令。
+
+　　除了保证事务中的所有命令要么全执行要么全不执行外，Redis的事务还能保证一个事务中的命令依次执行而不会被其他命令插入。试想一个客户端A需要执行几条命令，同时客户端B发送了几条命令，如果不使用事务，则客户端B的命令有可能会插入到客户端A的几条命令中，如果想避免这种情况发生，也可以使用事务。　
+
+　
+
+Redis事务错误处理
+　　如果一个事务中的某个命令执行出错，Redis会怎样处理呢？要回答这个问题，首先要搞清楚是什么原因导致命令执行出错：
+
+　　1.语法错误:就像上面的例子一样，语法错误表示命令不存在或者参数错误，这种情况需要区分Redis的版本，Redis 2.6.5之前的版本会忽略错误的命令，执行其他正确的命令，2.6.5之后的版本会忽略这个事务中的所有命令，都不执行，就比如上面的例子(使用的Redis版本是2.8的)
+
+　　2.运行错误 运行错误表示命令在执行过程中出现错误，比如用GET命令获取一个散列表类型的键值。这种错误在命令执行之前Redis是无法发现的，所以在事务里这样的命令会被Redis接受并执行。如果食物里有一条命令执行错误，其他命令依旧会执行（包括出错之后的命令）。比如下例：　　
+
+
+
+　　Redis中的事务并没有关系型数据库中的事务回滚(rollback)功能，因此使用者必须自己收拾剩下的烂摊子。不过由于Redis不支持事务回滚功能，这也使得Redis的事务简洁快速。
+
+　　回顾上面两种类型的错误，语法错误完全可以在开发的时候发现并作出处理，另外如果能很好地规划Redis数据的键的使用，也是不会出现命令和键不匹配的问题的。　
+
+　
+
+WATCH、UNWATCH、DISCARD命令
+　　从上面的例子我们可以看到，事务中的命令要全部执行完之后才能获取每个命令的结果，但是如果一个事务中的命令B依赖于他上一个命令A的结果的话该怎么办呢？就比如说实现类似Java中的i++的功能，先要获取当前值，才能在当前值的基础上做加一操作。这种场合仅仅使用上面介绍的MULTI和EXEC是不能实现的，因为MULTI和EXEC中的命令是一起执行的，并不能将其中一条命令的执行结果作为另一条命令的执行参数，所以这个时候就需要引进Redis事务家族中的另一成员：WATCH命令
+
+　　换个角度思考上面说到的实现i++的方法，可以这样实现：
+
+监控i的值，保证i的值不被修改
+获取i的原值
+如果过程中i的值没有被修改，则将当前的i值+1，否则不执行
+　　这样就能够避免竞态条件，保证i++能够正确执行。
+
+　　WATCH命令可以监控一个或多个键，一旦其中有一个键被修改（或删除），之后的事务就不会执行，监控一直持续到EXEC命令（事务中的命令是在EXEC之后才执行的，EXEC命令执行完之后被监控的键会自动被UNWATCH）。举个例子：　　
+
+
+
+　　上面的例子中，首先设置mykey的键值为1，然后使用WATCH命令监控mykey，随后更改mykey的值为2，然后进入事务，事务中设置mykey的值为3，然后执行EXEC运行事务中的命令，最后使用get命令查看mykey的值，发现mykey的值还是2，也就是说事务中的命令根本没有执行（因为WATCH监控mykey的过程中，mykey被修改了，所以随后的事务便会被取消）。
+
+　　UNWATCH命令可以在WATCH命令执行之后、MULTI命令执行之前取消对某个键的监控。举个例子：
+
+
+
+　　上面的例子中，首先设置mykey的键值为1，然后使用WATCH命令监控mykey，随后更改mykey的值为2，然后取消对mykey的监控，再进入事务，事务中设置mykey的值为3，然后执行EXEC运行事务中的命令，最后使用get命令查看mykey的值，发现mykey的值还是3，也就是说事务中的命令运行成功。
+
+　　DISCARD命令则可以在MULTI命令执行之后，EXEC命令执行之前取消WATCH命令并清空事务队列，然后从事务状态中退出。举个例子：
+
+
+
+　　上面的例子中，首先设置mykey的键值为1，然后使用WATCH命令监控mykey，随后更改mykey的值为2，然后进入事务，事务中设置mykey的值为3，然后执行DISCARD命令，再执行EXEC运行事务中的命令，发现报错“ERR EXEC without MULTI”，说明DISCARD命令成功执行——取消WATCH命令并清空事务队列，然后从事务状态中退出。
+
+ 
+
+Redis分布式锁
+　　上面介绍的Redis的WATCH、MULTI和EXEC命令，只会在数据被其他客户端抢先修改的情况下，通知执行这些命令的客户端，让它撤销对数据的修改操作，并不能阻止其他客户端对数据进行修改，所以只能称之为乐观锁（optimistic locking）。
+
+　　而这种乐观锁并不具备可扩展性——当客户端尝试完成一个事务的时候，可能会因为事务执行失败而进行反复的重试。保证数据准确性非常重要，但是当负载变大的时候，使用乐观锁的做法并不完美。这时就需要使用Redis实现分布式锁。
+
+　　分布式锁：是控制分布式系统之间同步访问共享资源的一种方式。在分布式系统中，常常需要协调他们的动作。如果不同的系统或是同一个系统的不同主机之间共享了一个或一组资源，那么访问这些资源的时候，往往需要互斥来防止彼此干扰来保证一致性，在这种情况下，便需要使用到分布式锁。
+
+　　Redis命令介绍：
+
+　　Redis实现分布式锁主要用到命令是SETNX命令（SET if Not eXists）。
+　　语法：SETNX key value
+　　功能：当且仅当 key 不存在，将 key 的值设为 value ，并返回1；若给定的 key 已经存在，则 SETNX 不做任何动作，并返回0。
+
+　　使用Redis构建锁：
+
+　　思路：将“lock:”+参数名设置为锁的键，使用SETNX命令尝试将一个随机的uuid设置为锁的值，并为锁设置过期时间，使用SETNX设置锁的值可以防止锁被其他进程获取。如果尝试获取锁的时候失败，那么程序将不断重试，直到成功获取锁或者超过给定是时限为止。
+
+　　代码：　　
+
+复制代码
+public String acquireLockWithTimeout(
+        Jedis conn, String lockName, long acquireTimeout, long lockTimeout)
+    {
+        String identifier = UUID.randomUUID().toString();   //锁的值
+        String lockKey = "lock:" + lockName;     //锁的键
+        int lockExpire = (int)(lockTimeout / 1000);     //锁的过期时间
+
+        long end = System.currentTimeMillis() + acquireTimeout;     //尝试获取锁的时限
+        while (System.currentTimeMillis() < end) {      //判断是否超过获取锁的时限
+            if (conn.setnx(lockKey, identifier) == 1){  //判断设置锁的值是否成功
+                conn.expire(lockKey, lockExpire);   //设置锁的过期时间
+                return identifier;          //返回锁的值
+            }
+            if (conn.ttl(lockKey) == -1) {      //判断锁是否超时
+                conn.expire(lockKey, lockExpire);
+            }
+
+            try {
+                Thread.sleep(1000);    //等待1秒后重新尝试设置锁的值
+            }catch(InterruptedException ie){
+                Thread.currentThread().interrupt();
+            }
+        }
+        // 获取锁失败时返回null
+        return null;
+    }
+复制代码
+　　锁的释放：
+
+　　思路：使用WATCH命令监视代表锁的键，然后检查键的值是否和加锁时设置的值相同，并在确认值没有变化后删除该键。
+
+　　代码：　　
+
+复制代码
+public boolean releaseLock(Jedis conn, String lockName, String identifier) {
+        String lockKey = "lock:" + lockName;    //锁的键
+
+        while (true){
+            conn.watch(lockKey);    //监视锁的键
+            if (identifier.equals(conn.get(lockKey))){  //判断锁的值是否和加锁时设置的一致，即检查进程是否仍然持有锁
+                Transaction trans = conn.multi();
+                trans.del(lockKey);             //在Redis事务中释放锁
+                List<Object> results = trans.exec();
+                if (results == null){   
+                    continue;       //事务执行失败后重试（监视的键被修改导致事务失败，重新监视并释放锁）
+                }
+                return true;
+            }
+
+            conn.unwatch();     //解除监视
+            break;
+        }
+        return false;
+    }
+复制代码
+　　
+
+　　通过在客户端上面实现一个真正的锁（非乐观锁），将会为程序带来更好的性能，更简单易用的API，但是与此同时，请记住Redis并不会主动使用这个自制的分布式锁，我们必须自己使用这个锁来代替WATCH命令，或者协同WATCH命令一起工作，从而保证数据的准确性与一致性。
+
+ 
+
+ 
+
+　　参考：
+
+　　http://qifuguang.me/2015/09/30/Redis%E4%BA%8B%E5%8A%A1%E4%BB%8B%E7%BB%8D/
+
+　　http://blog.csdn.net/ugg/article/details/41894947
