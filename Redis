@@ -9,6 +9,10 @@ redis 被广泛应用于各开发平台 php C# C C++ python
 hgetall keyname 查看keyname对应的所有key value 值
 
 今天使用redis 使用分布式锁解决保证不会超预算的问题  看到了 sadd这个方法 突然感到好陌生 所以好奇学习一下redis
+
+当我们在项目中使用redis来存储java对象时,一般采用什么方式来存储，String 还是 hahmap
+
+可以使用 type 命令来查看 key 的数据类型
  
 
 
