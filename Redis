@@ -1,1 +1,24 @@
 
+redis 被广泛应用于各开发平台 php C# C C++ python
+支持5种数据类型，包括String，Set,ZSet,List,hash   
+支持事务  使用关键操作字  watch multi exec 
+操作String 直接用 set key ， get  key
+操作 set 用 sadd  v1 v2 v3 ....       smembers来查看元素
+操作 zset 用 zadd  score1  v1  score2 v2  
+操作 hash(hashmap)  hmset keyname k1 v1 k2 v2  k3 v3
+hgetall keyname 查看keyname对应的所有key value 值
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
