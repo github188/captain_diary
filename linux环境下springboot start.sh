@@ -4,3 +4,6 @@ nohup是在后台执行该程序 以守护线程的形式  前台退出该线程
 启完之后  出现这个不要犯傻 nohup: ignoring input and appending output to `nohup.out'
 赶紧去 tail -f nohup.out 看启动日志就行了 
 
+
+linux  切换用户   su - 新用户名 
+
