@@ -1,0 +1,5 @@
+tomcat 启动参数 Xms, Xmx, XX:MaxNewSize, XX:PermSize, -XX:MaxPermSize, Djava.awt.headless  
+http://www.cnblogs.com/milton/p/4380126.html
+
+
+
