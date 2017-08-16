@@ -15,4 +15,15 @@
 
 
 如果出现向下箭头消失，向上箭头后面的数字大于1，commit & push又不成功，可以考虑，将代码add to index，再试一次。
+
+今天第一次尝试用eclipse中的git插件来merge两个分支的代码，居然成功了，真的很神奇。
+讲讲要注意的点：
+   比方说，我们的目标是将branch-2的代码merge合并到branch-1
+   1. 将branch-1的代码和branch-2的代码都通过eclipse import到本地，init branch分支选择branch-1;
+   2. convert to Maven project , 右键-team-merge 选择 branch-2 分支，OK，这个时候，本地代码会有红色冲突标记；
+   3. 根据红色标记找出冲突的文件，逐个解决冲突，然后add to index ，
+   4. commit :提交注释中会自动添加 merge ：...........
+   5. commit and push .
+   
+
  
