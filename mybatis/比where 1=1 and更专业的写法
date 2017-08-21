@@ -1,0 +1,8 @@
+<select id="select"  resultMap="BaseResultMap"  parameterType="com.jst.market.bean.ActivityUseRecord">  
+       select * from t_activity_use_record
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+      <if test="activityId != null" >
+        and activity_id=#{activityId}
+      </if>
+     </trim>
+    </select>
