@@ -25,5 +25,10 @@
    4. commit :提交注释中会自动添加 merge ：...........
    5. commit and push .
    
+   
+   
+   eclipse中git插件，将本地文件更新为远端文件，即用远端文件覆盖本地文件，用team - reset 可选soft mixed hard hard是强制用远端代码覆盖
+   本地代码。
+   
 
  
