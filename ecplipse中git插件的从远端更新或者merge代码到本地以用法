@@ -34,5 +34,8 @@
    #    eclipse git插件回退版本  
    首先 在编辑区 右键-show in -git repositories - 点击减号按钮(折叠)，打开要回退的所在分支-选中-右键-show in history -这样
    history就完美展现了  这个时候，选中某个提交版本 -右键 - reset - hard 就可以回退了。  用 git命令行也能解决回退的问题。
+   
+   
+   还可以 右键 - 加 tag标签   这样回退就更清楚方便了
 
  
