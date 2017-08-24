@@ -30,5 +30,9 @@
    eclipse中git插件，将本地文件更新为远端文件，即用远端文件覆盖本地文件，用team - reset 可选soft mixed hard hard是强制用远端代码覆盖
    本地代码。
    
+   
+   #    eclipse git插件回退版本  
+   首先 在编辑区 右键-show in -git repositories - 点击减号按钮(折叠)，打开要回退的所在分支-选中-右键-show in history -这样
+   history就完美展现了  这个时候，选中某个提交版本 -右键 - reset - hard 就可以回退了。  用 git命令行也能解决回退的问题。
 
  
