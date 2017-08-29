@@ -1,3 +1,5 @@
+今天看见韩伟东在vim编辑器里面去查看log日志，然后在命令行模式下面去搜素，用？加查询条件 然后用m键来向后搜索
+
 tail -500 就是查看末尾500行
 head -500  查看开头500行
 nohup java -jar -Dspring.profiles.active=dev -Xms1024m -Xmx1024m -XX:PermSize=256M -XX:MaxPermSize=512m member.jar 2>&1 & 
