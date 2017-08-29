@@ -1,4 +1,6 @@
 经过几天的努力，终于解决了这个问题 百度搜索:不支持diamond运算符 http://blog.csdn.net/kinginblue/article/details/52030250
+
+如果继续报错  选中工程名-邮件properties-projects Facets - convented to faceted form - 双击java - 选择1.8
 使用run as- run configuraion - package spring-boot:repackage 来实施package打包的时候，会出现
 =====   错误: -source 1.6 中不支持 diamond 运算符 (请使用 -source 7 或更高版本以启用 diamond 运算符)
 这个问题 要这样解决，在pom文件里面 properties 这个节点下面指定  
