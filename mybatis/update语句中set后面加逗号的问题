@@ -1,0 +1,81 @@
+<update id="updateUseStatusForCoupon" parameterType="UserActivity" >
+   update t_user_activity 
+    <set>
+       status=#{status},version_no=version_no+1
+      <if test="useDateTime != null" >
+        use_date_time = #{useDateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="orderNo != null" >
+        order_no = #{orderNo,jdbcType=VARCHAR}
+      </if>
+      <if test="orderAmt != null" >
+        order_amt = #{orderAmt,jdbcType=INTEGER}
+      </if>
+      <if test="channel != null" >
+        channel = #{channel,jdbcType=VARCHAR}
+      </if>
+      <if test="mobile != null" >
+       mobile = #{mobile,jdbcType=VARCHAR}
+      </if>
+      <if test="useAmt != null" >
+        use_amt = #{useAmt,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where
+    	<if test="oldStatus != null" >
+       status= #{oldStatus,jdbcType=VARCHAR} 
+      </if>
+      <if test="id != null" >
+       and id=#{id}
+      </if>
+      <if test="activityId != null" >
+        and activity_id=#{activityId}
+      </if>
+      <if test="userId != null" >
+        and user_id=#{userId}
+      </if>  
+      <if test="versionNo != null" >
+        and version_no = #{versionNo,jdbcType=INTEGER}
+      </if>
+      一开始这样写，会报错，那是当然，后来想着把逗号写在 if内的后面，但是后面会多一个逗号，远全提醒这样写，服务器上运行没错
+----------------分割线---------------------------------
+
+<update id="updateUseStatusForCoupon" parameterType="UserActivity" >
+   update t_user_activity 
+    <set>
+       status=#{status},version_no=version_no+1
+      <if test="useDateTime != null" >
+        ,use_date_time = #{useDateTime,jdbcType=TIMESTAMP}
+      </if>
+      <if test="orderNo != null" >
+        ,order_no = #{orderNo,jdbcType=VARCHAR}
+      </if>
+      <if test="orderAmt != null" >
+        ,order_amt = #{orderAmt,jdbcType=INTEGER}
+      </if>
+      <if test="channel != null" >
+        ,channel = #{channel,jdbcType=VARCHAR}
+      </if>
+      <if test="mobile != null" >
+       , mobile = #{mobile,jdbcType=VARCHAR}
+      </if>
+      <if test="useAmt != null" >
+       , use_amt = #{useAmt,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where
+    	<if test="oldStatus != null" >
+       status= #{oldStatus,jdbcType=VARCHAR} 
+      </if>
+      <if test="id != null" >
+       and id=#{id}
+      </if>
+      <if test="activityId != null" >
+        and activity_id=#{activityId}
+      </if>
+      <if test="userId != null" >
+        and user_id=#{userId}
+      </if>  
+      <if test="versionNo != null" >
+        and version_no = #{versionNo,jdbcType=INTEGER}
+      </if>
