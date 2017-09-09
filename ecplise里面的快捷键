@@ -11,6 +11,7 @@ CTR+Q  真是个好东西  再说一次，ctrl + q是个好东西
 CTRL + O  与 ctrl + F搭配起来使用， 在寻找方法的时候，非常有效，昨天在陈强那找那个initMMktChannel()这个function的时候，忘了用这个，在js里面寻找，要省好多时间，比ctrl+F
 ，这真的是出神入化。
 别小看ctrl + L + 输入行数 简单粗暴，真正用起来还是很能节省时间的。关键能节省精力，这个太重要了。
+ctrl + shift + r
 有一些快捷键真的可以熟练也用起来了。
 
 如何用快捷键对entity里面的成员变量进行排序，alt + shift + S ，选择sort members.
