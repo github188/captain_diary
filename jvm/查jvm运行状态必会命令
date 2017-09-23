@@ -1,0 +1,2 @@
+jstat -gcutil 26384 3s 30
+26384为 (pid)
