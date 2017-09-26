@@ -1,4 +1,5 @@
 今天在写一个dubbo调用的时候，没有用catch(){} 吃了大亏，导致后面的return 的数据都没有返回。 
+还有个alt + shilft + Z 这个快捷键好用
 
 catch捕获异常后面的语句还会不会执行 [问题点数：20分，结帖人xiyuanna]   收藏
 xiyuanna
