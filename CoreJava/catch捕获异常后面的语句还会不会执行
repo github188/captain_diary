@@ -1,0 +1,113 @@
+今天在写一个dubbo调用的时候，没有用catch(){} 吃了大亏，导致后面的return 的数据都没有返回。 
+
+catch捕获异常后面的语句还会不会执行 [问题点数：20分，结帖人xiyuanna]   收藏
+xiyuanna
+xiyuanna
+xiyuanna  T2
+结帖率：100%
+ 例如：
+
+                         if(is_rms)
+{	
+     try{
+                                         执行一部分语句
+               }
+    catch (Exception e) 
+    {
+System.out.println("canvasrms" + e.toString());
+    }
+    
+    is_rms=false;
+}	    	
+   	 m_temptextBuffer.delete(0, m_temptextBuffer.length());	    	
+    
+如果try里面执行的语句发生了异常catch捕获了之后，后面的  is_rms=false;和 m_temptextBuffer.delete(0, m_temptextBuffer.length());还会不会执行
+
+
+
+更多 0 分享到：
+
+ 
+
+ 
+
+ 
+
+发表于： 2008-06-30 10:59:37 楼主 对我有用[0] 丢个板砖[0] 引用 | 举报 | 管理 回复次数：14
+csdn官网
+csdn官网
+官方推荐
+Delphi7高级应用开发随书源码 聊天机器人2002 Unity 5.x 从入门到精通（完整版） Unity5.x 完整电子教案PPT 封装了DAO对象用于直接操纵access数据库&nbsp; Solid+Edge+ST2商业版全模块许可证 Solidedge ST6破解文件（32位&64位） Solid Edge ST7客户端安装指导 java try…catch捕获异常的实例 java try…catch…finally捕获异常的实例
+
+zhj92lxs
+zhj92lxs
+zhj92lxs  T7
+会执行，只是跳出try块
+回复于： 2008-06-30 11:00:28 #2 得分：2 对我有用[0] 丢个板砖[1] 引用 | 举报 | 管理
+luanguanglong
+luanguanglong
+luanguanglong  T1
+不会，如将后面代码写在final中还是能执行。
+回复于： 2008-06-30 11:02:03 #3 得分：2 对我有用[0] 丢个板砖[0] 引用 | 举报 | 管理
+freestar003
+freestar003
+freestar003  T1
+会的。
+回复于： 2008-06-30 11:03:52 #4 得分：2 对我有用[0] 丢个板砖[0] 引用 | 举报 | 管理
+yanjing_mail
+yanjing_mail
+yanjing_mail  T3
+会执行
+回复于： 2008-06-30 11:04:40 #5 得分：2 对我有用[0] 丢个板砖[0] 引用 | 举报 | 管理
+jabeginner
+jabeginner
+jabeginner  T5
+跳出，只是跳出try语句块。出现异常后，try语句块中的语句就不在执行啦！
+
+后面的语句是要接着执行的 
+回复于： 2008-06-30 11:09:20 #6 得分：3 对我有用[0] 丢个板砖[0] 引用 | 举报 | 管理
+yetaodiao
+yetaodiao
+90天内只能修改一次哟  T7
+ Blank  Blank
+会执行
+回复于： 2008-06-30 11:09:53 #7 得分：2 对我有用[0] 丢个板砖[0] 引用 | 举报 | 管理
+dinglinhu
+dinglinhu
+dinglinhu  T3
+会执行，把异常打出来以后继续执行try后面的代码
+回复于： 2008-06-30 11:23:56 #8 得分：2 对我有用[0] 丢个板砖[0] 引用 | 举报 | 管理
+logi22
+logi22
+logi22  T4
+如果你throw异常的话，会执行finally中的代码，其他代码不执行 --------------这里他指的是在catch｛｝这个大括号里面
+如果不throw的话，这个catch异常处理相当于程序的一个goto跳转，之后的代码继续执行
+回复于： 2008-06-30 11:32:09 #9 得分：3 对我有用[2] 丢个板砖[0] 引用 | 举报 | 管理
+shuhua198585
+shuhua198585
+shuhua198585  T1
+引用 9 楼 logi22 的回复:
+如果你throw异常的话，会执行finally中的代码，其他代码不执行 
+如果不throw的话，这个catch异常处理相当于程序的一个goto跳转，之后的代码继续执行
+
+非常正确!
+回复于： 2008-06-30 11:37:57 #10 得分：1 对我有用[0] 丢个板砖[0] 引用 | 举报 | 管理
+OXFORD_216
+OXFORD_216
+OXFORD_216  T2
+会执行
+回复于： 2008-06-30 11:38:11 #11 得分：1 对我有用[1] 丢个板砖[0] 引用 | 举报 | 管理
+seesea10523
+seesea10523
+seesea10523  T3
+catch块里的都会执行
+回复于： 2008-06-30 11:43:46 #12 得分：0 对我有用[0] 丢个板砖[0] 引用 | 举报 | 管理
+PopKaven
+PopKaven
+PopKaven  T1
+如你所写，一定会执行，不过如果你在catch(Exception e){}的{}部分又做其他处理且发生异常的话，那后面的都将中断
+回复于： 2008-06-30 11:43:58 #13 得分：0 对我有用[0] 丢个板砖[0] 引用 | 举报 | 管理
+ocean5678
+ocean5678
+jacker_  T1
+的福特基金多方通话
