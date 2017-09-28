@@ -1,0 +1,1 @@
+看这几个send方法，都是exchange，routingkey，message，如果省略了一两个前面参数，都是给空字符串
