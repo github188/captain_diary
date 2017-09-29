@@ -3,7 +3,7 @@
   1)   git clone http://10.101.90.189/team2/jst-alipay.git   从远程复制到本地
   输入用户名  密码 就会下载了  然后修改几个文件
   2）  git add .    从本地提交到本地暂存区
-  3) git commit .  点表示当前路径所有文件  从本地暂存区提交到本地仓库
+  3) git commit .  点表示当前路径所有文件  从本地暂存区提交到本地仓库   -- 注意这里要写一点点comment 才能commit成功
   4） git push origin master  提交成功    从本地仓库提交到远程仓库
   
   每个阶段文件的状态 可以用 git status 来看 颜色不同   可以用diff  来比较各个版本代码
