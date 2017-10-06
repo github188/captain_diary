@@ -1,0 +1,236 @@
+这篇文章讲了 很详细的自定义注解，可以看一下 http://www.jianshu.com/p/bbbc9f4c7887
+我们学注解的目的是为了能看到框架源码，仅此而已，面试的时候可以很轻松通过。将来说不定也会装B在项目中
+写一写注解，就这么简单，大把的时间，来学一学这个自定义注解吧。
+### 
+来讲讲这个话题：annotation跟comment有什么区别
+comment，就是注释，只会存在于源码当中，不会存在于编译期和运行期，也就是说在编译的时候，会把注释
+排除在正常代码之外。但是注解就不行，注解就是正常代码。编译期和运行期都会存在。
+### 
+注解按照使用的方式和用途，注解可以分为三大类。
+（1）内建注解。
+          内建注解也称为基本注解，位于java.lang包下。
+          内建注解有三个：
+          1，检验重写父类方法：@Override   仅存在于源码阶段 所以说不重要
+          2，标识方法已经过时：@Deprecated 可存在于runtime阶段 
+          3，取消编译器警告：@SurppressWarnings 仅存在于源码阶段
+（2）元注解。
+          元注解就是在注解上添加的注解。
+          位置：元注解位于java.lang.annotation子包中。
+          作用：用于修饰其他注解。
+          元注解有四个：
+         @Retention，@Target，@Documented，@Inherited。   最最重要的是前面两个,RT
+（3）自定义注解。
+         需要用到关键字@interface来定义。
+四个元注解的作用：
+      @Retention：用来描述被修饰的注解的生命周期。
+      @Target：用于指定被修饰的注解的适用范围，即被修饰的注解可以用来修饰哪些程序元素。
+      @Documented：用于指定被修饰的注解将被javadoc工具提取成文档。
+      @Inherited：用于指定被@Inherited修饰的注解具有继承性。
+      总结，以上为dirt，在写自定义注解的时候会用到以上元注解，否则你写的自定义注解没什么意义。死死记住
+      这四个元注解，上面三个内建注解一看就不熟那么重要，但是也要记住，谁让它简单呢。
+      以上四个元注解用来描述被他们注解的注解具有什么性质，@Documented制定该注解将会被javadoc抽取成文档，document嘛
+      @Inherited制定该注解具有继承性，@Retention指定该注解的生命周期，@Target指定该注解的使用范围。
+      也就是说，JDK提供的注解一共也就这么7个：三个内建注解，4个元注解。其他的都是自定义注解。
+      也就说，7个中间比较重要的就只有除了@Documented之外的三个注解IRT
+      补充一句：需要注意的是当注解的成员方法有value()方法时，在使用时不需要不需要指明具体名称。或者说指定名称的时候需要使用
+      @MyAnnotation（value=“XXXX”）的时候，这里是value的时候，这个value可以省略，为什么我现在这么强调这一点，因为注解中省略value=的现象
+      非常普遍，之频繁能达到几乎所有的注解都有一个value方法，没有则不正常的地步。
+      咱们继续点击框架里面的注解，看看到底都有啥，看进去之后发现，其实这东西就只有两个注解比较有意义，RT，Rentention和Target，这两个比较
+      起作用，Rentention一般指定生命周期到RunTime，Target指定注解的作用在Type 上或者是在Method上。
+      
+      注解的继承
+@Inherited可以让注解类似被“继承”一样。
+通过使用@Inherited，可以让子类对象使用getAnnotations()获取父类@Inherited修饰的注解。
+----------------------------华丽分割线，上面是基础，是准备知识，这里才是最重要的地方--------------------------------
+引言
+Java Web开发中，对框架的理解和掌握是必须的。而在使用大多数框架的过程中，一般有两种方式的配置，一种是基于xml的配置方式，一种是基于注解的方式。
+然而，越来越多的程序员（我）在开发过程中享受到注解带来的简便，并义无反顾地投身其中。
+ORM框架，像Hibernate，Mybatis就提供了基于注解的配置方式。我们接下来就使用自定义注解实现袖珍版的Mybatis，袖珍版的Hibernate。
+作者：walidake
+链接：http://www.jianshu.com/p/bbbc9f4c7887
+來源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+这很重要
+说明：实战的代码会被文章末尾附上。而实际上在之前做袖珍版框架的时候并没有想到会拿来做自定义注解的Demo。因此给出的代码涉及了其他的一些技术，例如数据库连接池，动态代理等等，比较杂。
+在这个篇幅我们只讨论关于自定义注解的问题，至于其他的技术后面会开多几篇博文阐述。（当然这么多前辈面前不敢造次，有个讨论学习的氛围是很好的~）
+
+那么在自定义注解框架前，我们需要花点时间浏览以下几个和Annotation相关的方法。
+
+方法名	用法
+Annotation getAnnotation(Class annotationType)	获取注解在其上的annotationType
+Annotation[] getAnnotations()	获取所有注解
+isAnnotationPresent(Class annotationType)	判断当前元素是否被annotationType注解
+Annotation[] getDeclareAnnotations()	与getAnnotations() 类似，但是不包括父类中被Inherited修饰的注解
+
+作者：walidake
+链接：http://www.jianshu.com/p/bbbc9f4c7887
+來源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+Mybatis 自定义注解
+
+本节目标：自定义注解实现Mybatis插入数据操作。
+本节要求：细心观察使用自定义注解的步骤。
+
+Step 1 :声明自定义注解。
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface Insert {
+    public String value();
+}
+Step 2 : 在规定的注解使用范围内使用我们的注解
+
+public interface UserMapper {
+
+    @Insert("insert into user (name,password) values (?,?)")
+    public void addUser(String name,String password);
+
+}
+Step 3 : 通过method.getAnnotation(Insert.class).value()使用反射解析自定义注解，得到其中的sql语句
+
+//检查是否被@Insert注解修饰
+if (method.isAnnotationPresent(Insert.class)) {
+    //检查sql语句是否合法
+    //method.getAnnotation(Insert.class).value()取得@Insert注解value中的Sql语句
+    sql = checkSql(method.getAnnotation(Insert.class).value(),
+        Insert.class.getSimpleName());
+    //具体的插入数据库操作
+    insert(sql, parameters);
+}
+
+Step 4 : 根据实际场景调用Step 3的方法
+
+UserMapper mapper = MethodProxyFactory.getBean(UserMapper.class);
+mapper.addUser("walidake","665908");
+运行结果：
+
+
+mybatis.png
+以上节选自annotation中Mybatis部分。具体CRUD操作请看源码。
+
+总结一下从上面学到的东西：
+1.声明自定义注解，并限制适用范围（因为默认是通用）
+2.规定范围内使用注解
+3.isAnnotationPresent(Insert.class)检查注解，getAnnotation(Insert.class).value()取得注解内容
+4.根据实际场景应用
+
+Hibernate 自定义注解
+
+本节目标：自定义注解使实体自动建表（即生成建表SQL语句）
+本节要求：动手操作，把未给全的代码补齐。
+本节规划：仿照Hibernate，我们大概会需要@Table，@Column，还有id，我们这里暂且声明为@PrimaryKey
+
+仿照自定义Mybatis注解的步骤：
+
+/**
+ * 可根据需要自行定制功能
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface Table {
+    String name() default "";
+
+}
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface Column {
+    // 列名 默认为""
+    String name() default "";
+
+    // 长度 默认为255
+    int length() default 255;
+
+    // 是否为varchar 默认为true
+    boolean varchar() default true;
+
+    // 是否为空 默认可为空
+    boolean isNull() default true;
+}
+
+/**
+ * 有需要可以拆分成更小粒度
+ * @author walidake
+ *
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface PrimaryKey {
+    String name() default "";
+}
+完成Step 1，接下来是Step 2。
+
+@Table
+public class Person {
+    @PrimaryKey
+    private int id;
+
+    @Column(isNull = false, length = 20)
+    private String username;
+    ...
+}
+Step 3，新建一个叫做SqlUtil的类，使用Class（实体类）.isAnnotationPresent(Table.class)取到@Table注解的内容。
+
+而我们如何取到@Column和@PrimaryKey的内容？
+使用反射，我们可以很容易做到。
+
+// 反射取得所有Field
+Field[] fields = clazz.getDeclaredFields();
+...
+...
+// 获取注解对象
+column = fields[i].getAnnotation(Column.class);
+// 设置访问私有变量
+fields[i].setAccessible(true);
+// 取得@Column的内容
+columnName = "".equals(column.name()) ? fields[i].getName(): column.name();
+反射的内容后面再写。（感觉每一篇都给自己挖了很多坑后面去填）
+
+Step 4套入使用场景
+
+String createSql = SqlUtil.createTable(clazz);
+...
+connection.createStatement().execute(createSql);
+运行结果：
+
+
+hibernate.png
+运行结果正确！
+
+自此我们完成了实战模块的内容。当然关于Hibernate的CRUD也可以用同样的方法做到，更进一步还可以把二级缓存整合进来，实现自己的一个微型框架。
+尽管现有的框架已经很成熟了，但自己实现一遍还是能收获很多东西。
+
+可以看出来，注解简化了我们的配置。每次使用注解只需要@注解名就可以了，就跟吃春药一样“爽”。不过由于使用了反射，后劲太“猛”,jvm无法对代码优化，
+影响了性能。这一点最后也会提及。
+
+另外提一点，之前想格式化hibernate生成的SQL，做大量搜索后被告知“Hibernate 使用的是开源的语法解析工具 Antlr，需要进行 SQL 语法解析，将 SQL 
+语句整理成语法树”。也算一个坑吧~
+不过后来找到一个除了建表SQL以外的格式化工具类，觉得还不错就也分享了。可以在源码中找到。
+
+最后说点什么
+可以发现我们使用运行时注解来搭建我们的袖珍版ORM框架，因为运行时注解来搭建框架相对容易而且适用性也比较广，搭建的框架使用起来也比较简单。但在此基础上
+因为需要用到反射，其效率性能相对不高。因此，多数Web应用使用运行时注解，而像Android等对效率性能要求较高的平台一般使用源码级别注解来搭建。下一节我们
+讨论怎么玩一玩源码级注解。
+
+作者：walidake
+链接：http://www.jianshu.com/p/bbbc9f4c7887
+來源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+结果可能会让你大失所望，注解里面除了配置信息，啥都没有，支持的携带的数据类型仅有四种：基本类型，字符串，枚举，Class.也就是说，包括自定义
+注解，它里面是没有逻辑代码的。我曹，这就让我大失所望了，那这样的话，这些注解信息是在什么地方读取并使用的呢，
+我觉得应该是抽取出来的公共代码里面，我们一mybatis为例，它里面读取@Select @Insert 这些注解是在什么地方被解析的呢，是在jdbc处理sql语句那里吧。
+可以看一下慕课网mybatis源码解析。
+
+
+
+
+
+
+
+
+
+
+
+
+
