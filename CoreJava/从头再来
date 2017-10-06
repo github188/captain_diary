@@ -20,15 +20,15 @@ comment，就是注释，只会存在于源码当中，不会存在于编译期�
 （1）内建注解。
           内建注解也称为基本注解，位于java.lang包下。
           内建注解有三个：
-          1，检验重写父类方法：@Override
-          2，标识方法已经过时：@Deprecated
-          3，取消编译器警告：@SurppressWarnings
+          1，检验重写父类方法：@Override   仅存在于源码阶段 所以说不重要
+          2，标识方法已经过时：@Deprecated 可存在于runtime阶段 
+          3，取消编译器警告：@SurppressWarnings 仅存在于源码阶段
 （2）元注解。
           元注解就是在注解上添加的注解。
           位置：元注解位于java.lang.annotation子包中。
           作用：用于修饰其他注解。
           元注解有四个：
-         @Retention，@Target，@Documented，@Inherited。
+         @Retention，@Target，@Documented，@Inherited。   最最重要的是前面两个,RT
 （3）自定义注解。
          需要用到关键字@interface来定义。
 四个元注解的作用：
