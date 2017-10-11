@@ -1,5 +1,9 @@
 eclipse里面的快捷键，
 
+。当你打开文件编辑，如何快速打开package explorer，并选中该文件？ 右键 - show  in
+
+。有时候，右键-没有suround with ，为什么？   必须要选中一段代码，才有这个
+
 在时间非常紧迫的时候，快捷键的好处才会凸显出来。
 shift + alt + z 这个东西非常好  写个try catch for 循环 if 什么的还是可以的
 今天发现eclipse debug的时候,查看变量值得快捷键非常好用，ctrl+shift+I : inspect   (左手在键盘右边控制),还有ctr+shift+d :连按两次，可以打印值。
