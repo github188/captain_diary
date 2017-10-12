@@ -2,4 +2,13 @@
 huanglei committed about a minute ago
 f78b0c6e
 
+胡宇恒，在这个PayDelayQueueConfig上面用@Configuration，优先级比较高，加载不到ConfigUtil里面的环境配置项，那就就换成@Comenent
+
+
+还有在这里下面 
+再加上 
+@Autowired 
+ConfigUtil configUtil；让它在这里再次加载一下环境变量 ，另外 在applicaiton.java里面再去扫描一下（用比较外层的包路径）
+@ComponentScan({"com.jst"})
+
 Browse Files
