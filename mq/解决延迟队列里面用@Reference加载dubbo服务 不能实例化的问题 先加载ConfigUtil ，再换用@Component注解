@@ -1,0 +1,5 @@
+解决延迟队列里面用@Reference加载dubbo服务 不能实例化的问题 先加载ConfigUtil ，再换用@Component注解
+huanglei committed about a minute ago
+f78b0c6e
+
+Browse Files
