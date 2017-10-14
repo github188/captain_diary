@@ -1,0 +1,52 @@
+http://blog.csdn.net/ludonqin/article/details/47211109
+
+http://blog.csdn.net/zhangxiaoyang0/article/details/65632828
+
+以上两个博客的综合，得到下面的结论
+单机实例安装    不是集群请注意  自己玩可以的
+1.  wget http://download.redis.io/redis-stable.tar.gz  ---------wget下载安装包   
+
+2.  tar –zxvf redis-stable.tar.gz   ----------解压   
+
+3.  cd redis-stable       --------------编译，安装
+
+4.  yum -y install  gcc    -- 安装gcc
+
+5.  yum -y install  tcl  --安装tcl
+
+6.  make distclean
+
+7.  make   ------------ 编译Make成功之后，会在/usr/local/bin目录下多出一些文件：  redis-check-aof redis-check-dump redis-cli redis-sentinel
+             -------- redis-server redis-trib.rb 可手动拷贝redis-server、redis-cli、redis-check-aof、
+             redis-check-dump等至/usr/local/bin目录下，也可执行make install，此处执行make install
+8. make install      ----可查看，/usr/local/bin下已有上面这些文件         
+
+9.  cd /etc/
+10.  mkdir redis
+11.  cd /var/
+12.  mkdir  redis
+13.  cd redis
+14.  mkdir data log run
+15. cd ~/redis-stable/
+16. cp redis.conf /etc/redis/
+17. cd /etc/redis/
+18. vim redis.conf
+将daemonize no 改为 daemonize yes    -----使得redis在background运行
+保存，退出
+19. cd /usr/local/bi 
+20. ./redis-server /etc/redis.conf
+21. ps -ef | grep redis
+
+
+
+
+
+
+
+
+
+
+
+
+
+
