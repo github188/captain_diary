@@ -1,0 +1,44 @@
+1.wget 'http://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.3.6/zookeeper-3.3.6.tar.gz'
+
+2. sudo mkdir /usr/local/zookeeper
+
+3. sudo cp zookeeper-3.3.6.tar.gz /usr/local/zookeeper/  
+
+4.cd /usr/local/zookeeper/
+
+5.sudo tar zxvf zookeeper-3.3.6.tar.gz 
+
+6.sudo rm -rf zookeeper-3.3.6.tar.gz
+
+7. sudo cp conf/zoo_sample.cfg conf/zoo.cfg
+
+8. vim /etc/profile     ------加入环境变量
+
+export ZOOKEEPER_HOME=/usr/local/zookeeper/zookeeper-3.3.6 
+export PATH=$ZOOKEEPER_HOME/bin:$PATH
+
+8.1  source /etc/profile
+8.2   cd /usr/local/zookeeper/zookeeper-3.3.6/conf/
+
+在zookeeper-3.3.6/conf/ 下将zoo_sample.cfg 改名为 zoo.cfg
+cd 
+8.3  mv  zoo_sample.cfg  zoo.cfg  
+9.启动zookeeper服务
+
+ ./zkServer.sh start
+
+10 启动zookeeper命令行客户端，能连接上说明安装成功
+
+./zkCli.sh -server 127.0.0.1:2181 
+
+
+
+-----------------我是分割线------------还有个办法，把自己写的demo脚手架，连上这个zk，如果能建立zk连接就能说明了-------
+怎么查看zookeeper是否启动
+暮年5965 | 浏览 112 次
+我有更好的答案
+发布于2017-03-23 14:23 最佳答案
+你可以查看进程：
+方法：
+ps -aux | grep 'zookeeper'
+系统有返回，说明zookeeper启动。
