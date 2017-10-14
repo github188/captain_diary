@@ -23,7 +23,7 @@ export PATH=$ZOOKEEPER_HOME/bin:$PATH
 （------------------这里不需要了  8.2   cd /usr/local/zookeeper/zookeeper-3.3.6/conf/   ---------在zookeeper-3.3.6/conf/ 下将zoo_sample.cfg 改名为 zoo.cfg
 ------------------这里不需要了   8.3  mv  zoo_sample.cfg  zoo.cfg  ---------）
 9.启动zookeeper服务
-  cd  bin
+  cd  bin     ------非常重要
  ./zkServer.sh start
 
 10 启动zookeeper命令行客户端，能连接上说明安装成功
