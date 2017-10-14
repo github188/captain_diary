@@ -10,7 +10,9 @@
 
 6.sudo rm -rf zookeeper-3.3.6.tar.gz
 
-7. sudo cp conf/zoo_sample.cfg conf/zoo.cfg
+7.1 cd zookeeper-3.3.6/
+
+7.2 sudo cp conf/zoo_sample.cfg conf/zoo.cfg
 
 8. vim /etc/profile     ------加入环境变量
 
