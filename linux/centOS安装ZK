@@ -18,10 +18,10 @@ export ZOOKEEPER_HOME=/usr/local/zookeeper/zookeeper-3.3.6
 export PATH=$ZOOKEEPER_HOME/bin:$PATH
 
 8.1  source /etc/profile
-8.2   cd /usr/local/zookeeper/zookeeper-3.3.6/conf/
+8.2   cd /usr/local/zookeeper/zookeeper-3.3.6/conf/   ---------在zookeeper-3.3.6/conf/ 下将zoo_sample.cfg 改名为 zoo.cfg
 
-在zookeeper-3.3.6/conf/ 下将zoo_sample.cfg 改名为 zoo.cfg
-cd 
+
+
 8.3  mv  zoo_sample.cfg  zoo.cfg  
 9.启动zookeeper服务
 
