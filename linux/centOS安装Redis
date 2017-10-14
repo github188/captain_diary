@@ -6,7 +6,7 @@ http://blog.csdn.net/zhangxiaoyang0/article/details/65632828
 单机实例安装    不是集群请注意  自己玩可以的
 1.  wget http://download.redis.io/redis-stable.tar.gz  ---------wget下载安装包   
 
-2.  tar –zxvf redis-stable.tar.gz   ----------解压   
+2.  tar -zxvf redis-stable.tar.gz    ----------解压    
 
 3.  cd redis-stable       --------------编译，安装
 
