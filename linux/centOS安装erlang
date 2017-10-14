@@ -1,0 +1,80 @@
+
+1.安装erlang 
+
+wget http://packages.erlang-solutions.com/erlang-solutions-1.0-1.noarch.rpm
+rpm -Uvh erlang-solutions-1.0-1.noarch.rpm
+rpm --import http://packages.erlang-solutions.com/rpm/erlang_solutions.asc
+
+2.添加RPMforge支持(64位)  报错也没关系
+wget http://packages.sw.be/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.x86_64.rpm  
+//导入 key 
+rpm --import http://apt.sw.be/RPM-GPG-KEY.dag.txt 
+//安装 RPMforge
+rpm -i rpmforge-release-0.5.2-2.el6.rf.*.rpm
+
+3. 安装erlang
+
+yum install erlang
+
+如果yum出现“No module named yum”错
+误，修改yum文件
+
+vi /usr/bin/yum
+!/usr/bin/python 修改为 #!/usr/bin/python2.4
+
+安装完成后可以用erl命令查看是否安装成功
+
+erl -version
+
+二、安装RabbitMQ Server
+
+下载RabbitMQ Server
+
+-----------打开RabbitMQ的下载页面，http://www.rabbitmq.com/download.html ，选择对应平台的二进制发行包下载；目前使用的是CentOS ，属于与RHEL/Fedora相兼容的版本，下载针对RHEL的二进制版本（Binary）即可：
+-------------本例中RabbitMQ的版本是3.5.1，下载得到文件rabbitmq-server-3.5.1-1.noarch.rpm
+
+wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.5.1/rabbitmq-server-3.5.1-1.noarch.rpm
+---------------安装RabbitMQ Server
+
+rpm --import http://www.rabbitmq.com/rabbitmq-signing-key-public.asc 
+yum install rabbitmq-server-3.5.1-1.noarch.rpm
+三、启动RabbitMQ
+
+配置为守护进程随系统自动启动，root权限下执行:
+
+chkconfig rabbitmq-server on
+启动rabbitMQ服务
+
+/sbin/service rabbitmq-server start
+如果报如下异常：
+
+Starting rabbitmq-server (via systemctl):  Job for rabbitmq-server.service failed. See 'systemctl status rabbitmq-server.service' and 'journalctl -xn' for details. [FAILED]
+尝试下面的操作：
+禁用 SELinux ，修改 /etc/selinux/config
+SELINUX=disabled
+修改后重启系统
+
+四、安装Web管理界面插件
+
+终端输入：
+
+rabbitmq-plugins enable rabbitmq_management
+安装成功后会显示如下内容
+
+The following plugins have been enabled:
+  mochiweb
+  webmachine
+  rabbitmq_web_dispatch
+  amqp_client
+  rabbitmq_management_agent
+  rabbitmq_management
+Plugin configuration has changed. Restart RabbitMQ for changes to take effect.
+五、登录Web管理界面
+
+安装好插件并开启服务后，可以浏览器输入localhost：15672,账号密码全输入guest即可登录。
+
+作者：dzgdp888
+链接：http://www.jianshu.com/p/d985a547eac8
+來源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
