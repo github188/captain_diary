@@ -33,8 +33,8 @@ http://blog.csdn.net/zhangxiaoyang0/article/details/65632828
 18. vim redis.conf
 将daemonize no 改为 daemonize yes    -----使得redis在background运行
 保存，退出
-19. cd /usr/local/bi 
-20. ./redis-server /etc/redis.conf
+19. cd /usr/local/bin 
+20. ./redis-server /etc/redis/redis.conf
 21. ps -ef | grep redis
 
 
