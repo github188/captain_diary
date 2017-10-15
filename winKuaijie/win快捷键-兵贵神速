@@ -18,7 +18,8 @@ win + 向左箭头 左半屏 win + 右箭头 右半屏  向上箭头是全屏 �
 win + alt + delete 这个特别有用
 
 
-
+-----用了Jconsole ，就知道这个pid是多少了  然后就可以用 jstat -gcutil pid 1000(毫秒) 5(次)
+pid - process-id
 
 这些基础性的东西，就是蹲马步。
 
