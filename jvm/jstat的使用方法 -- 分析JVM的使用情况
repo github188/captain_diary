@@ -1,0 +1,731 @@
+jstat的使用方法 -- 分析JVM的使用情况
+
+博客分类： JVM
+ 
+
+JDK自带VM分析工具jps，jstat，jmap，jconsole 
+关键字: jdk自带vm分析工具jps，jstat，jmap，jconsole 
+
+一、概述  
+
+    SUN 的JDK中的几个工具，非常好用。秉承着有免费，不用商用的原则。以下简单介绍一下这几种工具。(注：本文章下的所有工具都存在JDK5.0以上版本的工具集里，同javac一样，不须特意安装)  。 
+     
+    我一共找到以下四个工具：重点看看jconsole和jmap。 
+
+    jps  
+    :与unix上的ps类似，用来显示本地的java进程，可以查看本地运行着几个java程序，并显示他们的进程号。   
+      
+    jstat  
+    :一个极强的监视VM内存工具。可以用来监视VM内存内的各种堆和非堆的大小及其内存使用量。   
+      
+    jmap  
+    :打印出某个java进程（使用pid）内存内的所有‘对象’的情况（如：产生那些对象，及其数量）。   
+      
+    jconsole  
+    :一个java GUI监视工具，可以以图表化的形式显示各种数据。并可通过远程连接监视远程的服务器VM。  
+
+
+二、 使用介绍： 
+     
+    1、jps  ：我想很多人都是用过unix系统里的ps命令，这个命令主要是用来显示当前系统的进程情况，有哪些进程，及其 id。 jps 也是一样，它的作用是显示当前系统的java进程情况，及其id号。我们可以通过它来查看我们到底启动了几个java进程（因为每一个java程序都会独占一个java虚拟机实例），和他们的进程号（为下面几个程序做准备），并可通过opt来查看这些进程的详细启动参数。 
+    使用方法：在当前命令行下打 jps(需要JAVA_HOME，没有的话，到改程序的目录下打) 。 
+
+可惜没有linux下的ps好用，名称不好用。但是在第四个工具jconsole的界面里面会有具体JAR包的名称。 
+     
+    2、jstat ：对VM内存使用量进行监控。 
+    jstat工具特别强大，有众多的可选项，详细查看堆内各个部分的使用量，以及加载类的数量。使用时，需加上查看进程的进程id，和所选参数。以下详细介绍各个参数的意义。 
+    jstat -class pid:显示加载class的数量，及所占空间等信息。 
+    jstat -compiler pid:显示VM实时编译的数量等信息。 
+    jstat -gc pid:可以显示gc的信息，查看gc的次数，及时间。其中最后五项，分别是young gc的次数，young gc的时间，full gc的次数，full gc的时间，gc的总时间。 
+    jstat -gccapacity:可以显示，VM内存中三代（young,old,perm）对象的使用和占用大小，如：PGCMN显示的是最小perm的内存使用量，PGCMX显示的是perm的内存最大使用量，PGC是当前新生成的perm内存占用量，PC是但前perm内存占用量。其他的可以根据这个类推， OC是old内纯的占用量。 
+    jstat -gcnew pid:new对象的信息。 
+    jstat -gcnewcapacity pid:new对象的信息及其占用量。 
+    jstat -gcold pid:old对象的信息。 
+    jstat -gcoldcapacity pid:old对象的信息及其占用量。 
+    jstat -gcpermcapacity pid: perm对象的信息及其占用量。 
+    jstat -util pid:统计gc信息统计。 
+    jstat -printcompilation pid:当前VM执行的信息。 
+    除了以上一个参数外，还可以同时加上 两个数字，如：jstat -printcompilation 3024 250 6是每250毫秒打印一次，一共打印6次，还可以加上-h3每三行显示一下标题。 
+     
+   3、jmap 是一个可以输出所有内存中对象的工具，甚至可以将VM 中的heap，以二进制输出成文本。使用方法 jmap -histo pid。如果连用 SHELL jmap -histo pid>a.log可以将其保存到文本中去（windows下也可以使用），在一段时间后，使用文本对比工具，可以对比出GC回收了哪些对象。 jmap -dump:format=b,file=f1 3024可以将3024进程的内存heap输出出来到f1文件里。 
+     
+    4、jconsole 是一个用java写的GUI程序，用来监控VM，并可监控远程的VM，非常易用，而且功能非常强。由于是GUI程序，这里就不详细介绍了，不会的地方可以参考ＳＵＮ的官方文档。 
+    使用方法：命令行里打 jconsole，选则进程就可以了。 
+     
+    友好提示：windows查看进程号，由于任务管理器默认的情况下是不显示进程id号的，所以可以通过如下方法加上。ctrl+alt+del打开任务管理器，选择‘进程’选项卡，点‘查看’->''选择列''->加上''PID''，就可以了。当然还有其他很好的选项。 
+
+
+
+三、参考资料： 
+
+    article:http://elf8848.javaeye.com/blog/442806 
+
+
+    jps:http://java.sun.com/j2se/1.5.0/docs/tooldocs/share/jps.html 
+
+
+    jstat:http://java.sun.com/j2se/1.5.0/docs/tooldocs/share/jstat.html 
+
+
+    jmap:http://java.sun.com/j2se/1.5.0/docs/tooldocs/share/jmap.html 
+
+
+    jconsole:http://java.sun.com/j2se/1.5.0/docs/guide/management/jconsole.html     
+JDK之jstat的用法 
+
+
+jstat的用法 
+
+
+用以判断JVM是否存在内存问题呢？如何判断JVM垃圾回收是否正常？一般的top指令基本上满足不了这样的需求，因为它主要监控的是总体的系统资源，很难定位到java应用程序。 
+
+jstat 是JDK自带的一个轻量级小工具。全称“Java Virtual Machine statistics monitoring tool”，它位于java的bin目录下，主要利用JVM内建的指令对Java应用程序的资源和性能进行实时的命令行的监控，包括了对Heap size和垃圾回收状况的监控。可见，jstat是轻量级的、专门针对JVM的工具，非常适用。由于JVM内存设置较大，图中百分比变化不太明显 
+
+一个极强的监视VM内存工具。可以用来监视VM内存内的各种堆和非堆的大小及其内存使用量。 
+
+jstat工具特别强大，有众多的可选项，详细查看堆内各个部分的使用量，以及加载类的数量。使用时，需加上查看进程的进程id，和所选参数。 
+
+执行：cd $JAVA_HOME/bin中执行jstat，注意jstat后一定要跟参数。 
+
+
+语法结构： 
+
+Usage: jstat -help|-options 
+
+       jstat -<option> [-t] [-h<lines>] <vmid> [<interval> [<count>]] 
+
+参数解释： 
+
+Options — 选项，我们一般使用 -gcutil 查看gc情况 
+
+vmid    — VM的进程号，即当前运行的java进程号 
+
+interval– 间隔时间，单位为秒或者毫秒 
+
+count   — 打印次数，如果缺省则打印无数次 
+
+
+
+S0  — Heap上的 Survivor space 0 区已使用空间的百分比 
+S1  — Heap上的 Survivor space 1 区已使用空间的百分比 
+E   — Heap上的 Eden space 区已使用空间的百分比 
+O   — Heap上的 Old space 区已使用空间的百分比 
+P   — Perm space 区已使用空间的百分比 
+YGC — 从应用程序启动到采样时发生 Young GC 的次数 
+YGCT– 从应用程序启动到采样时 Young GC 所用的时间(单位秒) 
+FGC — 从应用程序启动到采样时发生 Full GC 的次数 
+FGCT– 从应用程序启动到采样时 Full GC 所用的时间(单位秒) 
+GCT — 从应用程序启动到采样时用于垃圾回收的总时间(单位秒) 
+
+实例使用1： 
+
+[root@localhost bin]# jstat -gcutil 25444 
+
+  S0     S1     E      O      P     YGC     YGCT    FGC    FGCT     GCT 
+
+11.63   0.00   56.46  66.92  98.49 162    0.248    6      0.331    0.579 
+
+
+
+实例使用2：(25444是java的进程号，ps -ef | grep java) 
+
+[root@localhost bin]# jstat -gcutil 25444 1000 5 
+
+  S0     S1     E      O      P     YGC     YGCT    FGC    FGCT     GCT 
+
+73.54   0.00  99.04  67.52  98.49    166    0.252     6    0.331    0.583 
+
+73.54   0.00  99.04  67.52  98.49    166    0.252     6    0.331    0.583 
+
+73.54   0.00  99.04  67.52  98.49    166    0.252     6    0.331    0.583 
+
+73.54   0.00  99.04  67.52  98.49    166    0.252     6    0.331    0.583 
+
+73.54   0.00  99.04  67.52  98.49    166    0.252     6    0.331    0.583 
+
+我们可以看到，5次young gc之后，垃圾内存被从Eden space区(E)放入了Old space区(O)，并引起了百分比的变化，导致Survivor space使用的百分比从73.54%(S0)降到0%(S1)。有效释放了内存空间。绿框中，我们可以看到，一次full gc之后，Old space区(O)的内存被回收，从99.05%降到67.52%。 
+
+图中同时打印了young gc和full gc的总次数、总耗时。而，每次young gc消耗的时间，可以用相间隔的两行YGCT相减得到。每次full gc消耗的时间，可以用相隔的两行FGCT相减得到。例如红框中表示的第一行、第二行之间发生了1次young gc，消耗的时间为0.252-0.252＝0.0秒。 
+
+常驻内存区(P)的使用率，始终停留在98.49%左右，说明常驻内存没有突变，比较正常。 
+
+如果young gc和full gc能够正常发生，而且都能有效回收内存，常驻内存区变化不明显，则说明java内存释放情况正常，垃圾回收及时，java内存泄露的几率就会大大降低。但也不能说明一定没有内存泄露。 
+
+GCT 是YGCT 和FGCT的时间总和。 
+
+以上，介绍了jstat按百分比查看gc情况的功能。其实，它还有功能，例如加载类信息统计功能、内存池信息统计功能等，那些是以绝对值的形式打印出来的，比较少用，在此就不做介绍。 
+
+[root@localhost bin]# ps -ef | grep java 
+
+root     25917     1  2 23:23 pts/2    00:00:05 /usr/local/jdk1.5/bin/java -Djava.endorsed.dirs=/usr/local/jakarta-tomcat-5.0.30/common/endorsed -classpath /usr/local/jdk1.5/lib/tools.jar:/usr/local/jakarta-tomcat-5.0.30/bin/bootstrap.jar:/usr/local/jakarta-tomcat-5.0.30/bin/commons-logging-api.jar -Dcatalina.base=/usr/local/jakarta-tomcat-5.0.30 -Dcatalina.home=/usr/local/jakarta-tomcat-5.0.30 -Djava.io.tmpdir=/usr/local/jakarta-tomcat-5.0.30/temp org.apache.catalina.startup.Bootstrap start 
+
+jstat -class pid:显示加载class的数量，及所占空间等信息。 
+
+实例使用3： 
+
+[root@localhost bin]# jstat -class 25917 
+
+Loaded  Bytes  Unloaded  Bytes     Time 
+
+2629    2916.8       29   24.6     0.90 
+
+
+
+jstat -compiler pid:显示VM实时编译的数量等信息。 
+
+实例使用4： 
+
+[root@localhost bin]# jstat -compiler 25917 
+
+Compiled Failed Invalid   Time   FailedType FailedMethod 
+
+     768      0       0   0.70            0 
+
+
+
+jstat –gccapacity :可以显示，VM内存中三代（young,old,perm）对象的使用和占用大小，如：PGCMN显示的是最小perm的内存使用量，PGCMX显示的是perm的内存最大使用量，PGC是当前新生成的perm内存占用量，PC是但前perm内存占用量。其他的可以根据这个类推， OC是old内纯的占用量。 
+
+
+
+[root@localhost bin]# jstat -gccapacity 25917 
+
+NGCMN       640.0 
+
+NGCMX       4992.0 
+
+NGC         832.0 
+
+S0C         64.0 
+
+S1C         64.0 
+
+EC          704.0 
+
+OGCMN       1408.0 
+
+OGCMX       60544.0 
+
+OGC         9504.0 
+
+OC          9504.0                  OC是old内纯的占用量 
+
+PGCMN       8192.0                  PGCMN显示的是最小perm的内存使用量 
+
+PGCMX       65536.0                 PGCMX显示的是perm的内存最大使用量 
+
+PGC         12800.0                 PGC是当前新生成的perm内存占用量 
+
+PC          12800.0                 PC是但前perm内存占用量 
+
+YGC         164 
+
+FGC         6 
+
+
+
+jstat -gcnew pid: new对象的信息 
+
+[root@localhost bin]# jstat -gcnew 25917 
+
+S0C    S1C    S0U    S1U   TT MTT  DSS      EC       EU     YGC     YGCT 
+
+64.0   64.0   47.4   0.0   2  15   32.0    704.0    145.7    168    0.254 
+
+
+
+jstat -gcnewcapacity pid: new对象的信息及其占用量 
+
+[root@localhost bin]# jstat -gcnewcapacity 25917 
+
+NGCMN  NGCMX   NGC   S0CMX  S0C   S1CMX  S1C   ECMX    EC      YGC   FGC 
+
+640.0  4992.0  832.0 64.0   448.0 448.0  64.0   4096.0  704.0  168     6 
+
+
+
+jstat -gcold pid: old对象的信息。 
+
+[root@localhost bin]# jstat -gcold 25917 
+
+   PC       PU        OC          OU       YGC    FGC    FGCT     GCT 
+
+12800.0  12617.6     9504.0      6561.3   169     6    0.335    0.591 
+
+
+
+jstat -gcoldcapacity pid:old对象的信息及其占用量。 
+
+[root@localhost bin]# jstat -gcoldcapacity 25917 
+
+OGCMN      OGCMX        OGC         OC       YGC   FGC    FGCT     GCT 
+
+1408.0     60544.0      9504.0      9504.0   169     6    0.335    0.591 
+
+
+
+jstat -gcpermcapacity pid: perm对象的信息及其占用量。 
+
+[root@localhost bin]# jstat -gcpermcapacity 25917 
+
+PGCMN      PGCMX       PGC         PC      YGC   FGC    FGCT     GCT 
+
+8192.0    65536.0    12800.0    12800.0   169     6    0.335    0.591 
+
+
+
+jstat -printcompilation pid:当前VM执行的信息。 
+
+[root@localhost bin]# jstat -printcompilation -h3  25917 1000 5 
+
+每1000毫秒打印一次，一共打印5次，还可以加上-h3每三行显示一下标题。 
+
+Compiled  Size  Type Method 
+
+     788     73    1 java/io/File <init> 
+
+     788     73    1 java/io/File <init> 
+
+     788     73    1 java/io/File <init> 
+
+Compiled  Size  Type Method 
+
+     788     73    1 java/io/File <init> 
+
+     788     73    1 java/io/File <init> 
+
+
+jstat监控gc情况 
+文章分类:Java编程 
+
+性能测试过程中，我们该如何监控java虚拟机内存的使用情况，用以判断JVM是否存在内存问题呢？如何判断JVM垃圾回收是否正常？一般的top指令基本上满足不了这样的需求，因为它主要监控的是总体的系统资源，很难定位到java应用程序。 
+在项目实践过程中，我们探索和使用了一款新工具－－Jstat。 
+    先秀一下。Jstat是JDK自带的一个轻量级小工具。全称“Java Virtual Machine statistics monitoring tool”，它位于java的bin目录下，主要利用JVM内建的指令对Java应用程序的资源和性能进行实时的命令行的监控，包括了对Heap size和垃圾回收状况的监控。可见，Jstat是轻量级的、专门针对JVM的工具，非常适用。 
+那，该怎么用呢？ 
+    语法结构如下：jstat [Options] vmid [interval] [count] 
+    Options — 选项，我们一般使用 -gcutil 查看gc情况 
+    vmid    — VM的进程号，即当前运行的java进程号 
+    interval– 间隔时间，单位为秒或者毫秒 
+    count   — 打印次数，如果缺省则打印无数次 
+    下面给出一个实际的例子： 
+
+
+
+            
+
+注：由于JVM内存设置较大，图中百分比变化不太明显 
+
+
+
+    图中参数含义如下： 
+
+    S0 — Heap上的 Survivor space 0 区已使用空间的百分比 
+    S1 — Heap上的 Survivor space 1 区已使用空间的百分比 
+    E   — Heap上的 Eden space 区已使用空间的百分比 
+    O   — Heap上的 Old space 区已使用空间的百分比 
+    P   — Perm space 区已使用空间的百分比 
+    YGC — 从应用程序启动到采样时发生 Young GC 的次数 
+    YGCT– 从应用程序启动到采样时 Young GC 所用的时间(单位秒) 
+    FGC — 从应用程序启动到采样时发生 Full GC 的次数 
+    FGCT– 从应用程序启动到采样时 Full GC 所用的时间(单位秒) 
+    GCT — 从应用程序启动到采样时用于垃圾回收的总时间(单位秒) 
+
+    上图的示例，红框中，我们可以看到，5次young gc之后，垃圾内存被从Eden space区(E)放入了Old space区(O)，并引起了百分比的变化，导致Survivor space使用的百分比从19.69%(S0)降到10.34%(S1)。有效释放了内存空间。绿框中，我们可以看到，一次full gc之后，Old space区(O)的内存被回收，从36.81%降到35.01%。 
+
+    图中同时打印了young gc和full gc的总次数、总耗时。而，每次young gc消耗的时间，可以用相间隔的两行YGCT相减得到。每次full gc消耗的时间，可以用相隔的两行FGCT相减得到。例如红框中表示的第一行、第二行之间发生了1次young gc，消耗的时间为52.281-52.252＝0.029秒。 
+
+    常驻内存区(P)的使用率，始终停留在37.6%左右，说明常驻内存没有突变，比较正常。 
+
+如果young gc和full gc能够正常发生，而且都能有效回收内存，常驻内存区变化不明显，则说明java内存释放情况正常，垃圾回收及时，java内存泄露的几率就会大大降低。但也不能说明一定没有内存泄露。 
+
+
+
+    以上，介绍了Jstat按百分比查看gc情况的功能。其实，它还有其它功能，例如加载类信息统计功能、内存池信息统计功能等，那些是以绝对值的形式打印出来的，比较少用，在此就不做介绍。 
+
+  
+
+    为了更全面的监控JVM内存使用情况，我们需要引入更强大的工具来进一步分析–JConsole。敬请关注。 
+
+-------- 
+
+一、概述 
+
+    SUN 的JDK中的几个工具，非常好用。秉承着有免费，不用商用的原则。以下简单介绍一下这几种工具。(注：本文章下的所有工具都存在JDK5.0以上版本的工具集里，同javac一样，不须特意安装) 。 
+   
+    我一共找到以下四个工具：重点看看jconsole和jmap。 
+Java代码 复制代码 
+
+    jps   
+    :与unix上的ps类似，用来显示本地的java进程，可以查看本地运行着几个java程序，并显示他们的进程号。   
+      
+    jstat   
+    :一个极强的监视VM内存工具。可以用来监视VM内存内的各种堆和非堆的大小及其内存使用量。   
+      
+    jmap   
+    :打印出某个java进程（使用pid）内存内的，所有‘对象’的情况（如：产生那些对象，及其数量）。   
+      
+    jconsole   
+    :一个java GUI监视工具，可以以图表化的形式显示各种数据。并可通过远程连接监视远程的服务器VM。   
+
+Java代码  收藏代码 
+
+    jps  
+    :与unix上的ps类似，用来显示本地的java进程，可以查看本地运行着几个java程序，并显示他们的进程号。   
+      
+    jstat  
+    :一个极强的监视VM内存工具。可以用来监视VM内存内的各种堆和非堆的大小及其内存使用量。   
+      
+    jmap  
+    :打印出某个java进程（使用pid）内存内的，所有‘对象’的情况（如：产生那些对象，及其数量）。   
+      
+    jconsole  
+    :一个java GUI监视工具，可以以图表化的形式显示各种数据。并可通过远程连接监视远程的服务器VM。  
+
+
+
+二、 使用介绍： 
+   
+    1、jstat ：我想很多人都是用过unix系统里的ps命令，这个命令主要是用来显示当前系统的进程情况，有哪些进程，及其 id。 jps 也是一样，它的作用是显示当前系统的java进程情况，及其id号。我们可以通过它来查看我们到底启动了几个java进程（因为每一个java程序都会独占一个java虚拟机实例），和他们的进程号（为下面几个程序做准备），并可通过opt来查看这些进程的详细启动参数。 
+    使用方法：在当前命令行下打 jps(需要JAVA_HOME，没有的话，到改程序的目录下打) 。 
+
+可惜没有linux下的ps好用，名称不好用。但是在第四个工具jconsole的界面里面会有具体JAR包的名称。 
+   
+    2、jstat ：对VM内存使用量进行监控。 
+    jstat工具特别强大，有众多的可选项，详细查看堆内各个部分的使用量，以及加载类的数量。使用时，需加上查看进程的进程id，和所选参数。以下详细介绍各个参数的意义。 
+    jstat -class pid:显示加载class的数量，及所占空间等信息。 
+    jstat -compiler pid:显示VM实时编译的数量等信息。 
+    jstat -gc pid:可以显示gc的信息，查看gc的次数，及时间。其中最后五项，分别是young gc的次数，young gc的时间，full gc的次数，full gc的时间，gc的总时间。 
+    jstat -gccapacity:可以显示，VM内存中三代（young,old,perm）对象的使用和占用大小，如：PGCMN显示的是最小perm的内存使用量，PGCMX显示的是perm的内存最大使用量，PGC是当前新生成的perm内存占用量，PC是但前perm内存占用量。其他的可以根据这个类推， OC是old内纯的占用量。 
+    jstat -gcnew pid:new对象的信息。 
+    jstat -gcnewcapacity pid:new对象的信息及其占用量。 
+    jstat -gcold pid:old对象的信息。 
+    jstat -gcoldcapacity pid:old对象的信息及其占用量。 
+    jstat -gcpermcapacity pid: perm对象的信息及其占用量。 
+    jstat -util pid:统计gc信息统计。 
+    jstat -printcompilation pid:当前VM执行的信息。 
+    除了以上一个参数外，还可以同时加上 两个数字，如：jstat -printcompilation 3024 250 6是每250毫秒打印一次，一共打印6次，还可以加上-h3每三行显示一下标题。 
+   
+   3、jmap 是一个可以输出所有内存中对象的工具，甚至可以将VM 中的heap，以二进制输出成文本。使用方法 jmap -histo pid。如果连用 SHELL jmap -histo pid>a.log可以将其保存到文本中去（windows下也可以使用），在一段时间后，使用文本对比工具，可以对比出GC回收了哪些对象。 jmap -dump:format=b,file=f1 3024可以将3024进程的内存heap输出出来到f1文件里。 
+   
+    4、jconsole 是一个用java写的GUI程序，用来监控VM，并可监控远程的VM，非常易用，而且功能非常强。由于是GUI程序，这里就不详细介绍了，不会的地方可以参考ＳＵＮ的官方文档。 
+    使用方法：命令行里打 jconsole，选则进程就可以了。 
+   
+    友好提示：windows查看进程号，由于任务管理器默认的情况下是不显示进程id号的，所以可以通过如下方法加上。ctrl+alt+del打开任务管理器，选择‘进程’选项卡，点‘查看’->''选择列''->加上''PID''，就可以了。当然还有其他很好的选项。 
+
+
+
+三、参考资料： 
+
+    article:http://elf8848.javaeye.com/blog/442806 
+
+
+    jps:http://java.sun.com/j2se/1.5.0/docs/tooldocs/share/jps.html 
+
+
+    jstat:http://java.sun.com/j2se/1.5.0/docs/tooldocs/share/jstat.html 
+
+
+    jmap:http://java.sun.com/j2se/1.5.0/docs/tooldocs/share/jmap.html 
+
+
+    jconsole:http://java.sun.com/j2se/1.5.0/docs/guide/management/jconsole.html    
+
+
+
+jstat - Java Virtual Machine Statistics Monitoring Tool 
+
+    Synopsis 
+    Description 
+    Virtual Machine Identifier 
+    Options 
+      - General Options 
+      - Output Options 
+    Examples 
+    See Also 
+
+SYNOPSIS 
+
+jstat [ generalOption | outputOptions vmid [interval[s|ms] [count]] ] 
+
+generalOption 
+    A single general command-line option (-help, -options, or -version) 
+outputOptions 
+    One or more output options, consisting of a single statOption, plus any of the -t, -h, and -J options. 
+vmid 
+    Virtual machine identifier, a string indicating the target Java virtual machine (JVM). The general syntax is 
+
+    [protocol:][//]lvmid[@hostname[:port]/servername] 
+
+    The syntax of the vmid string largely corresponds to the syntax of a URI. The vmid can vary from a simple integer representing a local JVM to a more complex construction specifying a communications protocol, port number, and other implementation-specific values. See Virtual Machine Identifier for details. 
+interval[s|ms] 
+    Sampling interval in the specified units, seconds (s) or milliseconds (ms). Default units are milliseconds.  Must be a positive integer.  If specified, jstat will produce its output at each interval. 
+count 
+    Number of samples to display. Default value is infinity; that is, jstat displays statistics until the target JVM terminates or the jstat command is terminated.  Must be a positive integer. 
+
+DESCRIPTION 
+
+The jstat tool displays performance statistics for an instrumented HotSpot Java virtual machine (JVM). The target JVM is identified by its virtual machine identifier, or vmid option described below. 
+
+NOTE: This utility is unsupported and may not be available in future versions of the J2SE SDK. It is not currently available on Windows 98 and Windows ME platforms. 
+VIRTUAL MACHINE IDENTIFIER 
+
+The syntax of the vmid string largely corresponds to the syntax of a URI: 
+
+[protocol:][//]lvmid[@hostname][:port][/servername] 
+
+protocol 
+    The communications protocol. If the protocol is omitted and a hostname is not specified, the default protocol is a platform specific optimized local protocol. If the protocol is omitted and a hostname is specified, then the default protocol is rmi. 
+lvmid 
+    The local virtual machine identifier for the target JVM. The lvmid is a platform-specific value that uniquely identifies a JVM on a system. The lvmid is the only required component of a virtual machine identifier. The lvmid is typically, but not necessarily, the operating system's process identifier for the target JVM process. You can use the jps command to determine the lvmid. Also, you can determine lvmid on Unix platforms with the ps command, and on Windows with the Windows Task Manager. 
+hostname 
+    A hostname or IP address indicating the target host. If hostname is omitted, then the target host is the local host. 
+port 
+    The default port for communicating with the remote server. If the hostname is omitted or the protocol specifies an optimized, local protocol, then port is ignored. Otherwise, treatment of the port parameter is implementation specific. For the default rmi protocol, the port indicates the port number for the rmiregistry on the remote host. If port is omitted, and protocol indicates rmi, then the default rmiregistry port (1099) is used. 
+servername 
+    The treatment of this parameter depends on implementation. For the optimized local protocol, this field is ignored. For the rmi protocol, it represents the name of the RMI remote object on the remote host. 
+
+OPTIONS 
+
+The jstat command supports two types of options, general options and output options. General options cause jstat to display simple usage and version information. Output options determine the content and format of the statistical output. 
+
+NOTE: All options, and their functionality are subject to change or removal in future releases. 
+
+GENERAL OPTIONS 
+
+If you specify one of the general options, you cannot specify any other option or parameter. 
+
+-help 
+    Display help message. 
+-version 
+    Display version information. 
+-options 
+    Display list of statistics options. See the Output Options section below. 
+
+OUTPUT OPTIONS 
+
+If you do not specify a general option, then you can specify output options. Output options determine the content and format of jstat's output, and consist of a single statOption, plus any of the other output options (-h, -t, and -J).  The statOption must come first. 
+
+Output is formatted as a table, with columns are separated by spaces. A header row with titles describes the columns.  Use the -h option to set the frequency at which the header is displayed.  Column header names are generally consistent between the different options. In general, if two options provide a column with the same name, then the data source for the two columns are the same. 
+
+Use the -t option to display a time stamp column, labeled Timestamp as the first column of output. The Timestamp column contains the elapsed time, in seconds, since startup of the target JVM. The resolution of the time stamp is dependent on various factors and is subject to variation due to delayed thread scheduling on heavily loaded systems. 
+
+Use the interval and count parameters to determine how frequently and how many times, respectively, jstat displays its output. 
+
+NOTE: You are advised not to write scripts to parse jstat's output since the format may change in future releases. If you choose to write scripts that parse jstat output, expect to modify them for future releases of this tool. 
+
+-statOption 
+    Determines the statistics information that jstat displays. The following table lists the available options.  Use the -options general option to display the list of options for a particular platform installation. 
+
+    Option Displays... 
+    class Statistics on the behavior of the class loader. 
+    compiler Statistics of the behavior of the HotSpot Just-in-Time compiler. 
+    gc Statistics of the behavior of the garbage collected heap. 
+    gccapacity Statistics of the capacities of the generations and their corresponding spaces. 
+    gccause Summary of garbage collection statistics (same as -gcutil), with the cause of the last and current (if applicable) garbage collection events. 
+    gcnew Statistics of the behavior of the new generation. 
+    gcnewcapacity Statistics of the sizes of the new generations and its corresponding spaces. 
+    gcold Statistics of the behavior of the old and permanent generations. 
+    gcoldcapacity Statistics of the sizes of the old generation. 
+    gcpermcapacity Statistics of the sizes of the permanent generation. 
+    gcutil Summary of garbage collection statistics. 
+    printcompilation HotSpot compilation method statistics. 
+-h n 
+    Display a column header every n samples (output rows), where n is a positive integer. Default value is 0, which displays the column header above the first row of data. 
+-t n 
+    Display a timestamp column as the first column of output. The timestamp is the the time since the start time of the target JVM. 
+-JjavaOption 
+    Pass javaOption to the java application launcher. For example, -J-Xms48m sets the startup memory to 48 megabytes. For a complete list of options, see the following documents: 
+
+        java - the Java application launcher (Solaris) 
+        java - the Java application launcher (Linux) 
+        java - the Java application launcher (Windows) 
+
+STATOPTIONS AND OUTPUT 
+
+The following tables summarize the columns that jstat outputs for each statOption. 
+-class Option 
+Class Loader Statistics Column Description 
+Loaded Number of classes loaded. 
+Bytes Number of Kbytes loaded. 
+Unloaded Number of classes unloaded. 
+Bytes Number of Kbytes unloaded. 
+Time Time spent performing class load and unload operations. 
+-compiler Option 
+HotSpot Just-In-Time Compiler Statistics Column Description 
+Compiled Number of compilation tasks performed. 
+Failed Number of compilation tasks that failed. 
+Invalid Number of compilation tasks that were invalidated. 
+Time Time spent performing compilation tasks. 
+FailedType Compile type of the last failed compilation. 
+FailedMethod Class name and method for the last failed compilation. 
+-gc Option 
+Garbage-collected heap statistics Column Description 
+S0C Current survivor space 0 capacity (KB). 
+S1C Current survivor space 1 capacity (KB). 
+S0U Survivor space 0 utilization (KB). 
+S1U Survivor space 1 utilization (KB). 
+EC Current eden space capacity (KB). 
+EU Eden space utilization (KB). 
+OC Current old space capacity (KB). 
+OU Old space utilization (KB). 
+PC Current permanent space capacity (KB). 
+PU Permanent space utilization (KB). 
+YGC Number of young generation GC Events. 
+YGCT Young generation garbage collection time. 
+FGC Number of full GC events. 
+FGCT Full garbage collection time. 
+GCT Total garbage collection time. 
+-gccapacity Option 
+Memory Pool Generation and Space Capacities Column Description 
+NGCMN Minimum new generation capacity (KB). 
+NGCMX Maximum new generation capacity (KB). 
+NGC Current new generation capacity (KB). 
+S0C Current survivor space 0 capacity (KB). 
+S1C Current survivor space 1 capacity (KB). 
+EC Current eden space capacity (KB). 
+OGCMN Minimum old generation capacity (KB). 
+OGCMX Maximum old generation capacity (KB). 
+OGC Current old generation capacity (KB). 
+OC Current old space capacity (KB). 
+PGCMN Minimum permanent generation capacity (KB). 
+PGCMX Maximum Permanent generation capacity (KB). 
+PGC Current Permanent generation capacity (KB). 
+PC Current Permanent space capacity (KB). 
+YGC Number of Young generation GC Events. 
+FGC Number of Full GC Events. 
+-gccause Option 
+
+This option displays the same summary of garbage collection statistics as the -gcutil option, but includes the causes of the last garbage collection event and (if applicable) the current garbage collection event. In addition to the columns listed for -gcutil, this option adds the following columns: 
+Garbage Collection Statistics, Including GC Events Column Description 
+LGCC Cause of last Garbage Collection. 
+GCC Cause of current Garbage Collection. 
+-gcnew Option 
+New Generation Statistics Column Description 
+S0C Current survivor space 0 capacity (KB). 
+S1C Current survivor space 1 capacity (KB). 
+S0U Survivor space 0 utilization (KB). 
+S1U Survivor space 1 utilization (KB). 
+TT Tenuring threshold. 
+MTT Maximum tenuring threshold. 
+DSS Desired survivor size (KB). 
+EC Current eden space capacity (KB). 
+EU Eden space utilization (KB). 
+YGC Number of young generation GC events. 
+YGCT Young generation garbage collection time. 
+-gcnewcapacity Option 
+New Generation Space Size Statistics Column Description 
+NGCMN          
+Minimum new generation capacity (KB). 
+NGCMX     Maximum new generation capacity (KB). 
+NGC     Current new generation capacity (KB). 
+S0CMX Maximum survivor space 0 capacity (KB). 
+S0C Current survivor space 0 capacity (KB). 
+S1CMX Maximum survivor space 1 capacity (KB). 
+S1C Current survivor space 1 capacity (KB). 
+ECMX Maximum eden space capacity (KB). 
+EC Current eden space capacity (KB). 
+YGC Number of young generation GC events. 
+FGC Number of Full GC Events. 
+-gcold Option 
+Old and Permanent Generation Statistics Column Description 
+PC Current permanent space capacity (KB). 
+PU Permanent space utilization (KB). 
+OC Current old space capacity (KB). 
+OU old space utilization (KB). 
+YGC Number of young generation GC events. 
+FGC Number of full GC events. 
+FGCT Full garbage collection time. 
+GCT Total garbage collection time. 
+-gcoldcapacity Option 
+Old Generation Statistics Column Description 
+OGCMN Minimum old generation capacity (KB). 
+OGCMX Maximum old generation capacity (KB). 
+OGC Current old generation capacity (KB). 
+OC Current old space capacity (KB). 
+YGC Number of young generation GC events. 
+FGC Number of full GC events. 
+FGCT Full garbage collection time. 
+GCT Total garbage collection time. 
+-gcpermcapacity Option 
+Permanent Generation Statistics Column Description 
+PGCMN Minimum permanent generation capacity (KB). 
+PGCMX Maximum permanent generation capacity (KB). 
+PGC Current permanent generation capacity (KB). 
+PC Current permanent space capacity (KB). 
+YGC Number of young generation GC events. 
+FGC Number of full GC events. 
+FGCT Full garbage collection time. 
+GCT Total garbage collection time. 
+-gcutil Option 
+Summary of Garbage Collection Statistics Column Description 
+S0 Survivor space 0 utilization as a percentage of the space's current capacity. 
+S1 Survivor space 1 utilization as a percentage of the space's current capacity. 
+E Eden space utilization as a percentage of the space's current capacity. 
+O Old space utilization as a percentage of the space's current capacity. 
+P Permanent space utilization as a percentage of the space's current capacity. 
+YGC Number of young generation GC events. 
+YGCT Young generation garbage collection time. 
+FGC Number of full GC events. 
+FGCT Full garbage collection time. 
+GCT Total garbage collection time. 
+-printcompilation Option 
+HotSpot Compiler Method Statistics Column Description 
+Compiled Number of compilation tasks performed. 
+Size Number of bytes of bytecode for the method. 
+Type Compilation type. 
+Method Class name and method name identifying the compiled method. Class name uses "/" instead of "." as namespace separator. Method name is the method within the given class. The format for these two fields is consistent with the HotSpot - XX:+PrintComplation option. 
+EXAMPLES 
+
+This section presents some examples of monitoring a local JVM with a lvmid of 21891. 
+Using the gcutil option 
+
+This example attaches to lvmid 21891 and takes 7 samples at 250 millisecond intervals and displays the output as specified by the -gcutil option. 
+
+jstat -gcutil 21891 250 7 
+  S0     S1     E      O      P     YGC    YGCT    FGC    FGCT     GCT 
+12.44   0.00  27.20   9.49  96.70    78    0.176     5    0.495    0.672 
+12.44   0.00  62.16   9.49  96.70    78    0.176     5    0.495    0.672 
+12.44   0.00  83.97   9.49  96.70    78    0.176     5    0.495    0.672 
+  0.00   7.74   0.00   9.51  96.70    79    0.177     5    0.495    0.673 
+  0.00   7.74  23.37   9.51  96.70    79    0.177     5    0.495    0.673 
+  0.00   7.74  43.82   9.51  96.70    79    0.177     5    0.495    0.673 
+  0.00   7.74  58.11   9.51  96.71    79    0.177     5    0.495    0.673 
+
+The output of this example shows that a young generation collection occurred between the 3rd and 4th sample. The collection took 0.001 seconds and promoted objects from the eden space (E) to the old space (O), resulting in an increase of old space utilization from 9.49% to 9.51%. Before the collection, the survivor space was 12.44% utilized, but after this collection it is only 7.74% utilized. 
+Repeating the column header string 
+
+This example attaches to lvmid 21891 and takes samples at 250 millisecond intervals and displays the output as specified by -gcutil option. In addition, it uses the -h3 option to output the column header after every 3 lines of data. 
+
+jstat -gcnew -h3 21891 250 
+S0C    S1C    S0U    S1U   TT MTT  DSS      EC       EU     YGC     YGCT 
+  64.0   64.0    0.0   31.7 31  31   32.0    512.0    178.6    249    0.203 
+  64.0   64.0    0.0   31.7 31  31   32.0    512.0    355.5    249    0.203 
+  64.0   64.0   35.4    0.0  2  31   32.0    512.0     21.9    250    0.204 
+S0C    S1C    S0U    S1U   TT MTT  DSS      EC       EU     YGC     YGCT 
+  64.0   64.0   35.4    0.0  2  31   32.0    512.0    245.9    250    0.204 
+  64.0   64.0   35.4    0.0  2  31   32.0    512.0    421.1    250    0.204 
+  64.0   64.0    0.0   19.0 31  31   32.0    512.0     84.4    251    0.204 
+S0C    S1C    S0U    S1U   TT MTT  DSS      EC       EU     YGC     YGCT 
+  64.0   64.0    0.0   19.0 31  31   32.0    512.0    306.7    251    0.204 
+
+In addition to showing the repeating header string, this example shows that between the 2nd and 3rd samples, a young GC occurred. Its duration was 0.001 seconds. The collection found enough live data that the survivor space 0 utilization (S0U) would would have exceeded the desired survivor Size (DSS). As a result, objects were promoted to the old generation (not visible in this output), and the tenuring threshold (TT) was lowered from 31 to 2. 
+
+Another collection occurs between the 5th and 6th samples. This collection found very few survivors and returned the tenuring threshold to 31. 
+Including a time stamp for each sample 
+
+This example attaches to lvmid 21891 and takes 3 samples at 250 millisecond intervals. The -t option is used to generate a time stamp for each sample in the first column. 
+
+jstat -gcoldcapacity -t 21891 250 3 
+Timestamp          OGCMN        OGCMX         OGC           OC       YGC   FGC    FGCT    GCT 
+          150.1       1408.0      60544.0      11696.0      11696.0   194    80    2.874   3.799 
+          150.4       1408.0      60544.0      13820.0      13820.0   194    81    2.938   3.863 
+          150.7       1408.0      60544.0      13820.0      13820.0   194    81    2.938   3.863 
+
+The Timestamp column reports the elapsed time in seconds since the start of the target JVM. In addition, the -gcoldcapacity output shows the old generation capacity (OGC) and the old space capacity (OC) increasing as the heap expands to meet allocation and/or promotion demands. The old generation capacity (OGC) has grown to from 11696 KB to 13820 KB after the 81st Full GC (FGC). The maximum capacity of the generation (and space) is 60544 KB (OGCMX), so it still has room to expand. 
+Monitor instrumentation for a remote JVM 
+
+This example attaches to lvmid 40496 on the system named remote.domain using the -gcutil option, with samples taken every second indefinitely. 
+
+jstat -gcutil 40496@remote.domain 1000 
+... output omitted 
+
+The lvmid is combined with the name of the remote host to construct a vmid of 40496@remote.domain. This vmid results in the use of the rmi protocol to communicate to the default jstatd server on the remote host. The jstatd server is located using the rmiregistry on remote.domain that is bound to the default rmiregistry port (port 1099).
