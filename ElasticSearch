@@ -1,0 +1,30 @@
+安装蓝本是这个   http://www.cnblogs.com/ShawnYuki/p/6818677.html
+
+1.  wget  https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.6.3.tar.gz
+2.  mv elasticsearch-5.6.3.tar.gz /opt/
+3.  cd /opt
+4.  tar -zxvf elasticsearch-5.6.3.tar.gz
+5.  rm -f elasticsearch-5.0.0.tar.gz
+6.  cd elasticsearch-5.6.3/
+7.  cd config
+8. vim elasticsearch.yml
+修改network.host和discovery.zen.ping.unicast.hosts的IP，改成当前ip地址（通过 ifconfig 命令查看）。
+如果不修改，则只能本地访问(localhost或127.0.0.1)
+9.  vim /etc/security/limits.conf
+最下方添加：
+* soft nproc:65535
+* hard nproc:65535
+* soft nofile:65535
+* hard nofile:65535
+11.  vim /etc/security/limits.d/90-nproc.conf  
+将  * soft nproc 1024 改为 * soft nproc 2048
+12. vim /etc/sysctl.conf
+13. 在最后添加一行数据如下: vm.max_map_count=262144
+14. 修改完后，执行如下命令 sysctl -p
+15. 启动elasticsearch首先进入其安装目录，使用命令 cd /opt/elasticsearch-5.0.0/
+
+　　然后使用命令 bin/elasticsearch
+
+　　即启动了Elasticsearch
+
+
