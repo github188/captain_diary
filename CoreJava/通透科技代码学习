@@ -1,0 +1,13 @@
+1.看看 别人怎么  校验入参  Assert.hasLength("","str is empty"); //判断串是否为空
+Assert.isNull(Object,"str is empty");   //   
+
+注意 Assert 是Spring里面提供的工具类  
+
+
+2.   看看别人 在 log里面用占位符，这个也要学着用。 log.info("----{}---{}-  {}-",str1,str2,str3);
+
+
+
+
+
+
