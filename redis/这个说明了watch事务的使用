@@ -1,1 +1,4 @@
 http://www.cnblogs.com/Jason-Xiang/p/5364252.html
+只有在释放分布式锁的时候，才需要用watch和multi   ，  加锁的时候用的是getset  redis这个命令是天然具有原子性的
+
+
