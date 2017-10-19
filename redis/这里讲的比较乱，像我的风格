@@ -1,0 +1,3 @@
+http://blog.csdn.net/ugg/article/details/41894947
+
+注意这里面后半段有一句话 ：  6：至于为什么不使用Redis的muti，expire，watch等机制，可以查一参考资料，找下原因。 这里要注意一下
