@@ -46,6 +46,10 @@ http://blog.csdn.net/shihuacai/article/details/8856370
 }
 
 
+所以说 http://blog.csdn.net/yuxxz/article/details/52551357
+final CountDownLatch latch = new CountDownLatch(0);   
+我怀疑这里应该是new CountDownLatch(0)   给0没有意义啊
+
 
 
 
