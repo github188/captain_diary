@@ -2,6 +2,7 @@ http://www.importnew.com/10620.html
 
 简单抽象总结一下，HashMap 有两层存储，第一层是个16个长度的Entry数组，存储不同key的hash值value，如果hash值相同，则将相同hash值的value以
 链表方式存储。
+这里面提到了  HashMap$Entry 这个东西表示什么，表示类HashMap下面有个Entry，他是前者的内部类。
 
 
 
