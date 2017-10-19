@@ -1,0 +1,11 @@
+http://blog.csdn.net/desilting/article/details/41280869
+
+这篇文章里面写的这个代码，是需要改造的   
+首先说      
+1.这里的test类是用main方法类测试的，如果要改造成在controller里面来调用锁service的方式来做的话，需要改造代码;
+2.我们已经掌握了CountDownLatch的使用，ThreadPoolExecutor的使用，所以这些都不叫事，就zookeeper加锁释放锁的原理看一下就够了。
+
+
+
+
+
