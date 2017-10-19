@@ -4,7 +4,8 @@ http://www.importnew.com/10620.html
 链表方式存储。
 这里面提到了  HashMap$Entry 这个东西表示什么，表示类HashMap下面有个Entry，他是前者的内部类。
 
-jdk1.8里面已经在这里更新了，这个内部类不叫Entry了，而是叫做Node，但还是实现自Map.Entry这个接口
+jdk1.8里面已经在这里更新了，这个内部类不叫Entry了，而是叫做Node（你用watch进去看看就知道了），但还是实现自Map.Entry这个接口，
+
 
 
 
