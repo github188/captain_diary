@@ -1,5 +1,5 @@
 http://blog.csdn.net/shihuacai/article/details/8856370
-    
+    CountLatch有个中文名叫做倒数锁
    public class CountDownLatchTest {
 
     // 模拟了100米赛跑，10名选手已经准备就绪，只等裁判一声令下。当所有人都到达终点时，比赛结束。
