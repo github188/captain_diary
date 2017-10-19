@@ -49,6 +49,12 @@ http://blog.csdn.net/shihuacai/article/details/8856370
 所以说 http://blog.csdn.net/yuxxz/article/details/52551357
 final CountDownLatch latch = new CountDownLatch(0);   
 我怀疑这里应该是new CountDownLatch(0)   给0没有意义啊
+http://blog.csdn.net/yuxxz/article/details/52551357   这个里面test代码里面出现的这个东西  
+其实来讲这里是用多线程来模拟分布式并发场景来测试分布式锁，所以用了coutdownLatch  搞分布式锁，其实是不需要这些concurrent里面的这些类的
+所以，我们在使用分布式锁的时候，也用不上这些类  仅仅是测试分布式锁的时候 就派上大用场了  
+下次面试问你，多线程有没有用过，在什么地方用的，你就可以加上分布式锁的测试场景用了多线程，而且用的是concurrent包里面的这些工具类来实现多线程的
+
+
 
 
 
