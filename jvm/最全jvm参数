@@ -1,0 +1,8 @@
+nohup java -jar -Dspring.profiles.active=test -Xms2048m -Xmx2048m -Xmn1g
+-XX:MetaspaceSize=512m -XX:MaxMetaspaceSize=512m -XX:+DisableExplicitGC  -XX:+UseConcMarkSweepGC -XX:+CMSParallelRemarkEnabled
+-XX:LargePageSizeInBytes=128m -XX:+UseFastAccessorMethods -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=70
+-Duser.timezone=GMT+8       -XX:+PrintGCDateStamps -verbose:gc -XX:+PrintGCDetails -Xloggc:/home/jst/sms_11380/gc.log 
+-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/jst/sms_11380/gc.hprof -XX:+PrintGCApplicationStoppedTime -XX:+PrintGCDateStamps 
+jst-sms.jar 2>&1 &
+
+    
