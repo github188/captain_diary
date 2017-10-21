@@ -1,1 +1,3 @@
 http://www.cnblogs.com/gdpuzxs/p/7222309.html
+
+但是没法像lison那样操作两个redis缓存，一个主缓存，一个备份缓存。
