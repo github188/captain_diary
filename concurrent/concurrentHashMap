@@ -1,5 +1,11 @@
 http://www.importnew.com/19685.html     Java中的几个HashMap/ConcurrentHashMap实现分析
 
+ConcurrentHashMap原理分析   http://www.importnew.com/16142.html
+
+HashSet  HashList  HashMap   所谓死老毛都是现成不安全的  为什么  
+HashTable  Vector 线程安全 
+concurrentMap 为什么线程安全
+
 
 
 
