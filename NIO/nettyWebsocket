@@ -1,2 +1,6 @@
 netty websocket  百度搜索一下这个
 搞不好 这里面的代码是可以跑起来的
+
+
+http://blog.csdn.net/sanchan/article/details/54846806   这个是个不错的springboot + netty 网页IM聊天demo 
+实际的项目中可能不只是做网页聊天这么简单，主要还是要求高并发，快速响应的分布式通讯的问题。比如像33得久
