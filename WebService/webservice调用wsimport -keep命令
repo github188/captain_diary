@@ -1,6 +1,12 @@
 真的是太爽了  配合文件夹里面按住shift键-右键，在该路径下打开命令行窗口，然后执行cmd命令就可以了 ，eclipse工程里面刷新，代码就出来了。
 不过怎么写client调用代码需要一点点眼力劲。
-针对部分wsdl链接  不能给通过wsimport -keep  wsdl链接 生成代码的问题  
+针对部分wsdl链接  不能给通过wsimport -keep  wsdl链接 生成代码的问题   
+20多个常用的免费WebService接口
+天气预报Web服务，数据来源于中国气象局 
+Endpoint  
+Disco  
+WSDL    
+上面三个地址，只是问号后面的单词不一样
 http://blog.csdn.net/xiongwt/article/details/50936092  这篇博客解决了问题  
 先将wsdl网页上的代码下载成本地wsdl文件（网页上右键另存为本地wsdl文件）
 将文档中的 
