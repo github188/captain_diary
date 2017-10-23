@@ -1,4 +1,6 @@
 eclipse里面的快捷键，
+如何去掉所有空行？
+ctrl + F ， 选中正则，输入 ^\s*\n,点击全部替换，就Ok了。
 ctrl + K 也是几好用的，  ctrl + q 有奇效
 
 。当你打开文件编辑，如何快速打开package explorer，并选中该文件？ 右键 - show  in
