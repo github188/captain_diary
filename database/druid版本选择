@@ -1,0 +1,32 @@
+李鑫:
+	<!-- druid阿里巴巴数据库连接池 -->
+		<!-- 
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>1.0.26</version>
+		</dependency>
+		 -->
+		
+		<!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
+		<dependency>
+		    <groupId>com.alibaba</groupId>
+		    <artifactId>druid</artifactId>
+		    <version>1.1.4</version>
+		</dependency>
+李鑫:
+各位，druid抽时间换这个版本
+李鑫:
+近期出现的mysql拒绝druid连接问题，高版本没这个问题
+李鑫:
+低版本应该没做自动重连机制
+李鑫:
+这个是最新druid的数据库连接池配置，目前在500用户并发情况下半个种之内是很稳的
+李鑫:
+这个是最新的jvm参数配置
+李鑫:
+生产的可以抽时间配置一下
+捷顺-韩伟东:
+
+捷顺-丁杰:
+@鑫哥，灰度环境帮忙搞一下，
