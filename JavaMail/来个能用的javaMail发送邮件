@@ -4,7 +4,7 @@ http://blog.csdn.net/lp1052843207/article/details/49615769
 
 用126邮箱发送  并且使用授权码作为第三方发送的密码  13579huanglei
 
-不知道 这个会不会被拒掉 
+不知道 这个会不会被拒掉 //126服务器总共有一天会拒绝掉的
  public static void main(String[] args) {  
   String smtp = "smtp.126.com";// smtp服务器  
   String from = "huangleisir@126.com";// 邮件显示名称  
