@@ -1,3 +1,6 @@
    https://www.zhihu.com/question/23284469
    
    http://blog.csdn.net/zero__007/article/details/43572777  锁与CAS介绍
+
+
+AtomicInt, AtomicLong.incrementAndGet()   java.util.concurrent.Atomic*  底层都运用了CAS锁
