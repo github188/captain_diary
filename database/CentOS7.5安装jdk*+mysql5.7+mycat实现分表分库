@@ -71,6 +71,12 @@ windows 条件下来做感觉要容易很多：
 同样shift+右键 在命令行打开该目录，
 终于可以执行下面这个命令了，今天在linux哪里当误了好久的时间，
 mysql -uroot -p -h127.0.0.1 -P8066 -TESTDB;   (这里的TESTDB叫做逻辑库)
+use TESTDB; (TESTDB要大写)
+ create table company(id int not null primary key,name varchar(100),sharding_id int not null);
+  insert into company(id,name,sharding_id) values(1,'leader us',10000);
+  insert into company(id,name,sharding_id) values(2,'leader us',10010);
+  insert into company(id,name,sharding_id) values(3,'leader us',10010);
+  insert into company(id,name,sharding_id) values(4,'leader us',10000);
 
 
 然后在sqlyog 8066端口也可以打开TESTDB 这个逻辑库。
