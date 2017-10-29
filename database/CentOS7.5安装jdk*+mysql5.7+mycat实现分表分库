@@ -1,0 +1,36 @@
+首先安装jdk  
+yum -y install java1.8.0-openjdk*   
+
+
+安装mysql 
+1.wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+2.sudo yum install mysql-server
+3.重置mysql密码
+$ mysql -u root
+登录时有可能报这样的错：ERROR 2002 (HY000): Can‘t connect to local MySQL server through socket ‘/var/lib/mysql/mysql.sock‘
+，原因是/var/lib/mysql的访问权限问题。下面的命令把/var/lib/mysql的拥有者改为当前用户：
+4.sudo chown -R root:root /var/lib/mysql
+重启mysql服务
+$ service mysqld restart
+接下来登录重置密码：
+$ mysql -u root  //直接回车进入mysql控制台
+mysql > use mysql;
+mysql > update user set password=password('123456') where user='root';
+mysql > exit;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
