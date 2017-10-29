@@ -1,2 +1,4 @@
 整型  》  date ，timestamp  》enum，char 》  varchar 
 能用小类型 不用大类型  比如年龄 tinyint 就够了  
+
+尽量做非空条件限制
