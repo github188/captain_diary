@@ -1,0 +1,27 @@
+MyCat架构设计图  怎么理解
+1.应用application首先 通过 MYSQL protocol, mysql协议是个什么鬼东西。  
+spring.datasource.url=jdbc:mysql://localhost:3306/springbootdb?useUnicode=true&characterEncoding=utf8&autoReconnect=true
+看这个你就知道了 应用连接数据库确实是经过mysql协议 
+2.然后经过 APPLICATION CONNECTION POOL  比如druid，
+
+3. SQL PARSE comonent 
+
+4.  sql optimization component 
+
+5. sql routing component
+
+6. sql  execute component
+
+7. database connection pool 
+
+8. 一方面用mysql protocol连接mysql ，另一方面 用jdbcdirver 连接oracle mongodb等等
+ 
+ 
+ http://www.csdn.net/article/2015-07-16/2825228  
+ 
+ 
+ 垂直分库  就是将不同业务模块的表放在不同的schema下面。
+
+
+
+
