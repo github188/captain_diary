@@ -63,7 +63,17 @@ Query OK, 1 row affected (0.00 sec)
 mycat 读写分离
 
 
+windows 条件下来做感觉要容易很多：
+1.在github上面下载mycat windows版本，下载到本地，解压，进入bin目录，shift——右键在命令行打开该目录，
+1)mycat install
+2)mycat start
+2.在mysql的安装目录才可以用mysql命令，这个跟环境变量设置有关吧。
+同样shift+右键 在命令行打开该目录，
+终于可以执行下面这个命令了，今天在linux哪里当误了好久的时间，
+mysql -uroot -p -h127.0.0.1 -P8066 -TESTDB;   (这里的TESTDB叫做逻辑库)
 
+
+然后在sqlyog 8066端口也可以打开TESTDB 这个逻辑库。
  
 
 
