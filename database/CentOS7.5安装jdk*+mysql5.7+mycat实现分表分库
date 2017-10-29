@@ -1,3 +1,6 @@
+http://www.cnblogs.com/ivictor/p/5111495.html
+
+
 首先安装jdk  
 yum -y install java1.8.0-openjdk*   
 
@@ -26,6 +29,41 @@ mysql > update user set password=password('123456') where user='root';
 mysql>GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'youpassword' WITH GRANT OPTION;
 操作完后切记执行以下命令刷新权限 
 mysql>FLUSH PRIVILEGES ;
+
+下载安装mycat 
+手动windows系统到这个地址下载*.tar.gz压缩包 
+https://github.com/huangleisir/Mycat-download/blob/master/1.6-RELEASE/Mycat-server-1.6-RELEASE-20161028204710-linux.tar.gz
+yum -y install lrzsz 
+拖到 ~/mycat/路径下  
+tar -xvf Mycat-server-1.6-RELEASE-20161028204710-linux.tar.gz
+mv mycat /usr/local/
+设置mycat目录的属主和属组
+
+# chown -R root.root /usr/local/mycat/
+登录mysql  
+mysql -h127.0.0.1 -uroot -p123456
+首先在MySQL上创建三个数据库：db1，db2，db3
+mysql> create database db1;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> create database db2;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> create database db3;
+Query OK, 1 row affected (0.00 sec)
+
+修改hosts文件，绑定主机名
+# vim /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+192.168.244.144 MySQL-Server1
+
+
+
+mycat 读写分离
+
+
+
  
 
 
