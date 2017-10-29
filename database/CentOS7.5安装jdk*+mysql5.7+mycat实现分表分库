@@ -16,7 +16,12 @@ $ service mysqld restart
 $ mysql -u root  //直接回车进入mysql控制台
 mysql > use mysql;
 mysql > update user set password=password('123456') where user='root';
-mysql > exit;
+  MySQL> flush privileges;  
+    MySQL> quit 
+重新启动MySQL，就可以使用新密码登录了。
+再次登录命令  mysql -h127.0.0.1 -uroot -p123456
+ 
+
 
 
 
