@@ -7,3 +7,6 @@
   
   
   http://blog.sina.com.cn/s/blog_6277623c0102vmo3.html
+  
+  nohup java -jar -Dspring.profiles.active=test -Xms2G -Xmx2G -Xmn512m -XX:MetaspaceSize=512m -XX:MaxMetaspaceSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -verbose:gc -XX:+PrintGCDetails -Xloggc:/home/jst/member/gc.log -XX:+UseCMSInitiatingOccupancyOnly member.jar 2>&1 &
+
