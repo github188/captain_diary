@@ -1,0 +1,9 @@
+1.
+    yum install java-1.8.0-openjdk* -y 
+    
+2.       java -version
+
+3 。   mkdir -p /data/release/zipkin && cd "$_"
+
+4.   wget -O zipkin.jar 'https://search.maven.org/remote_content?g=io.zipkin.java&a=zipkin-server&v=LATEST&c=exec'
+
