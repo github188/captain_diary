@@ -1,5 +1,7 @@
 http://jinnianshilongnian.iteye.com/blog/2190344
 
+罗永浩正式发布锤子T2,奖金将授予OpenResty  2015年底的事
+
 搭建（nginx+lua）OpenResty环境
 1. 创建目录/usr/servers，以后我们把所有软件安装在此目录
 mkdir -p /usr/servers  
