@@ -1,0 +1,20 @@
+centOS环境安装：好像最近腾讯云开发者实验室有增多了一些课程，挑出一些有点作用的练熟悉，
+总结下来，写到简历上去，这些都是加分项。
+Jenkins 是一个开源软件项目，是基于Java开发的一种持续集成工具，用于监控持续重复的工作，旨在提供一个开放易用的软件平台，使软件的持续集成变成可能。
+1.yum -y install java-1.8.0-openjdk-devel
+2.为了使用jenkins仓库，我们需要先从jenkins导入key
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+
+3.安装  yum -y install jenkins
+
+4.启动jenkins  并设置为开机启动  
+systemctl start jenkins.service
+chkconfig jenkins on
+5.Jenkins 默认运行在 8080端口。
+稍等片刻，打开 http://119.29.23.67:8080 测试访问。
+6.查看初始密码   
+cat /var/lib/jenkins/secrets/initialAdminPassword
+将密码 贴到初始化页面
+在网页上 我们选择默认的 select  plugins to install 来安装插件。
+选择all  ---  点击安装
