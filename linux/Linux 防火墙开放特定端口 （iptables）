@@ -1,0 +1,25 @@
+http://www.cnblogs.com/wucg/p/6143204.html
+
+
+Linux 防火墙开放特定端口 （iptables）
+查看状态:
+iptables -L -n
+下面添加对特定端口开放的方法：
+使用iptables开放如下端口
+/sbin/iptables -I INPUT -p tcp --dport 8000 -j ACCEPT
+保存
+/etc/rc.d/init.d/iptables save
+重启服务
+service iptables restart
+查看需要打开的端口是否生效？
+/etc/init.d/iptables status
+
+法2:
+或直接编辑/etc/sysconfig/iptables
+-A INPUT -p tcp -m tcp --dport 4000 -j ACCEPT
+保存在前面部分
+再重启:
+service iptables restart
+
+分类: 00.Unix/Linux
+标签: iptables
