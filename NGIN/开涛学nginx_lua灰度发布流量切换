@@ -8,6 +8,10 @@ mkdir -p /usr/servers
 2 .cd /usr/servers/  
 3.安装依赖 （centOS）yum install pcre-devel openssl-devel gcc curl
 ubuntu下面: apt-get install libreadline-dev libncurses5-dev libpcre3-dev libssl-dev perl  
+
+-- 事实上上面这些都不好使  这个才好使
+安装依赖库
+yum install readline-devel pcre-devel openssl-devel gcc
 4. 3、下载ngx_openresty-1.7.7.2.tar.gz并解压
 
 wget http://openresty.org/download/ngx_openresty-1.7.7.2.tar.gz  
