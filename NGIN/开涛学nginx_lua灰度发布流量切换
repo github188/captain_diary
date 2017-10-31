@@ -21,7 +21,7 @@ ngx_openresty-1.7.7.2/bundle目录里存放着nginx核心和很多第三方模�
  
 3、安装LuaJIT
 Java代码  收藏代码      
-cd bundle/LuaJIT-2.1-20150120/  
+cd ngx_openresty-1.7.7.2/bundle/LuaJIT-2.1-20150120/  
 make clean && make && make install  
 ln -sf luajit-2.1.0-alpha /usr/local/bin/luajit  
  
