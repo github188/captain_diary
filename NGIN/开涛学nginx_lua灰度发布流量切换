@@ -16,10 +16,6 @@ ubuntu下面: apt-get install libreadline-dev libncurses5-dev libpcre3-dev libss
 
 wget http://openresty.org/download/ngx_openresty-1.7.7.2.tar.gz  
 tar -xzvf ngx_openresty-1.7.7.2.tar.gz  
-3、下载ngx_openresty-1.7.7.2.tar.gz并解压
-Java代码  收藏代码
-wget http://openresty.org/download/ngx_openresty-1.7.7.2.tar.gz  
-tar -xzvf ngx_openresty-1.7.7.2.tar.gz  
  
 ngx_openresty-1.7.7.2/bundle目录里存放着nginx核心和很多第三方模块，比如有我们需要的Lua和LuaJIT。
  
@@ -84,9 +80,13 @@ vim /usr/servers/nginx/conf/nginx.conf
 Java代码  收藏代码
 #lua模块路径，多个之间”;”分隔，其中”;;”表示默认搜索路径，默认到/usr/servers/nginx下找  
 lua_package_path "/usr/servers/lualib/?.lua;;";  #lua 模块  
-lua_package_cpath "/usr/servers/lualib/?.so;;";  #c模块   
+lua_package_cpath "/usr/servers/lualib/?.so;;";  #c模块  
+3、在nginx.conf中的http部分添加include lua.conf包含此文件片段 
+Java代码  收藏代码
+include lua.conf;  
   
-3、为了方便开发我们在/usr/servers/nginx/conf目录下创建一个lua.conf 
+4、为了方便开发我们在/usr/servers/nginx/conf目录下创建一个lua.conf 
+vim /usr/servers/nginx/conf/lua.conf
 Java代码  收藏代码
 #lua.conf  
 server {  
@@ -94,9 +94,7 @@ server {
     server_name  _;  
 }  
  
-4、在nginx.conf中的http部分添加include lua.conf包含此文件片段 
-Java代码  收藏代码
-include lua.conf;  
+
   
 5、测试是否正常 
 Java代码  收藏代码
