@@ -93,6 +93,16 @@ server {
     listen       80;  
     server_name  _;  
 }  
+
+------start---------题外话---------
+如果你要配置该服务器的80端口对应到某域名  前提是在域名提供网站那里该域名已经映射到该IP了
+#lua.conf  
+server {
+    listen       80;
+    server_name  www.nightcatfun.xyz;
+}
+
+---------------end 题外话----
  
 
   
