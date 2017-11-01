@@ -1,5 +1,13 @@
 
 就是说，我一个url可以按照均衡权重请求到两个服务器上去。
 
-这个lua大概是这么配置的
+这个lua大概是这么配置的 
+#lua.conf
+server {
+    listen       80;
+    server_name  www.nightcatfun.xyz;
+    
+    
+    
+}
 
