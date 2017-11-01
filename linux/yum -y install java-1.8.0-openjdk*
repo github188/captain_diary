@@ -1,1 +1,15 @@
 yum -y install java-1.8.0-openjdk* 
+配置 JAVA 环境变量0    
+执行命令:
+编辑 ~/.bashrc  在结尾追加：
+
+ vim ~/.bashrc 
+ export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
+ 使其生效   
+ source ~/.bashrc
+ 为了检测系统中 JAVA 环境是否已经正确配置并生效，可以分别执行下面命令:
+java -version
+$JAVA_HOME/bin/java -version
+若两条命令输出的结果一致，且都为我们前面安装的 openjdk-1.8.0 的版本，则表明 JDK 环境已经正确安装并配置。
+可用 echo $JAVA_HOME 来查看JAVA_HOME配置值
+ 
