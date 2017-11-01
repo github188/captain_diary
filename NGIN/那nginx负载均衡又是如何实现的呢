@@ -1,14 +1,21 @@
 
 就是说，我一个url可以按照均衡权重请求到两个服务器上去。
+http://www.cnblogs.com/jacktang/p/3669115.html
 
-这个lua大概是这么配置的 
+这个lua大概是这么配置的 ,这里相当于是个重定向
 #lua.conf
 server {
     listen       80;
     server_name  www.nightcatfun.xyz;
+    location /demo1 {     
+        proxy_pass 127.0.0.1:8002/springboot ;
+}  
   
     
     
     
 }
+
+
+
 
