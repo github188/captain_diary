@@ -2,6 +2,8 @@
 就是说，我一个url可以按照均衡权重请求到两个服务器上去。
 http://www.cnblogs.com/jacktang/p/3669115.html
 
+http://www.cnblogs.com/oshine/p/3953259.html   这篇文章是实操型的，拿来就能用
+
 这个lua大概是这么配置的 ,这里相当于是个重定向
 #lua.conf
 server {
