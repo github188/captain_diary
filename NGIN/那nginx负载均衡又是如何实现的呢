@@ -2,7 +2,8 @@
 就是说，我一个url可以按照均衡权重请求到两个服务器上去。
 http://www.cnblogs.com/jacktang/p/3669115.html
 
-http://www.cnblogs.com/oshine/p/3953259.html   这篇文章是实操型的，拿来就能用
+http://www.cnblogs.com/oshine/p/3953259.html   这篇文章是实操型的，拿来就能用，要实践出来，至少需要三台服务器。不过配出这个
+东西出来，意义很大，像失效转移可以验证，以及限流验证。灰度发布模拟都可以来做了。
 
 这个lua大概是这么配置的 ,这里相当于是个重定向
 #lua.conf
