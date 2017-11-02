@@ -1,5 +1,12 @@
 
 先按照腾讯开发者实验室nginx配置静态资源，将nginx安装起来，然后进入 /etc/nginx/nginx.conf 文件
+安装 Nginx
+在 CentOS 上，可直接使用 yum 来安装 Nginx
+yum install nginx -y
+安装完成后，使用 nginx 命令启动 Nginx：
+nginx
+vim /etc/nginx/nginx.conf
+
 
 user nginx;
 worker_processes auto;
