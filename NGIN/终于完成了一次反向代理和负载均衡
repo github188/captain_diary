@@ -25,8 +25,8 @@ http {
     # for more information.
     include /etc/nginx/conf.d/*.conf;
      upstream test.miaohr.com {   #---------added  by huanglei --------
-    server 123.207.56.239:9080;   #---------added  by huanglei --------
-    server 123.207.69.81:9080;   #---------added  by huanglei --------
+    server 123.207.56.239:9080 weight=1;   #---------added  by huanglei --------
+    server 123.207.69.81:9080  weight=10 ;   #---------added  by huanglei --------
     }   #---------added  by huanglei --------
     server {
         listen       80 default_server;
@@ -51,6 +51,8 @@ http {
  被这个问题 干扰了一下  invalid PID number
  其实很简单，在nginx启动之前 是不能通用nginx -s -reload  来重启nginx的，都没启动哪来的重启呢
  直接在nginx目录下 用nginx 命令启动就好了  
+ 
+ 加了权重之后重启nginx 就好了
                               
                               
                               
