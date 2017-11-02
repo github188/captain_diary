@@ -52,7 +52,9 @@ http {
  其实很简单，在nginx启动之前 是不能通用nginx -s -reload  来重启nginx的，都没启动哪来的重启呢
  直接在nginx目录下 用nginx 命令启动就好了  
  
- 加了权重之后重启nginx 就好了
+ 加了权重之后重启nginx 就好了  nginx -s reload
+ 
+ http://blog.csdn.net/zhangskd/article/details/50194069   这篇文章 不错  今天太晚了，明天再看，再写心得体会
                               
                               
                               
