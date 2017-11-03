@@ -41,7 +41,29 @@ HashMap类上方的这段源码内容很丰富，讲了很多，也是面试中�
         return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
     }
 -----------hash method end------------------
-
+--------------get method start-------------------
+/**
+     * Returns the value to which the specified key is mapped,
+     * or {@code null} if this map contains no mapping for the key.
+     *
+     * <p>More formally, if this map contains a mapping from a key
+     * {@code k} to a value {@code v} such that {@code (key==null ? k==null :
+     * key.equals(k))}, then this method returns {@code v}; otherwise
+     * it returns {@code null}.  (There can be at most one such mapping.)
+     *
+     * <p>A return value of {@code null} does not <i>necessarily</i>
+     * indicate that the map contains no mapping for the key; it's also
+     * possible that the map explicitly maps the key to {@code null}.
+     * The {@link #containsKey containsKey} operation may be used to
+     * distinguish these two cases.
+     *
+     * @see #put(Object, Object)
+     */
+    public V get(Object key) {
+        Node<K,V> e;
+        return (e = getNode(hash(key), key)) == null ? null : e.value;
+    }
+--------------get method end-------------------
 
 ------------------就像压栈，新来的技术放上面，FILO-------------------------------
 2013/11/15 | 分类： 基础技术 | 44 条评论 | 标签： HASHPMAP
