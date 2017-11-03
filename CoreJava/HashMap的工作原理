@@ -2,6 +2,7 @@
 HashMap类上方的这段源码内容很丰富，讲了很多，也是面试中经常问到的
 另一个，就是里面的hash方法，
 重中之重是put方法，和get方法。
+http://www.bubuko.com/infodetail-1603297.html   写这篇文章的人是真看进去源码了，可惜的是没有写完。
 --------put method--------
 /**
      * Associates the specified value with the specified key in this map.
