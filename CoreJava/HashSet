@@ -1,1 +1,5 @@
 http://www.cnblogs.com/runwulingsheng/p/5208762.html
+
+
+注意观察 HashSet的构造方法里面就是　 new HashMap(),所以他的地层就是用的HashMap来实现的。要存进来的值，放在key的位置上，value存的是一个present
+，一个静态的成员变量new Object（）。
