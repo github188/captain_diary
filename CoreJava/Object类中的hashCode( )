@@ -37,7 +37,7 @@ https://www.zhihu.com/question/30301819
         int h;
         return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
     }
-    
+    我们可以把table数组每一个元素叫做一个桶bucket
     为什么hashmap要这么处理，
     看下面文章
     http://blog.csdn.net/anxpp/article/details/51234835
