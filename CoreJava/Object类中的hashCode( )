@@ -11,7 +11,8 @@ public native int hashCode();   后面是分号，结束了。
 -------------再来说说对象的hashCode在程序中的作用----------
 简单概括一下，就是判断重复元素，比如容器中是不能存放重复对象的，已经存放了1万个对象，不使用hashCode的情况下，怎么处理呢，一个一个比较吧。时间复杂度是
 O(N),N是对象个数，时间复杂度随着N的增加线性增加。那现在假设我用散列集合来做，HashMap，这个里面第一层结构是一个table[]数组，这个数组里面每一个元素存放
-的是该组对象的hashCode，也就是说，这个组里面的所有对象的hashCode都是这个值，外面的元素想要存进来，首先必须比较hashCode是否一样。这样的话，就把大多数
+的是该组对象的hashCode（其实这种说法是错误的，是对hanCode处理后的一个hash值，看下面的算法），也就是说，这个组里面的所有对象的hashCode都是这个值，
+外面的元素想要存进来，首先必须比较hashCode是否一样。这样的话，就把大多数
 的想要加进来的对象都拒之门外了（就好像马未都说的，他做编辑，看稿，先把大多数的稿件给突突了）。顺便再往下说一句话，如果外面想加进来的hashCode与该组
 吻合，那么再用equals（）方法比较地址值（用双等号==）就行了。这样
 就大大降低了时间复杂度。
@@ -32,7 +33,15 @@ http://blog.csdn.net/hahalzb/article/details/6415360
 https://www.zhihu.com/question/30301819
 
 
-
+	static final int hash(Object key) {
+        int h;
+        return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+    }
+    
+    为什么hashmap要这么处理，
+    看下面文章
+    http://blog.csdn.net/anxpp/article/details/51234835
+    不懂就问问 动脑学院老师
 
 
 
