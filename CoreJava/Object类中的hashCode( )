@@ -23,9 +23,13 @@ the {@code equals(Object)}
      *     the two objects must produce the same integer result.）
      所以说当你重写了equals方法的时候，比如String，非常有必要重写hashCode，让两个equals（）相等的对象，保持hashCode相等。
      
+http://blog.csdn.net/fenglibing/article/details/8905007
 
+http://www.cnblogs.com/dolphin0520/p/3681042.html
 
+http://blog.csdn.net/hahalzb/article/details/6415360
 
+https://www.zhihu.com/question/30301819
 
 
 
