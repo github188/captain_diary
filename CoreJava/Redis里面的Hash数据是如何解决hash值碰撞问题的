@@ -1,0 +1,28 @@
+对啊，只要使用hashCode就一定会有碰撞发生的可能性，除非你想String那样重写hashCode()方法。
+redis作为一个nosql，不管存放什么数据都是KV这种形式的。
+key都是字符串类型。存放相同key值得数据，后面的数据会覆盖前面的数据。
+hash数据里面存放的也是键值对，那么他怎么保证没有hash碰撞呢。看这篇文章   http://www.runoob.com/redis/redis-data-types.html
+Redis hash 是一个键名对集合。
+Redis hash是一个string类型的field和value的映射表，hash特别适合用于存储对象。
+以上，hash数据的key也是String类型的，那么就简单了，redis根据String的内容来生成hashCode，就能保证不会发生hash碰撞了。这根Java的String对象里面重写
+hashCode方法是一个道理。
+
+redis中保存的数据都是键值对，键的类型都是字符串类型，值的类型有五种： 
+String， 字符串 
+Hashs, 哈希表(又称散列), 哈希表中的元素是字符串 
+Lists, 列表 ,列表中的元素也是字符串 
+Sets, 集合，元素也是字符串 
+Sorted Sets, 有序集合，元素是字符串和一个对应的score
+
+List，Set，SortedSet，这三种集合类型外加String这种简单类型，外加Hash这种适用于存储对象的数据类型，一共5种。
+另外，值得一提的是，redis初始化状态下游16个数据库，叫做16个桶，类似于HashMap的数据结构，一样一样的。
+
+
+
+http://blog.csdn.net/sbjiesbjie/article/details/48752271
+
+
+
+
+
+
