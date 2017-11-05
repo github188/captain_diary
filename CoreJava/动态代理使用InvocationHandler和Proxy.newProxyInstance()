@@ -1,1 +1,10 @@
 http://www.jb51.net/article/86531.htm    
+
+
+http://www.jb51.net/article/98629.htm   这里增加一个变种，其实差别不大，只是反射放在代理类里面
+
+
+
+关于基于JDK实现动态代理，还是基于cglib实现，这里给了比较好的比较，可以关注一下。
+简单讲讲cglib的方式，他是以生成字节码的方式来实现的。
+https://segmentfault.com/a/1190000011291179
