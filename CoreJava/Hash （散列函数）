@@ -4,3 +4,7 @@
 Java对象的哈希码是一个10位的整数，int型的，可能是10位负整数
 ，new Date（）.hashCode()就是10位负整数。
 String的hash值不好说，空串的时候哈希值是0  非空串最低2位（一位字符串的时候，就是他的ascii码，）  最高10位   
+
+
+今天赵凯平也直接讲了，重写equals（）之后，一定有必要重写hash'Code（）
+重写hashCode（)不一定要重写equals()
