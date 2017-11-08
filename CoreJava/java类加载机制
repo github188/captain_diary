@@ -1,1 +1,24 @@
+jdk自带的类加载器有三个：
+按照先后代顺序来讲：1.根加载器bootstrap，2.扩展加载器ExtCalssLoad，3.应用加载器AppClassLoader
+跟加载起Bootstrap是用代码看不到的，他不是ClassLoader子类，因此我们在Java中看不见他，靠jdk自举来创建。他加载的是JRE目录下的rt.jar，charsets.jar等
+。ExtClassLoader加载的是ext目录下的jar包。AppClassLoader加载的是Classpath下的类包。
+
+
+-------用Java代码来看当前线程的ClassLoader -----------------
+ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		System.out.println(classLoader);
+		System.out.println(classLoader.getParent());
+		System.out.println(classLoader.getParent().getParent());
+    
+   sun.misc.Launcher$AppClassLoader@2a139a55
+sun.misc.Launcher$ExtClassLoader@7852e922
+null
+
+
+
+类加载器的作用是读取相关路径下相关类的字节码文件并构造出类在JVM内部表示的对象组建。
+    关于上面的描述，我有太多的问题，比如这个类路径只的是什么，classpath是操作系统配置的那个吗，还是工程下面的那个classpath
+    如何自己编写类加载器，解决了这个问题，你才能知道双亲委托机制，想让jdk使用自己写的类加载器来加载类的字节码文件首先要让jdk放弃默认的类加载器。
+    
+
 
