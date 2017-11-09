@@ -1,2 +1,21 @@
 李传晓，今天说了这个问题，
 就是这个如果你已经上传了路径/a下面的东西，再去ignore文件里面配置这个文件忽略，没用。如果你删除了上传的a路径，那么在去本地上传，ignore配置就有用了。
+
+
+*.class
+.svn/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.cfg
+
+# Eclipse project files
+.project
+.classpath
+.settings
+bin/
+target/
+/target/
+
