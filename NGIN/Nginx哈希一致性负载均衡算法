@@ -18,6 +18,8 @@ http://blog.csdn.net/cywosp/article/details/23397179
 为什么一定要是环，为了避免破坏就近原则，你懂得。
 关于hash,我们几乎说完了这东西，还差一点点，就是redis里面的hash是个什么东东。
 
+niginx 哈希一致性的使用  https://www.cnblogs.com/mrxiaohe/p/5844843.html
+
 
 
 
