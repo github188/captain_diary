@@ -1,0 +1,239 @@
+$ history
+    1  ll
+    2  ls
+    3  ll
+    4  ls
+    5  factor 345345
+    6  factor 345345234234
+    7  factor 34534523423445245245245235234523452452345245235
+    8  factor 34534523423445245245
+    9  factor 345345234234452452455
+   10  factor 3453452342344524524556
+   11  factor 34534523423445245245567
+   12  factor 345345234234452452455678
+   13  factor 3453452342344524524556789
+   14  factor 34534523423445245245567890
+   15  factor 3453452342344524524556789012
+   16  factor 34534523423445245245567890123
+   17  factor 34534523423445245245567890123456789
+   18  factor 34534523423445245245567890123456789012345
+   19  factor 3453452342344524524556789012345678901234567890
+   20  factor 345345234234452452455678901234567890123456789012
+   21  factor 3453452342344524524556789012345678901234567890123
+   22  factor 3453452342344524524556789012345678901234567890123456
+   23  factor 3453452342344524524556789012345678901234567890123456789
+   24  factor 34534523423445245245567890123456789012345678901234567890
+   25  factor 345345234234452452455678901234567890123456789012345678901
+   26  factor 3453452342344524524556789012345678901234567890123456789012345
+   27  factor 34534523423445245245567890123456789012345678901234567890123
+   28  factor 345345234234452452455678901234567890123456789012345678901234
+   29  git
+   30  git log
+   31  git -log
+   32  ls
+   33  cd ~
+   34  ls
+   35  cd /
+   36  ls
+   37  git config --global user.name 'huanglei'
+   38  git config --global user.email 'Lei.huang@jieshunpay.cn'
+   39  git clone https://github.com/huangleisir/captain_diary.git
+   40  git status
+   41  git status
+   42  git status -a
+   43  git diff
+   44  git add .
+   45  ll
+   46  git stauts
+   47  git status
+   48  git add .
+   49  git init
+   50  git clone https://github.com/huangleisir/captain_diary.git
+   51  git clone https://github.com/huangleisir/captain_diary.git
+   52  git clone https://github.com/huangleisir/captain_diary.git
+   53  git status
+   54  git add .
+   55  git commit -m 'say 5555'
+   56  git push origin master
+   57  git push master
+   58  git push master master
+   59  git push master origin
+   60  git push origin master
+   61  git clone http://10.101.90.189/team2/jst-alipay.git
+   62  git clone http://10.101.90.189/team2/jst-alipay.git
+   63  git clone http://10.101.90.189/team2/jst-alipay.git
+   64  git clone http://10.101.90.189/team2/jst-alipay.git
+   65  git clone http://10.101.90.189/team2/jst-alipay.git
+   66  ls
+   67  git clone http://10.101.90.189/team2/jst-alipay.git
+   68  git clone http://10.101.90.189/team2/jst-alipay.git
+   69  git clone http://10.101.90.189/team2/jst-alipay.git
+   70  git clone http://10.101.90.189/team2/test-hwd.git
+   71  git status
+   72  git
+   73  git add
+   74  git
+   75  cd jst-alipay/
+   76  git add  Constants.java
+   77  git add  .
+   78  git status
+   79  git status
+   80  git add .
+   81  git status
+   82  git commit .
+   83  git push .
+   84  git status
+   85  git push origin
+   86  git branch -a
+   87  git -version
+   88  git push ./
+   89  git
+   90  git push ./
+   91  git push origin
+   92  git pull origin
+   93  git push origin master
+   94  git add .
+   95  git commit .
+   96  git push origin master
+   97  git status
+   98  git diff
+   99  git diff
+  100  git diff
+  101  git branch -a
+  102  git branch newBeranchName
+  103  git branch -a
+  104  git branch newbranchname_hl18380710 origin/master
+  105  git branch -a
+  106  git checkout newBeranchN
+  107  sad阿斯顿发生的是大爱粉色的dfgsdfg sdfgsdfg
+  108  git branch -a
+  109  git checkout newBeranchName
+  110  git diff
+  111  git add .
+  112  git commit .
+  113  git push origin master
+  114  git push origin newBeranchName
+  115  git merge master
+  116  git merge  newBeranchName master
+  117  git branch -a
+  118  git checkout newBranchname_hl18380710
+  119  pull
+  120  git pull master
+  121  git pull origin master
+  122  git diff
+  123  git add .
+  124  git commit -ma sdfgsdfgsgf
+  125  git commit -ma  'say sth when commit 0711'
+  126  git commit . -ma  'say sth when commit 0711'
+  127  git commit . -m  'say sth when commit 0711'
+  128  git push origin newBranchname_hl18380710
+  129  git push origin master
+  130  git push origin origin newBranchname_hl18380710
+  131  git push origin newBranchname_hl18380710
+  132  git push newBranchname_hl18380710 master
+  133  git push newBranchname_hl18380710 origin
+  134  git push origin newBranchname_hl18380710
+  135  git push origin newBranchname_hl18380710
+  136  git branch -a
+  137  ll
+  138  factor
+  139  factor 345
+  140  clear
+  141  git config --gloabal user.name huanglei
+  142  git config --global user.name huanglei
+  143  git config --global user.email lei.huang@jieshunpay.cn
+  144  git clone http://10.101.130.56/huanglei/marketmgr.git
+  145  git status
+  146  git
+  147  git status
+  148  git
+  149  git add .
+  150  git clone http://10.101.130.56/huanglei/marketmgr.git
+  151  git status
+  152  git status
+  153  git status
+  154  git push .
+  155  git add .\
+  156  git add .
+  157  git commit .
+  158  git push .
+  159  git status
+  160  git status
+  161  git branch
+  162  git log
+  163  git push
+  164  git push .
+  165  git status
+  166  git status
+  167  git diff
+  168  git fetch origin
+  169  git checkout -b branch-dev-0810 origin/branch-dev-0810
+  170  git fetch origin
+  171  git checkout -b branch-dev-0810 origin/branch-dev-0810
+  172  git fetch origin
+  173  git checkout -b branch-dev-0810 origin/branch-dev-0810
+  174  git clone https://github.com/huangleisir/files.git
+  175  git status
+  176  git status
+  177  git commit-m"upload"
+  178  git commit -m"upload"
+  179  git add .
+  180  git commit -m"upload"
+  181  git push origin master
+  182  git log --pretty=oneline
+  183  git checkout -b modify-red cf28376ccb71cefd63676e9a90a8d61182416da8
+  184  git log
+  185  git log --pretty=oneline
+  186  git status
+  187  git checkout -b modify-red cf28376ccb71cefd63676e9a90a8d61182416da8
+  188  git checkout -b modify-red2 cf28376ccb71cefd63676e9a90a8d61182416da8
+  189  git clone
+  190  git clone https://github.com/huangleisir/js-demo.git
+  191  git add .
+  192  git init
+  193  git status
+  194  git  add .
+  195  git commit -m"init"
+  196  git log
+  197  git log --stat
+  198  git status
+  199  ls -al
+  200  vim .gitignore
+  201  git add .gitignore
+  202  git status
+  203  git add .
+  204  git status
+  205  ll
+  206  git log
+  207  git reflog
+  208  git log
+  209  git reflog
+  210  git show b0dd067
+  211  git show b0dd067 --stat
+  212  git reflog
+  213  git log
+  214  git reset --hard  b0dd067
+  215  git log
+  216  git branch
+  217  git branch -vv
+  218  git fetch
+  219  git diff HEAD:origin/branch-dev
+  220  git diff HEAD:origin/branch_dev
+  221  git branch -a
+  222  git diff HEAD:origin/branch-dev
+  223  git diff HEAD  origin/branch-dev
+  224  git push origin HEAD:branch-dev
+  225  git push origin HEAD:branch-dev
+  226  git pull
+  227  git pull origin branch-dev
+  228  git status
+  229  git add .
+  230  git commit
+  231  git log
+  232  git push origin HEAD:branch-dev
+  233  git status
+  234  git branch -a
+  235  git checkout -b branch-dev origin/branch-dev
+  236  git branch
+  237  git branch -vv
+  238  history
