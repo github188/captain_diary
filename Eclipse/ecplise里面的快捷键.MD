@@ -1,4 +1,15 @@
-
+>  记得以前周光进让我按F4  这个跟ctrl + T 是一个意思？
+F类快捷键 
+F2：显示提示/重命名
+F3：打开选中元素的声明
+F4：打开选中元素的类型继承结构
+F5：刷新
+F5：Step Into（debug）
+F6：Step over（debug）
+F7：Step return（debug）
+F8：Resume（debug）
+F11：debug上一个应用（debug）
+F12：激活编辑器
 > >  eclipse的顶上还有信息的，这些资源也是可以用的，对于老鸟来说，资源本来就不多，你还不珍惜资源。
 >  xshell 的顶上也有路径给你看的。
 
