@@ -10,6 +10,9 @@ F7：Step return（debug）
 F8：Resume（debug）
 F11：debug上一个应用（debug）
 F12：激活编辑器
+
+
+
 > >  eclipse的顶上还有信息的，这些资源也是可以用的，对于老鸟来说，资源本来就不多，你还不珍惜资源。
 >  xshell 的顶上也有路径给你看的。
 
