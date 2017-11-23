@@ -1,0 +1,47 @@
+
+Eclipse常用的高效插件
+今天为使用Eclipse的程序员们，收集一些比较高效的插件，这些插件可以帮助你提高工作效率。
+
+Properties Editor
+
+Properties Editor 编辑java的属性文件，并可以自动存盘为Unicode格式，在写一下配置文件的时候，不用工具生成。
+
+官网：http://propedit.sourceforge.jp/index_en.html 
+
+Fat Jar
+
+Fat Jar 打包插件，可以方便的完成各种打包任务，可以包含外部的包等。这个插件比自带的好多很多。方便有第三方lib的程序员
+
+官网：http://fjep.sourceforge.net/ 
+
+Checkclipse
+
+Checkclipse 是一个用来检查代码的风格、写法是否符合规范的Eclipse插件
+
+官网：http://sourceforge.net/projects/checkclipse/
+
+Maven 插件 m2eclipse
+
+这是一个在Eclipse环境中集成的Maven插件，不过多解释，安装方法自行google
+
+Git插件 EGit
+
+EGit目前还是一个出于孵化期间的项目，因此EGit 0.7.1并没有提供对Git全部功能的支持，同 时也无法保证没有bug(当然EGit 0.7.1是经过严格的测试之后才发布的正式版本)，但对于笔者这样的用户来说能满足基本的功能并且可以方便的享受Eclipse整合git功能即可。同 时作者表示在Eclipse下一个发行版Eclipse Helios到来之际将发布EGit 0.8，届时EGit的功能将更加强大，同时提供更多的新特性支持。
+
+安装地址：http://download.eclipse.org/egit/updates
+
+Snowberry
+
+Snowberry 是供Java开发者使用的Eclipse插件，Snowberry 能够将您编写的Java代码同步显示为“类图”，并展现类与类之间的关系。查看父类和接口、寻找已知的子类和实现，都以直观的类图操作呈现出来。
+
+下载地址：http://pan.baidu.com/s/1c0eXLz6
+
+Eclipse Color Themes
+
+一个很赞的eclipse插件，可以简单方便地实现eclipse下的代码配色。另外插件作者还专门为此插件做了一个eclipse配色网站，配色多达728个，开发者们也可以在此网站分享自己的配色方案。
+
+官网：http://eclipsecolorthemes.org/
+
+
+
+转载自：http://developer.51cto.com/art/201411/457801.htm
