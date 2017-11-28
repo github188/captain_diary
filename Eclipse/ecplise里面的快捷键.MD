@@ -1,5 +1,6 @@
-
-
+这中间一个重点是，搜索，导航到要找的类或者文件，这个太重要了，通过各种方式 ctrl+Q  ctr+F  ctrl+alt+g   F4   open call back   alt+shift+W
+ctrl+shift+r，ctrl+T，ctrl+左键，ctrl+H
+-------------
 14、ctrl+shift+x和ctrl+shift+y：英文字母大小写的转换  X是大写  Y是小写 女士优先嘛
 这个快捷键常用语·SQL·语句的编写中，我也是经常用的，建议大家SQL语句中的关键字都用大写，尽管数据库大小写不区分，但这样有利于他人和自己阅读尤其是SQL语句非常长的情况下，而且这样看着也很规范。
  
