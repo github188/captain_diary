@@ -1,0 +1,14 @@
+JAVA 自省机制 java bean
+原创 2015年05月18日 21:32:46 标签：java /bean /自行机制 2361
+//Java Bean
+1 Java对象，是有一定约定的对象
+2 同一外观，为了使用方便
+3 Java Bean的约定
+   ①类一定有无参数构造器（直接创建对象，子类继承时候方便直接调用父类无参构造器）
+   ②对象属性使用get set方法访问。
+          get  set方法访问的属性称为Bean属性
+   ③一定实现序列话接口（方便对象序列化）
+   ④必须在包中定义
+4 软件开发中建议采用Java Bean规则定义Bean
+5 Java提供了一套java.beans API,对反射进行了封装，专门为Java Bean设计的API，这套API称为java自省api
+   作用：方便访问Java 的Bean属性方法
