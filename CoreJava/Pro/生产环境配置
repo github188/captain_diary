@@ -1,0 +1,205 @@
+app.name=jst-finance-member
+server.port=8084
+server.context-path=/jst-finance-member
+server.tomcat.uri-encoding = UTF-8
+server.compression.enabled=true
+
+server.session-timeout=60
+server.tomcat.accept-count=300
+server.tomcat.max-threads=400
+server.tomcat.min-spare-threads=20
+server.tomcat.max-connections=500
+#logging.path=logs
+#logging.file=app.log
+
+JAVA_OPTS=-Xdebug -Xrunjdwp:server=y,transport=dt_socket,suspend=n
+spring.devtools.remote.debug.local-port=18084
+
+server.tomcat.basedir=springboot-tomcat
+server.tomcat.accesslog.buffered=true
+server.tomcat.accesslog.directory=logs
+server.tomcat.accesslog.enabled=true
+server.tomcat.accesslog.file-date-format=.yyyy-MM-dd
+server.tomcat.accesslog.pattern=%t %a "%r" %s (%D ms)
+server.tomcat.accesslog.prefix=access_log
+
+#JAVA_OPTS=-Xmx1024m
+#server.ssl.enabled=false
+#server.ssl.keyAlias=springboot
+#server.ssl.keyPassword=123456
+#server.ssl.keyStore=/
+
+
+spring.resources.add-mappings=true
+
+
+
+spring.redis.cluster.nodes=10.10.202.52:7001,10.10.202.52:7002,10.10.202.53:7001,10.10.202.53:7002,10.10.202.54:7001,10.10.202.54:7002
+spring.redis.cluster.timeout=2000
+
+spring.redis.cluster.maxRedirects=8
+
+spring.redis.cluster.expireTime=3600
+
+spring.redis.cluster.dailyExpireTime=86400
+
+spring.redis.cluster.baseExpireTime=3000
+
+spring.cache.cache-names=keyUserInfoCache,keyUserLoginInfoCache
+
+spring.cache.type=REDIS
+
+pagehelper.helperDialect=mysql
+pagehelper.reasonable=true
+pagehelper.supportMethodsArguments=true
+pagehelper.params=count=countSql
+
+#********************jedis pool config******************************************
+jedisPool.maxTotal=2048
+jedisPool.maxIdle=200
+jedisPool.minIdle=10
+jedisPool.numTestsPerEvictionRun=1024
+jedisPool.timeBetweenEvictionRunsMillis=30000
+jedisPool.minEvictableIdleTimeMillis=-1
+jedisPool.softMinEvictableIdleTimeMillis=10000
+jedisPool.maxWaitMillis=1500
+jedisPool.testOnBorrow=true
+jedisPool.testWhileIdle=true
+jedisPool.testOnReturn=false
+jedisPool.blockWhenExhausted=false
+
+
+#auto config ConnectionFactory RabbitTemplate
+spring.rabbitmq.host=10.10.202.59
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=jst
+spring.rabbitmq.password=jst
+spring.rabbitmq.listener.concurrency=30
+spring.rabbitmq.listener.max-concurrency=60
+spring.rabbitmq.listener.retry.enabled=true
+spring.rabbitmq.listener.retry.max-attempts=3
+
+
+spring.datasource.url=jdbc:mysql://10.10.202.58:3306/jstpay?useUnicode=true&characterEncoding=utf-8&autoReconnect=true
+spring.datasource.username=jstyh
+spring.datasource.password=Pw56@Jstyh
+spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+spring.datasource.type=com.alibaba.druid.pool.DruidDataSource
+
+# \u521D\u59CB\u5316\u5927\u5C0F\uFF0C\u6700\u5C0F\uFF0C\u6700\u5927
+spring.datasource.initialSize=5
+spring.datasource.minIdle=5
+spring.datasource.maxActive=50
+# \u914D\u7F6E\u83B7\u53D6\u8FDE\u63A5\u7B49\u5F85\u8D85\u65F6\u7684\u65F6\u95F4
+spring.datasource.maxWait=60000
+# \u914D\u7F6E\u95F4\u9694\u591A\u4E45\u624D\u8FDB\u884C\u4E00\u6B21\u68C0\u6D4B\uFF0C\u68C0\u6D4B\u9700\u8981\u5173\u95ED\u7684\u7A7A\u95F2\u8FDE\u63A5\uFF0C\u5355\u4F4D\u662F\u6BEB\u79D2 
+spring.datasource.timeBetweenEvictionRunsMillis=60000
+# \u914D\u7F6E\u4E00\u4E2A\u8FDE\u63A5\u5728\u6C60\u4E2D\u6700\u5C0F\u751F\u5B58\u7684\u65F6\u95F4\uFF0C\u5355\u4F4D\u662F\u6BEB\u79D2 
+spring.datasource.minEvictableIdleTimeMillis=300000
+# Oracle\u8BF7\u4F7F\u7528select 1 from dual
+spring.datasource.validationQuery=SELECT 'x'
+spring.datasource.testWhileIdle=true
+spring.datasource.testOnBorrow=false
+spring.datasource.testOnReturn=false
+# \u6253\u5F00PSCache\uFF0C\u5E76\u4E14\u6307\u5B9A\u6BCF\u4E2A\u8FDE\u63A5\u4E0APSCache\u7684\u5927\u5C0F 
+spring.datasource.poolPreparedStatements=true
+spring.datasource.maxPoolPreparedStatementPerConnectionSize=20
+# \u914D\u7F6E\u76D1\u63A7\u7EDF\u8BA1\u62E6\u622A\u7684filters\uFF0C\u53BB\u6389\u540E\u76D1\u63A7\u754C\u9762sql\u65E0\u6CD5\u7EDF\u8BA1\uFF0C'wall'\u7528\u4E8E\u9632\u706B\u5899 
+spring.datasource.filters=stat,wall,slf4j
+# \u901A\u8FC7connectProperties\u5C5E\u6027\u6765\u6253\u5F00mergeSql\u529F\u80FD\uFF1B\u6162SQL\u8BB0\u5F55
+#spring.datasource.connectionProperties=druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+# \u5408\u5E76\u591A\u4E2ADruidDataSource\u7684\u76D1\u63A7\u6570\u636E
+#spring.datasource.useGlobalDataSourceStat=true
+
+mybatis.mapper-locations=classpath:mapper/*.xml
+mybatis.config=classpath:mybatis-config.xml
+
+
+dubbo.applicationName=jst-finance-member
+
+dubbo.logger=slf4j
+
+dubbo.protocol=dubbo
+
+dubbo.registryAddress=zookeeper://10.10.202.62:2181?backup=10.10.202.63:2181,10.10.202.64:2181
+
+dubbo.protocolName=dubbo
+
+dubbo.protocolPort=20885
+
+dubbo.protocolAccepts=4000
+
+dubbo.poolType=fixed
+
+dubbo.pootThreads=100
+
+dubbo.timeout=15000
+
+dubbo.retries=0
+
+dubbo.referenceConnections=10
+
+dubbo.serviceActives=500
+
+dubbo.delay=-1
+
+
+system.region.index=0
+system.worker.index=0
+
+
+
+#============ \u9884\u4ED8\u5361\u652F\u4ED8\u8BF7\u6C42\u5730\u5740\u6D4B\u8BD5\u73AF\u5883 ============
+#\u67E5\u8BE2\u9884\u4ED8\u5361\u4F59\u989D
+queryBalanceUrl=http://10.10.203.206:18090/wechat-subscription/cardJst/getAcctInfos
+#\u9884\u4ED8\u5361\u652F\u4ED8
+jstCardPayUrl=http://10.10.203.206:18090/wechat-subscription/cardJst/consumeJstCard
+#\u9884\u4ED8\u5361\u652F\u4ED8\u51B2\u9500
+cancelJstCardUrl=http://10.10.203.206:18090/wechat-subscription/cardJst/consumeCancleJstCard
+#============ \u9884\u4ED8\u5361\u652F\u4ED8\u8BF7\u6C42\u5730\u5740 ============
+#\u67E5\u8BE2\u9884\u4ED8\u5361\u4F59\u989D \u6F14\u7EC3\u73AF\u5883
+#queryBalanceUrl=http://10.101.130.123:8080/wechat-subscription/cardJst/getAcctInfos
+#\u9884\u4ED8\u5361\u652F\u4ED8
+#jstCardPayUrl=http://10.101.130.123:8080/wechat-subscription/cardJst/consumeJstCard
+#\u9884\u4ED8\u5361\u652F\u4ED8\u51B2\u9500
+#cancelJstCardUrl=http://10.101.130.123:8080/wechat-subscription/cardJst/consumeCancleJstCard
+
+
+
+#*****************TMS CONFIG***********************
+tms.onOff=Y
+#\u6D4B\u8BD5\u73AF\u5883 \u53D1\u9001\u77ED\u4FE1
+#tms.msgSendUrl=http://10.101.130.8:8082/app/rest/message/msgSendto
+#\u6F14\u7EC3\u73AF\u5883
+tms.msgSendUrl=http://10.10.203.194/app/rest/message/msgSendto
+#tms.msgSendUrl=http://10.10.203.194:80/app/rest/message/msgSendto
+#\u6D4B\u8BD5\u73AF\u5883\u53D1\u6A21\u677F\u77ED\u4FE1   
+sendMessgeUrl=http://10.10.202.50:11380/jst-sms/message/sendMsg
+#\u6F14\u7EC3\u73AF\u5883\u73AF\u5883\u53D1\u6A21\u677F\u77ED\u4FE1  
+#sendMessgeUrl=http://10.101.130.34:11380/jst-sms/message/sendMsg
+#\u6F14\u7EC3\u73AF\u5883 \u53D1\u9001\u77ED\u4FE1
+#tms.msgSendUrl=http://10.101.130.33:8082/app/rest/message/msgSendto
+#
+#
+#\u7528\u6237\u6CE8\u518C\u767D\u540D\u5355\u5F00\u5173
+white.onOff=N
+
+
+#\u6D4B\u8BD5\u73AF\u5883\u5916\u7F51(\u667A\u6167\u505C\u8F66\u83B7\u53D6\u7B7E\u7EA6\u5730\u5740)  
+signAgreeUrl=http://scjsjk.jieshunpay.cn:8113/signpay/public/account/account_takepay.html?
+
+#\u6F14\u7EC3\u73AF\u5883\u73AF\u5883\u53D1\u6A21\u677F\u77ED\u4FE1  
+#sendMessgeUrl=http://10.101.130.34:11380/jst-sms/message/sendMsg
+#\u6F14\u7EC3\u73AF\u5883 \u53D1\u9001\u77ED\u4FE1
+#tms.msgSendUrl=http://10.101.130.33:8082/app/rest/message/msgSendto
+logIsAsyn=Y
+logSystemQueueName=logSystemQueue_name
+logSystemQueueKey=logSystemQueue_key
+logSystemNoCustomerQueueKey=logSystemNoCustomerQueue_pro
+
+IndiSystemQueueName=IndiSystemQueue_name
+IndiSystemQueueKey=IndiSystemQueue_key
+IndiSystemNoCustomerQueueKey=IndiSystemNoCustomerQueue_pro
+ # second
+isSetTokenTime=N
+tokenTimeout=7200
