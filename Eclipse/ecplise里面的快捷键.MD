@@ -1,3 +1,5 @@
+
+还有一个很有用的工具，bookmarker，task list（//TODO） bookmarker尤其是个好东西 方便查找 task List可以打开Markers图标来找
 这中间一个重点是，搜索，导航到要找的类或者文件，这个太重要了，通过各种方式 ctrl+Q  ctr+F  ctrl+alt+g   F4   open call back   alt+shift+W
 ctrl+shift+r，ctrl+T，ctrl+左键，ctrl+H
 -------------
