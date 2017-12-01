@@ -1,0 +1,16 @@
+Eclipse错误: 找不到或无法加载主类或项目无法编译10种解决大法！
+原创 2015年04月01日 23:01:41 标签：Eclipse错误 /找不到或无法加载主类或项目 /elipse无法编译 /项目无法编译 /找不到加载主类无法编译 59937
+       今天启动项目，又遇到找不到或无法加载主类的情况，清除项目后无法编译,class文件下没有.class文件，至少遇到3次这个问题了，隔一段时间就出现这个问题，而且每次解决的方法都还不相同，这个问题的标识就是项目上有红色差号或者叹号，原因诸多也说不清楚，有的时候是jar包缺或者引入了无用的jar包，有时候开发软件编译停顿了反应慢等等，今天特意总结解决此问题的方法，和大家分享一下：
+
+1、在src文件夹上点右键-Build Path-Use as Source Folder，重新进行编译，一切正常了。
+2、在Eclipse工程文件夹上点右键-Refresh，重新编译，一功OK（这个方法一般不起作用）。
+3、右键Properties在Java Builder Path的Libraries的标签里面看是否有缺少或者无用的（一般带红差头）的，引入对应的jar包或者删除掉。
+4、在Properties里面设置Source.添加你的java路径.比如src，然后需要设置下面的Default output folder，这里设置你的输出路径也就是class路径了。
+5、右键Properties在里面的builder里面把项目的builder.xml引用(import)进来。
+6、把右键Properties在Java Builder Path的Libraries全部删除，尤其是jre，然后，点击保存，关闭eclipse，然后再打开，再把对应的jre和lib下边的相关jar引进来，保存，重新编译后就好了，我也不知道为啥，有一次我就这么弄好了。
+7、把class下边的有.class文件的话还是这样，把这些.class文件删除掉，然后elipse中菜单project—clear然后选中对应项目，在project菜单下边勾上Build Automaticlly（自动部署）,然后生成新的就class文件就OK了。
+8、把项目下边的.project删除掉，从同事身边运行正常的项目下边拷贝过来它的.project文件，刷新项目试试。
+9、把项目下边的.classpath删除掉，从同事身边运行正常的项目下边拷贝过来它的.classpath文件，刷新项目试试。
+10、终极解决办法，也是很管用的解决办法，就是把整个项目删除掉，删除之前把更改的内容提交到CVS或者SVN上，然后重新从SVN或者CVS上把项目档下来。
+
+本人太厌恶这个问题了，很希望上边的其中一种方法会帮到您，成功把问题解决掉！！！
