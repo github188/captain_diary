@@ -1,3 +1,11 @@
+17.12.3 18:17
+1.Ctrl + shift + E 、 ctrl + E 这个很有用了，他可以将目前打开的编辑页面以列表悬浮页面的方式展现在你面前，这个有用了。
+2.ctrl+K ，ctrl+shift+K 这个好用 不过后者通常会被搜狗拼音覆盖掉，可以在sougou拼音里面将它去掉。
+3.ctr+shift+U 等于是在当前编辑页面的一个ctrl+shift+G 好像有ctr+（shift）+K就够了
+4.Ctrl+J ctrl+shift+J  是这样  你先按下快捷键 然后键盘输入 字符，然后编辑页面自动匹配 自动跳到符合条件的第一个位置 好像也没有ctr+（shift）+K好用
+还有ctr+F  这个用的最得心应手
+
+
 
 还有一个很有用的工具，bookmarker，task list（//TODO） bookmarker尤其是个好东西 方便查找 task List可以打开Markers图标来找
 这中间一个重点是，搜索，导航到要找的类或者文件，这个太重要了，通过各种方式 ctrl+Q  ctr+F  ctrl+alt+g   F4   open call back   alt+shift+W
