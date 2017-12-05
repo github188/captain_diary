@@ -1,0 +1,9 @@
+添加依赖  
+<dependency>
+		<groupId>com.taobao</groupId>
+		<artifactId>stresstester</artifactId>
+		<version>1.0</version>
+	</dependency>
+  
+  
+
