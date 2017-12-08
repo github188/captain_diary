@@ -1,3 +1,32 @@
+
+--今天忽然发现一个文件不能被git识别到新创建，在eclipse不能被识别到，在git bash查看git status也不能被识别，
+用git add -f 就能强制提交了
+cmy@jst-cmy MINGW32 ~/git/root-member1206/src/test/java/com/jst/prodution/member                                                                                                                /service (stress)
+$ git status
+On branch stress
+Your branch is up-to-date with 'origin/stress'.
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git checkout -- <file>..." to discard changes in working directory)
+
+        modified:   TestLogin.java
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+cmy@jst-cmy MINGW32 ~/git/root-member1206/src/test/java/com/jst/prodution/member                                                                                                                /service (stress)
+$ git add  TestGetMemberInfo.java
+The following paths are ignored by one of your .gitignore files:
+src/test/java/com/jst/prodution/member/service/TestGetMemberInfo.java
+Use -f if you really want to add them.
+
+cmy@jst-cmy MINGW32 ~/git/root-member1206/src/test/java/com/jst/prodution/member                                                                                                                /service (stress)
+$ git ignore
+git: 'ignore' is not a git command. See 'git --help'.
+
+cmy@jst-cmy MINGW32 ~/git/root-member1206/src/test/java/com/jst/prodution/member                                                                                                                /service (stress)
+$ git add  -f  TestGetMemberInfo.java
+
+-------------------------------------------------------------
 $ history
     1  ll
     2  ls
