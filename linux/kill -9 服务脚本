@@ -1,0 +1,4 @@
+ps -ef | grep yiiu.jar | grep -v grep | cut -c 9-15 | xargs kill -s 9
+
+ps -ef | grep member.jar | grep -v grep | cut -c 9-15 | xargs kill -s 9
+亲手试过 还挺好用的
