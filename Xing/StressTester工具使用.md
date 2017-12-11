@@ -8,7 +8,8 @@
 ![image22222222222222222](https://github.com/huangleisir/common-pics/blob/master/D1FAOLIY1_~O~A2_%7B%7D~X7~7.png)
   如果你引入的图片有问题 中括号里面的文字下面是不会有下划线的 
   
->package com.jst.prodution.member.service;
+```java
+package com.jst.prodution.member.service;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,4 +44,4 @@ public class TestLogin {
 		     System.out.println(StressTestUtils.format(result));
 	   }
 }
-
+```
