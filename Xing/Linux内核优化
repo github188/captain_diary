@@ -1,0 +1,23 @@
+* 修改最大文件句柄打开数&最大可开进程数调优
+
+修改最大文件句柄打开数&最大可开进程数调优
+    ulimit –u 65535
+    ulimit –n 65535
+查看： ulimit -a
+
+
+
+
+TCP传输参数调优
+执行命令(root用户) ：
+         vi /etc/sysctl.conf 
+   修改内容：
+         net.ipv4.tcp_max_tw_buckets = 6000
+              net.ipv4.ip_local_port_range = 1024 65000
+              net.ipv4.tcp_tw_recycle = 1
+              net.ipv4.tcp_tw_reuse = 1
+              net.ipv4.tcp_syncookies = 1
+              net.core.somaxconn = 262144
+          以上解决，高并发下linux访问流量上不去的问题   
+              
+          
