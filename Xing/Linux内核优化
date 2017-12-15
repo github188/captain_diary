@@ -5,7 +5,8 @@
     ulimit –n 65535
 查看： ulimit -a
 
-
+lsof -n |awk '{print $2}'|sort|uniq -c |sort -nr|more   这个可以看最大可打开文件句柄数的统计结果。
+然后用 ps -ef|grep pid_num  查看到底是哪一个进程占用了这么多的打开文件数
 
 
 TCP传输参数调优
@@ -19,5 +20,7 @@ TCP传输参数调优
               net.ipv4.tcp_syncookies = 1
               net.core.somaxconn = 262144
           以上解决，高并发下linux访问流量上不去的问题   
+          
+          
               
           
