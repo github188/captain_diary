@@ -9,6 +9,10 @@ lsof -n |awk '{print $2}'|sort|uniq -c |sort -nr|more   这个可以看最大可
 然后用 ps -ef|grep pid_num  查看到底是哪一个进程占用了这么多的打开文件数
 
 
+聊聊jps这个命令，这个命令可以查看当前活着的java进程，这个就有意思了，springboot进程是可以发现的。 以前都用
+ps -ef|grep member.jar  这个方式，太low 了，直接用jps -l,真好用。
+
+
 TCP传输参数调优
 执行命令(root用户) ：
          vi /etc/sysctl.conf 
