@@ -1,0 +1,6 @@
+http://blog.csdn.net/raylee2007/article/details/50449742
+
+比如两个key分别是obj1,obj2 ，不同的两个obj刚好碰撞上了，怎么保证obj2不会覆盖obj1,上面这篇文章将的很好，没毛病，当hash碰撞发生时，会用
+equals方法去判断是否需要覆盖，这个equals在没有覆盖的情况下使用地址值器比较的，如有覆盖，那就按照编程员自己的想法去决定obj2是否覆盖obj1，
+讲完了，没毛病。
+
