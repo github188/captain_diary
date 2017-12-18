@@ -48,7 +48,73 @@ Executors这个类的newXXX方法方法可以返回ExcutorService下面的各种
 
 它们均为大多数使用场景预定义了设置。”
 ```
+https://www.cnblogs.com/GarfieldEr007/p/5746362.html  这篇入门的文章也可以看一看
+是这样，关于实现多线程的方法有哪几种，，枚举一下：
+1.继承自Thread类，复写里面的run方法，然后调用start方法来启动该线程；
+2.实现Runnable接口，重写里面的run方法，然后调用start方法来启动线程；
+区别在于
+实现Runnable接口比继承Thread类所具有的优势：
 
+1）：适合多个相同的程序代码的线程去处理同一个资源
+
+2）：可以避免java中的单继承的限制
+
+3）：增加程序的健壮性，代码可以被多个线程共享，代码和数据独立
+
+4）：线程池只能放入实现Runable或callable类线程，不能直接放入继承Thread的类
+
+```  java
+package com.example.multithread;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+public class CallableAndFuture {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<String> future = executor.submit(new Callable<String>() {   //接受一上callable实例
+            public String call() throws Exception {
+                return "MOBIN";
+            }
+           /* Future<Integer> future = Executors.newSingleThreadExecutor().submit(new Callable<Integer>() {   //接受一上callable实例
+            	@Override
+                public Integer call() throws Exception {
+                    return 3;
+                }*/
+        });
+        System.out.println("任务的执行结果："+future.get());
+    }
+}
+package com.example.multithread;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+public class CallableAndFuture {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<String> future = executor.submit(new Callable<String>() {   //接受一上callable实例
+            public String call() throws Exception {
+                return "MOBIN";
+            }
+           /* Future<Integer> future = Executors.newSingleThreadExecutor().submit(new Callable<Integer>() {   //接受一上callable实例
+            	@Override
+                public Integer call() throws Exception {
+                    return 3;
+                }*/
+        });
+        System.out.println("任务的执行结果："+future.get());
+    }
+}
+
+
+```
 
 
 
