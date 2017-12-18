@@ -96,22 +96,97 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class CallableAndFuture {
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<String> future = executor.submit(new Callable<String>() {   //接受一上callable实例
-            public String call() throws Exception {
-                return "MOBIN";
+package com.example.multithread;
+import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+public class HeartBeat {
+    public static void main(String[] args) {
+    	System.out.println("---------开始执行该代码块时间----"+new Date());
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
+        Runnable task = new Runnable() {
+            public void run() {
+                System.out.println("HeartBeat........."+new Date()+"................");
             }
-           /* Future<Integer> future = Executors.newSingleThreadExecutor().submit(new Callable<Integer>() {   //接受一上callable实例
-            	@Override
-                public Integer call() throws Exception {
-                    return 3;
-                }*/
-        });
-        System.out.println("任务的执行结果："+future.get());
+        };
+        executor.scheduleAtFixedRate(task,10,3, TimeUnit.SECONDS);   //5秒后第一次执行，之后每隔3秒执行一次
     }
 }
+
+package com.example.multithread;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ThreadPoolExecutor;
+
+public class ThreadA {
+	
+	public static void main(String[] args) throws InterruptedException, ExecutionException {
+		long t1 = System.currentTimeMillis();
+		List al = new ArrayList();
+		int c = 0 ; 
+		/*for(int i=0;i<1000;i++) {
+			c++;
+			final int j = i ;
+//			al.add(j);
+			new Thread() {
+				@Override
+				public void run() {
+					al.add(j);
+					System.out.println(Thread.currentThread().getName());
+				}
+			}.start();
+		}*/
+		System.out.println(al);
+		System.out.println(String.format(c+"向ArrayList加进去十万次，耗时{%s}", (System.currentTimeMillis()-t1)));
+		
+		
+		for(int i=0;i<10;i++) {
+			c++;
+			final int j = i ;
+//			al.add(j);
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					al.add(j);
+					System.out.println(Thread.currentThread().getName());
+				}
+			}).start();
+			
+			
+			/*new Thread(new Callable() {
+				@Override
+				public Object call() throws Exception {
+					al.add(j);
+					System.out.println(Thread.currentThread().getName());
+					return "";
+				}
+			
+		}).start();*/
+		}	
+			ExecutorService es = Executors.newCachedThreadPool();
+//			es.execute(command);
+			Future<String> future = es.submit(new Callable<String>() {
+				@Override
+				public String call() throws Exception {
+//					al.add(j);
+					System.out.println(Thread.currentThread().getName());
+					return "1111";
+				}
+			
+		});
+			System.out.println(future.get());
+		System.out.println(al);
+		System.out.println(String.format(c+"向ArrayList加进去十万次，耗时{%s}", (System.currentTimeMillis()-t1)));
+	}
+}
+
 
 
 ```
