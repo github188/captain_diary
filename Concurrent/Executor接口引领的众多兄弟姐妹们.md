@@ -39,7 +39,15 @@ https://www.cnblogs.com/MOBIN/p/5436482.html 这篇给我了很多灵感
 
 线程池里面给进去Runnable和Callable实例有什么区别，前置有返回值，后者无返回值？
 线程池实例执行exucte与submit方法有什么区别。前者与Runnable实例作为参数搭配使用，无返回结果，后者与Callable实例搭配有返回结果。
+Executors这个类的newXXX方法方法可以返回ExcutorService下面的各种子类实例，一种1个线程，固定多个线程，可变线程数的CacheableThreadPoolExecutors
+，还一个ScheduledThreadPoolExecutor，一共四个。
+```
+在JDK帮助文档中，有如此一段话：
 
+“强烈建议程序员使用较为方便的Executors工厂方法Executors.newCachedThreadPool()（无界线程池，可以进行自动线程回收）、Executors.newFixedThreadPool(int)（固定大小线程池）Executors.newSingleThreadExecutor()（单个后台线程）
+
+它们均为大多数使用场景预定义了设置。”
+```
 
 
 
