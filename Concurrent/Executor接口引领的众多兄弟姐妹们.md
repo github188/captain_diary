@@ -32,7 +32,9 @@ public interface Executor {
     void execute(Runnable command);
 }
 ```
+>>传统的我们说多线程的实现，有两种方法，一种是thread构造器里面套一个继承thread的实现类，或者套一个实现runnable接口的实现类
 
+如果是线程池，往里塞的是runnable的实现类或者callable的实现类，后者可以用future承载返回值。
 [https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ExecutorService.html](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ExecutorService.html)
 
 https://www.cnblogs.com/MOBIN/p/5436482.html 这篇给我了很多灵感
