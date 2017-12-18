@@ -1,0 +1,12 @@
+eclipse容易卡死或者较慢的解决方案
+转载 2016年05月22日 14:36:03 标签：eclipse 2593
+问题：
+Eclipse经常卡住或Building workspace等待，感觉很不爽，很多朋友可能都会遇到这样的问题，在网上搜了一下解决办法，测试了可以解决问题，下面给出几个解决方法。
+
+解决:
+1. 取消掉“project -> Buiild Automatically”选项；
+2. 进入Windows->Preferences->Java->Editor->Hovers，然后关掉eclipse相关的hover选项；
+3. 在 Eclipse.ini文件中增加最大内存使用数量-vmargs-Xms40m-Xmx512m；
+(Eclipse.ini文件参数说明可以参考http://flysheet.javaeye.com/blog/437071)
+4. 在 Help->Software Updates->Manage Configration中unenable掉subclipse插件；
+5. 取消各种文件的validation；
