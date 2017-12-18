@@ -2,7 +2,7 @@
 首先说，Exxcutors是个帮助类，就像Collections，Arrays
 可以打开 Excutor这个接口的源码出来看看，它里面就一个抽象方法 execute()
 ```java
-* The {@code Executor} implementations provided in this package
+/* The {@code Executor} implementations provided in this package
  * implement {@link ExecutorService}, which is a more extensive
  * interface.  The {@link ThreadPoolExecutor} class provides an
  * extensible thread pool implementation. The {@link Executors} class
