@@ -35,6 +35,13 @@ public interface Executor {
 
 [https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ExecutorService.html](https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ExecutorService.html)
 
+https://www.cnblogs.com/MOBIN/p/5436482.html 这篇给我了很多灵感
+
+线程池里面给进去Runnable和Callable实例有什么区别，前置有返回值，后者无返回值？
+线程池实例执行exucte与submit方法有什么区别。前者与Runnable实例作为参数搭配使用，无返回结果，后者与Callable实例搭配有返回结果。
+
+
+
 
 
 
