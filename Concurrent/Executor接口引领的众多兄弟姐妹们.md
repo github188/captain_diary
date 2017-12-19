@@ -1,8 +1,8 @@
 
+为什么用线程池来做多线程卖票，怎么都不会库存超卖，怎么线程休眠都不会库存超卖，这很厉害。
 
 
-
-这么些，是不是走偏了啊：
+这么写，是不是走偏了啊：
 > new Thread(new RunnableScheduledFuture<String>() {}).start();
 	
 > new Thread(new RunnableFuture<String>() {}).start();
