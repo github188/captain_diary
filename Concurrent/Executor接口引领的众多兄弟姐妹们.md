@@ -1,3 +1,11 @@
+
+
+
+
+这么些，是不是走偏了啊：
+new Thread(new RunnableScheduledFuture<String>() {}).start();
+new Thread(new RunnableFuture<String>() {}).start();
+
 http://www.importnew.com/19011.html  这个例子觉得好  家纺公司和甲方工人以及外包员工
 
 
