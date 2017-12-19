@@ -1,3 +1,6 @@
+[http://blog.csdn.net/qq_31753145/article/details/50899119]http://blog.csdn.net/qq_31753145/article/details/50899119
+上面这篇文章写的真是好，代码可以好好调试一下
+
 -----------如何优雅的写多线程，就像用eclipse模板写Servlet一样自动生成那样行云流水---------
 张孝祥，确实人才，这套多线程的视频讲的牛逼
 首先 new Thread().start();  然后光标移动到Thread后面的括号，alt加斜杠，new Runnable（）自动生成这个括号里面的代码，自动加上run方法，
