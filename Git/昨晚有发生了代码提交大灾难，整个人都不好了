@@ -1,4 +1,11 @@
 
+有的时候，新增文件，或修改文件不能被git识别，用命令行来强制add  真的很好用
+>  cmy@jst-cmy MINGW32 ~/git/root-member1206/src/test/java/com/jst/prodution/member                                                                                                                /service (stress)
+$ git add  -f  TestGetMemberInfo.java
+ git commit -m "写点提交日志"
+  git push origin branch-dev  
+  真的好用
+
 --今天忽然发现一个文件不能被git识别到新创建，在eclipse不能被识别到，在git bash查看git status也不能被识别，
 用git add -f 就能强制提交了
 cmy@jst-cmy MINGW32 ~/git/root-member1206/src/test/java/com/jst/prodution/member                                                                                                                /service (stress)
