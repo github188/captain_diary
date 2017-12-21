@@ -1,1 +1,79 @@
 http://blog.csdn.net/cloudeagle_bupt/article/details/21378283
+
+改造一下 更新意思
+``` java  
+/**
+ * 一个注意这个notify(),和notifyAll()的区别，另一个注意这个假死锁，互相唤醒后自己等待，循环往复，谁有没有执行权利
+ * yield()
+ * @author cmy
+ *
+ */
+public class Wait {  
+    private int counter = 4;  //
+    private String name = null;  
+    public Wait(int counter,String name){  
+        this.counter = counter;  
+        this.name = name;  
+    }  
+    public synchronized void doSomthing() throws InterruptedException{ 
+    	String tname = Thread.currentThread().getName();
+    	while(true) {
+    		if(counter<=0) {
+    			System.out.println("没得吃了，该线程停止了"+tname);
+    			Thread.currentThread().stop();
+    		}
+    		if(counter%4 == Integer.valueOf(tname.substring(tname.length()-1, tname.length()))){  
+    			counter--;
+            	System.out.println("轮到了，"+tname+"吃了一个，调用wait()");
+            	customizedNotifyAll();
+            	wait();
+            	System.out.println(tname+"被唤醒了");
+            }else {
+            	System.out.println("没轮到，"+tname+"调用NotifyAll()");
+                customizedNotifyAll(); 
+                wait();
+                System.out.println(tname+"被唤醒了");
+            }
+    	}
+    		
+    	}
+          
+    public void customizedNotifyAll(){  
+//        notifyAll();  
+//    	Thread.currentThread().yield();
+    }  
+} 
+
+
+public class TestThread implements Runnable {  
+      
+    private Wait wait;  
+      
+    public TestThread(Wait wait){  
+        this.wait = wait;  
+    }  
+    public void run() {  
+        try {
+			wait.doSomthing();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+    }  
+      
+    public static void main(String [] args){  
+        Wait wait = new Wait(4,"DAVID");  
+        Thread  t1 = new Thread(new TestThread(wait)); //四个线程共享一个wait实例 
+        Thread  t2 = new Thread(new TestThread(wait));  
+        Thread  t3 = new Thread(new TestThread(wait));  
+        Thread  t4 = new Thread(new TestThread(wait));  
+        	t1.start();  
+            t2.start();  
+            t3.start();  
+            t4.start(); 
+    }  
+  
+} 
+
+
+```
