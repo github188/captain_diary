@@ -1,5 +1,5 @@
 http://blog.csdn.net/cloudeagle_bupt/article/details/21378283
-
+想想yield()方法怎么用的。感觉这方法没啥用，notify()  notifyAll()还有点意思
 改造一下 更新意思
 ``` java  
 /**
