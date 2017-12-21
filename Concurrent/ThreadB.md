@@ -1,3 +1,7 @@
+
+这种搞法太粗犷了，每次都新建一个线程，太浪费了，迟早会崩掉的。 看ThreadB1
+
+``` java
 public class ThreadB {
 	static int i = 1;
 	public static void main(String[] args) {
@@ -37,3 +41,4 @@ public class ThreadB {
 		}
 	}
 }
+```
