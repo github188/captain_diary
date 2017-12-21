@@ -1,0 +1,36 @@
+
+Java多线程实例 3种实现方法
+Java中的多线程有三种实现方式：
+1.继承Thread类，重写run方法。Thread本质上也是一个实现了Runnable的实例，他代表一个线程的实例，并且启动线程的唯一方法就是通过Thread类的start方法。
+2.实现Runnable接口，并实现该接口的run()方法.创建一个Thread对象，用实现的Runnable接口的对象作为参数实例化Thread对象，调用此对象的start方法。
+3.实现Callable接口，重写call方法。Callable接口与Runnable接口的功能类似，但提供了比Runnable更强大的功能。有以下三点
+1）.Callable可以在人物结束后提供一个返回值，Runnable没有提供这个功能。
+2）.Callable中的call方法可以抛出异常，而Runnable的run方法不能抛出异常。
+3）.运行Callable可以拿到一个Future对象，表示异步计算的结果，提供了检查计算是否完成的方法。
+
+需要注意的是，无论用那种方式实现了多线程，调用start方法并不意味着立即执行多线程代码，而是使得线程变为可运行状态。
+
+run start的区别
+start方法是启动一个线程，而线程中的run方法来完成实际的操作。
+如果开发人员直接调用run方法，那么就会将这个方法当作一个普通函数来调用，并没有多开辟线程，开发人员如果希望多线程异步执行，则需要调用start方法。
+
+sleep wait的区别
+1.两者处理的机制不同，sleep方法主要是，让线程暂停执行一段时间，时间一到自动恢复，并不会释放所占用的锁，当调用wait方法以后，他会释放所占用的对象锁，等待其他线程调用notify方法才会再次醒来。
+2.sleep是Threa的静态方法，是用来控制线程自身流程的，而wait是object的方法，用于进行线程通信。
+3.两者使用的区域不同。sleep可以在任何地方使用，wait必须放在同步控制方法，或者语句块中执行。
+
+
+synchronized notify wait的运用
+synchronized关键字有两种用法，synchronized方法和synchronized语句块。
+public synchronized void function(){}
+synchronized(object){}
+当某个资源被synchronized所修饰，线程1线程2等多个线程在共同请求这个资源，线程1先请求到，调用了对象的wait方法释放了对象的锁，此时线程2可以对这个对象进行访问，在工作结束时可以调用对象的notify方法，唤醒等待队列中正在等待的线程，此时被唤醒的线程将会再一次拿到对象锁，对对象进行操作。可以调用notifyAll方法，唤醒等待队列中的所有线程。
+
+需要注意的是一个线程被唤醒不代表立即获取对象锁，必须等调用的线程对象的方法推出synchronized块释放对象锁后，被唤醒的进程才会获得对象锁。
+
+
+以下为大家提供一个简单的代码实例：
+
+分别用Runnable和Thread方法实现，展示各个方法的
+
+实现Runnable实现多线程的方法
