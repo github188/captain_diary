@@ -1,0 +1,12 @@
+Condition con1 = new Condition.newCondition();
+
+con1.await();   //让当前线程在这里wait();
+
+con1.signal();  //唤醒一个被con1.await()的线程，继续执行后面的代码   
+
+我很想写一个demo，按顺序让线程1，2，3分别执行1，2，3圈，循环往复，一个线程任务不能被其他线程断，可以用重入锁。或者synchronized
+
+
+
+
+
