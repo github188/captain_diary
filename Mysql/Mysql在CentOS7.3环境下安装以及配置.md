@@ -70,7 +70,7 @@ show slave status\G   --注意这里结尾不要跟分号  #查看SLAVE状态�
 这里写图片描述
 
 service mysql restart #重启服务
-如果 没有出现这个
+如果 没有出现这个，主库运行一下unlock tables;  然后再再次启动一下 service mysql restart 
 下面这个是出现在第11,12行
         Slave_IO_Running: Yes
         Slave_SQL_Running: Yes
