@@ -39,10 +39,40 @@ mysql>unlock tables;
 ---------配置从库------------
 安装方式同上
 
+配置从服务器 
+修改UUID
+
+由于data拷贝是全目录拷贝，将/var/lib/mysql/auto.cnf也拷贝，它里面记录了对数据库的一个uuid标识，随便产生个新的uuid，替换掉新目录中的auto.cnf中的uuid串即可。
+可以用select uuid()来产生新值，手工黏贴到auto.cnf文件中。
+1
+2
+修改/etc/my.cnf增加一行
+
+server-id=2
+1
+重启服务 
+service mysql restart 
+通过mysql命令配置同步日志的指向：
+
+change master to master_host='192.168.58.130',master_port=3306,master_user='root',master_password='123456',master_log_file='mysql-bin.000001',master_log_pos=120;
+1
+2
+master_host 主服务器的IP地址 
+master_port 主服务器的PORT端口 
+master_log_file 和主服务器show master status中的File字段值相同 
+master_log_pos 和主服务器show master status中的Position字段值相同
+
+start slave; #stop slave;停止服务，出错时先停止，再重新配置 
+show slave status\G; #查看SLAVE状态，\G结果纵向显示。必须大写. 
+只有出现两个yes才算成功。 
+注意：如果出错，可以看后面的错误信息。观察Slave_SQL_Running_State字段，它会记录详细的错误信息。如果正常，上面两个线程执行都应该是YES。这样当主库创建数据库、创建表、插入数据时，从库都会立刻同步，这样就实现了主从复制。
+
+这里写图片描述
+
+service mysql restart #重启服务
 
 
-
-
+http://blog.csdn.net/xmz_java/article/details/54896955
 
 
  
