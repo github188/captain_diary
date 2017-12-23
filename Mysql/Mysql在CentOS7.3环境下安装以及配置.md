@@ -19,6 +19,23 @@ GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRANT OPTI
 FLUSH PRIVILEGES;
 -------OK了，可以从sql yog登录进来了--------------
 
+------配置master数据库--------
+vim /etc/my.cnf
+在[mysqld]节点下加入两句话
+>server-id=1
+>log-bin=mysql-bin       #启用二进制日志
+重启服务：service mysql restart 
+登录mysql：mysql –uroot -proot 
+mysql>flush tables with read lock; #数据库锁表，不让写数据 
+mysql>show master status; #查看MASTER状态（这两个值File和Position） 
+
+从库启动好后，记得要解除主库锁定
+mysql>unlock tables;
+
+
+
+---------配置从库------------
+安装方式同上
 
 
 
