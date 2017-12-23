@@ -23,7 +23,9 @@ FLUSH PRIVILEGES;
 vim /etc/my.cnf
 在[mysqld]节点下加入两句话
 >server-id=1
+
 >log-bin=mysql-bin       #启用二进制日志
+
 重启服务：service mysql restart 
 登录mysql：mysql –uroot -proot 
 mysql>flush tables with read lock; #数据库锁表，不让写数据 
