@@ -78,6 +78,7 @@ service mysql restart #重启服务
 
 这样就算是完成了mysql的主从配置了
 在主库增加实例，建表，增删改，在从库增删改，不会同步到主库。这里可以作为一个面试题来考察。
+还有双主和互为主从，也是可以这样去配置的，有时间的时候可以去研究一下。
 
 
 http://blog.csdn.net/xmz_java/article/details/54896955
