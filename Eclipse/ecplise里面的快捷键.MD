@@ -1,4 +1,7 @@
 
+口诀，去掉空白行的Ctr+F的用正则表达式的方法；
+·尖斜s星斜n·   ^\s*\n  replaceAll 就行了
+
 17.12.23 22：14 今天eclipse快捷键又往前走了一大步，
 Control-Shift-T: 打开类型（Open type）。如果你不是有意磨洋工，还是忘记通过源码树（source tree）打开的方式吧。用eclipse很容易打开接口的实现类的，按ctrl+t会列出接口的实现类列表  
 再不要磨洋工了
