@@ -1,0 +1,25 @@
+确实是史上最简单的安装和配置
+---
+
+1
+wget https://github.com/Qihoo360/Atlas/releases/download/2.2.1/Atlas-2.2.1.el6.x86_64.rpm
+
+2
+rpm -ivh Atlas-2.2.1.el6.x86_64.rpm 
+
+3.
+vim /usr/local/mysql-proxy/conf/test.cnf 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
