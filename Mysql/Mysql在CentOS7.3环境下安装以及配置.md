@@ -1,7 +1,7 @@
 1.
 yum install mysql-server -y
 2.
-service mysqld restart
+service mysqld restart     
 3.
 /usr/bin/mysqladmin -u root password '123456'
 4.
