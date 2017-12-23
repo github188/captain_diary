@@ -71,6 +71,8 @@ show slave status\G; #查看SLAVE状态，\G结果纵向显示。必须大写.
 
 service mysql restart #重启服务
 
+这样就算是完成了mysql的主从配置了
+
 
 http://blog.csdn.net/xmz_java/article/details/54896955
 
