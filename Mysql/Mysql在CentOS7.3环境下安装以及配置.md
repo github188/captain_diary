@@ -34,7 +34,7 @@ mysql>show master status; #查看MASTER状态（这两个值File和Position）
 从库启动好后，记得要解除主库锁定
 mysql>unlock tables;
 
-
+（http://blog.csdn.net/shootyou/article/details/6026735）
 
 ---------配置从库------------
 安装方式同上
