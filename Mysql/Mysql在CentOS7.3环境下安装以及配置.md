@@ -12,7 +12,7 @@ chkconfig mysqld on
 4.
 /usr/bin/mysqladmin -u root password '123456'
 5.
-mysql -uroot -p123
+mysql -uroot -p123456
 登录之后才能执行grant语句
 6.设置该用户及密码可以从任何服务器连接mysql服务器的任何实例
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;
@@ -27,7 +27,7 @@ vim /etc/my.cnf
 >log-bin=mysql-bin       #启用二进制日志
 
 重启服务：service mysql restart 
-登录mysql：mysql –uroot -proot 
+登录mysql：mysql -uroot -p123456 
 mysql>flush tables with read lock; #数据库锁表，不让写数据 
 mysql>show master status; #查看MASTER状态（这两个值File和Position） 
 
@@ -63,13 +63,18 @@ master_log_file 和主服务器show master status中的File字段值相同
 master_log_pos 和主服务器show master status中的Position字段值相同
 
 start slave; #stop slave;停止服务，出错时先停止，再重新配置 
-show slave status\G; #查看SLAVE状态，\G结果纵向显示。必须大写. 
+show slave status\G   --注意这里结尾不要跟分号  #查看SLAVE状态，\G结果纵向显示。必须大写. 
 只有出现两个yes才算成功。 
 注意：如果出错，可以看后面的错误信息。观察Slave_SQL_Running_State字段，它会记录详细的错误信息。如果正常，上面两个线程执行都应该是YES。这样当主库创建数据库、创建表、插入数据时，从库都会立刻同步，这样就实现了主从复制。
 
 这里写图片描述
 
 service mysql restart #重启服务
+如果 没有出现这个
+下面这个是出现在第11,12行
+        Slave_IO_Running: Yes
+        Slave_SQL_Running: Yes
+
 
 这样就算是完成了mysql的主从配置了
 
