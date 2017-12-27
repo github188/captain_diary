@@ -5,7 +5,7 @@
 
 1.java集合
 集合的好处：1是可变容量  2.是可以存放不同类型的元素  3.增删改查算法优化  4.部分支持线程安全
-Collections - List接口 -Map接口   
+Collections - List接口 -Map接口  -Queue接口 
 List接口 ： 有序可重复  Arraylist 查快 增删改慢（用挪动其他元素）  LinkedList 查比较慢 增删改快（不用挪动其他元素） Vector 3个
 可以用List的特性做队列和栈容器  用addLast/First pollFirst/Last  removeFirst/Last（）在在集合为空的时候会报空指针异常。
 List接口里面有contains()方法，不要傻逼比再去用for循环了。
@@ -14,7 +14,23 @@ set接口  : 无序不可重复  HashSet treeSet   2个
 Map 接口 ：  treeMap  HashMap    HashTable 3个
 
 也很重要，能装逼的类：ArrayQueue， Stack（Verctor子类） WeakHashMap()  SortedMap() SortedSet()
+EnumHashMap EnumHashSet  LinkedHashMap LinkedHashSet NavigableMap NavigableSet RegularEnumSet
+还有并发包下面的集合   
+BlockingQueue BlockingDequeue   ArrayBlockingQueue  还有SynchronousQueue （用在缓冲线程池里面）
+ConcurrentHashMap 
+ConcurrentLinkedDequeue
+ConcurrentLinkedQueue
+ConcurrentSkipListMap
+ConcurrentSkipListSet
+CopyOnWriteArrayList
+CopyOnWriteArraySet
+DelayQueue
 
+这下真有三十个集合了。
+
+
+ForkJoinPool FokJoinTask 干嘛用的 当然这根集合框架无关  CompletableFuture
+我曹  读源码包真的好有意思
 
 2.多线程 
 
