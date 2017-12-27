@@ -13,6 +13,8 @@ set接口  : 无序不可重复  HashSet treeSet   2个
 
 Map 接口 ：  treeMap  HashMap    HashTable 3个
 
+也很重要，能装逼的类：ArrayQueue， Stack（Verctor子类） WeakHashMap()  SortedMap() SortedSet()
+
 
 2.多线程 
 
