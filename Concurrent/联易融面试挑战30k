@@ -3,12 +3,12 @@
 
 综合1： 画架构图
 
-
 1.java集合
-
+集合的好处：1是可变容量  2.是可以存放不同类型的元素  3.增删改查算法优化  4.部分支持线程安全
 Collections - List接口 -Map接口   
-List接口 ：  Arraylist  LinkedList  Vector 3个
-set接口  :  HashSet treeSet   2个
+List接口 ： 有序可重复  Arraylist 查快 增删改慢（用挪动其他元素）  LinkedList 查比较慢 增删改快（不用挪动其他元素） Vector 3个
+可以用List的特性做队列和栈容器  用addLast/First pollFirst/Last  removeFirst/Last（）在在集合为空的时候会报空指针异常。
+set接口  : 无序不可重复  HashSet treeSet   2个
 
 Map 接口 ：  treeMap  HashMap    HashTable 3个
 
