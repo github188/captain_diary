@@ -81,10 +81,10 @@ public class Main2 {
 }
 实现代码很简单   http://blog.csdn.net/heyutao007/article/details/49738887
 
-6.数据库优化 
+6.数据库优化      https://ke.qq.com/course/255238  这个里面很简洁的讲了主从配置读写分离
 分库分表，读写分离 ，主从复制怎么做
 
-7.数据库索引，sql优化
+7.数据库索引，sql优化   布尔学院那里的总结比较好
 
 
 8.分布式：dubbo架构和zk原理 
