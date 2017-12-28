@@ -35,7 +35,8 @@ ForkJoinPool FokJoinTask 干嘛用的 当然这根集合框架无关  Completabl
 2.多线程 
 
 
-3.线程安全CAS
+3.线程安全CAS 
+原子类嘛，张孝祥讲的，compareAndSet方法来保证的。这是一个直接操作硬件的方法。
 
 
 4.线程池  
