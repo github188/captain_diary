@@ -45,9 +45,41 @@ ForkJoinPool FokJoinTask 干嘛用的 当然这根集合框架无关  Completabl
 5.1动态代理，反射
 动态代理有两种方式：
 1.直接用jdk实现动态代理；
-
+ UserService userServiceProxy = (UserService)Proxy.newProxyInstance(userService.getClass().getClassLoader(),  
+                userService.getClass().getInterfaces(), invocationHandler); 
 2.cglib动态代理；
+Cglib是一个优秀的动态代理框架，它的底层使用ASM在内存中动态的生成被代理类的子类，使用CGLIB即使代理类没有实现任何接口也可以实现动态代理功能。
+CGLIB具有简单易用，它的运行速度要远远快于JDK的Proxy动态代理：
+>import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
+import java.lang.reflect.Method;
+public class CglibProxy implements MethodInterceptor {
+    @Override
+    public Object intercept(Object o, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
+        System.out.println("++++++before " + methodProxy.getSuperName() + "++++++");
+        System.out.println(method.getName());
+        Object o1 = methodProxy.invokeSuper(o, args);
+        System.out.println("++++++before " + methodProxy.getSuperName() + "++++++");
+        return o1;
+    }
+}
 
+>package com.meituan.hyt.test3.cglib;
+import com.meituan.hyt.test3.service.UserService;
+import com.meituan.hyt.test3.service.impl.UserServiceImpl;
+import net.sf.cglib.proxy.Enhancer;
+public class Main2 {
+    public static void main(String[] args) {
+        CglibProxy cglibProxy = new CglibProxy();
+        Enhancer enhancer = new Enhancer();
+        enhancer.setSuperclass(UserServiceImpl.class);
+        enhancer.setCallback(cglibProxy);
+        UserService o = (UserService)enhancer.create();
+        o.getName(1);
+        o.getAge(1);
+    }
+}
+实现代码很简单   http://blog.csdn.net/heyutao007/article/details/49738887
 
 6.数据库优化 
 分库分表，读写分离 ，主从复制怎么做
