@@ -33,7 +33,8 @@ ForkJoinPool FokJoinTask 干嘛用的 当然这根集合框架无关  Completabl
 我曹  读源码包真的好有意思
 
 2.多线程 
-
+传统方法，jdk1.5以前，只有两种方法创建多线程，一个是继承Thread类，另一个是实现Runnable接口。
+此外，就是用线程池来实现了，话题转到了4.
 
 3.线程安全CAS 
 原子类嘛，张孝祥讲的，compareAndSet方法来保证的。这是一个直接操作硬件的方法。
