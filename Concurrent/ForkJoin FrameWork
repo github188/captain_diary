@@ -1,0 +1,25 @@
+Fork/Join 框架  这个是jdk1.7开始有的，张孝祥是没看到这东西了，他是学机械的，真有意思，北京理工
+就类似与大数据Hadoop里面的Mapreduce，只是那个是分布式的跨jvm的，这个是单个jvm里面多线程的。
+类图是这样的  Future <- - -  ForkJoinTask（Abstract class），这个抽象类有两个子类，一个是RecursiveTask（可以获取返回结果），
+另一个是RecursiveAction（没有返回结果）
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
