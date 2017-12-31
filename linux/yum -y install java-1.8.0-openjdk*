@@ -1,3 +1,18 @@
+想用yum -y install 安装jdk9 没有安装源应该是
+先用 yum -y list java*  
+然后出来
+java-1.8.0-openjdk-headless.x86_64                                                   1:1.8.0.151-5.b12.el7_4                                            updates
+java-1.8.0-openjdk-headless-debug.i686                                               1:1.8.0.151-5.b12.el7_4                                            updates
+java-1.8.0-openjdk-headless-debug.x86_64                                             1:1.8.0.151-5.b12.el7_4                                            updates
+java-1.8.0-openjdk-javadoc.noarch                                                    1:1.8.0.151-5.b12.el7_4                                            updates
+java-1.8.0-openjdk-javadoc-debug.noarch                                              1:1.8.0.151-5.b12.el7_4                                            updates
+java-1.8.0-openjdk-javadoc-zip.noarch                                                1:1.8.0.151-5.b12.el7_4                                            updates
+java-1.8.0-openjdk-javadoc-zip-debug.noarch                                          1:1.8.0.151-5.b12.el7_4                                            updates
+java-1.8.0-openjdk-src.i686                                                          1:1.8.0.151-5.b12.el7_4                                            updates
+java-1.8.0-openjdk-src.x86_64                                                        1:1.8.0.151-5.b12.el7_4                                            updates
+java-1.8.0-openjdk-src-debug.i686                                                    1:1.8.0.151-5.b12.el7_4                                            updates
+java-1.8.0-openjdk-src-debug.x86_64   
+看第一列，就知道有没有jdk9了
 yum -y install java-1.8.0-openjdk* 
 配置 JAVA 环境变量0    
 执行命令:
