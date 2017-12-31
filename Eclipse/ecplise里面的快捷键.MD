@@ -1,4 +1,7 @@
-
+2017 12-30 9:30 sunny  
+源于前几天用了，win+R 打开画图软件，输入paint，怎么也不好使，今天查了，是mspaint,如果你之前用过这个命令，他会想百度一下一样自动记住，然后自动下拉
+框提醒，其实这里比较好用的就五个命令，你都找不出第六个来，notepad ，mspaint ，calc，mstsc ,services.msc
+-=----
 
 还发现了一个问题：就是前面令我很头疼的那个问题，当在github里面用的链接不用直接导入工程而是用了parent，伟东说的分模块开发，这个时候，只能先
 导出最外层的，将完整的github repository全导出来，然后再，在eclipse里面将最小单元的maven工程，选中右键import以maven工程形式导入就可以了。
