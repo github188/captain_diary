@@ -1,3 +1,7 @@
+ 
+ 
+ http://www.importnew.com/16436.html  这篇文章有点意思   https://chuanke.baidu.com/3095819-137456.html 李兴华这个课程非常不错，
+ 必要时可以购买
  https://www.cnblogs.com/WJ5888/p/4618465.html   这篇文章讲的非常好，有空可以琢磨一下，可以在编程中装X使用，李兴华的网易公开课上降到了jdk8
  的lamda表达式。
  lamda表达式更像是一个匿名实例，作为传参来使用 
