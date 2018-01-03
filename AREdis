@@ -1,0 +1,3 @@
+http://blog.csdn.net/men_wen/article/details/62237970
+
+redis除了做缓存还有一些高级功能，要关注一下。订阅发布，阻塞队列，在分布式环境下使用。
