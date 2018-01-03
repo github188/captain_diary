@@ -1,5 +1,5 @@
  
- 
+ http://edu.51cto.com/center/course/lesson/index?id=186735  这个课程是已经购买的
  http://www.importnew.com/16436.html  这篇文章有点意思   https://chuanke.baidu.com/3095819-137456.html 李兴华这个课程非常不错，
  必要时可以购买
  https://www.cnblogs.com/WJ5888/p/4618465.html   这篇文章讲的非常好，有空可以琢磨一下，可以在编程中装X使用，李兴华的网易公开课上降到了jdk8
@@ -29,8 +29,22 @@
 //        SpringApplication.run(BookApplication.class, args);
     }
 ```
-
-
+第一个例子 我不说了  这太简单了
+``` java
+// Java 8之前：
+new Thread(new Runnable() {
+    @Override
+    public void run() {
+    System.out.println("Before Java8, too much code for too little to do");
+    }
+}).start();
+1
+2
+	
+//Java 8方式：
+new Thread( () -> System.out.println("In Java8, Lambda expression rocks !!") ).start();
+```
+第二个例子  
 
 
 
