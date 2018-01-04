@@ -1,6 +1,7 @@
  
  
  为什么lamda表达式的可读性这么差，因为它里面有一些语句推断，予以推断，自动推断。
+ lamda表达式不是一个语句，而是一个匿名对象。java.util.function包可以好好看一下
  工作中有可用lamda表达式的地方，有这样的机会千万不要错过。
  http://edu.51cto.com/center/course/lesson/index?id=186735  这个课程是已经购买的
  http://www.importnew.com/16436.html  这篇文章有点意思   https://chuanke.baidu.com/3095819-137456.html 李兴华这个课程非常不错，
