@@ -1,3 +1,5 @@
+ctrl+Q  Q指的是quick，快吧  ctr+F F是 Fast
+----
 2017 12-30 9:30 sunny  
 源于前几天用了，win+R 打开画图软件，输入paint，怎么也不好使，今天查了，是mspaint,如果你之前用过这个命令，他会想百度一下一样自动记住，然后自动下拉
 框提醒，其实这里比较好用的就五个命令，你都找不出第六个来，notepad ，mspaint ，calc，mstsc ,services.msc mspaint 画图还是挺好用的，ctr+z,Y都跟
