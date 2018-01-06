@@ -1,0 +1,239 @@
+给Eclipse提速的7个技巧
+分享到： 56
+本文由 ImportNew - 孙 波翔 翻译自 nicolasbize。欢迎加入翻译小组。转载请见文末要求。
+大约一个月前，我发表了一篇博客，其中介绍了对Eclipse的爱与恨。 有些人问我如何给Eclipse提速，这篇文章就来讨论这个问题。顺带提一下，这篇文章不是比较IDE，所以不要说你讨厌某个IDE而选择另外一个。这篇文章只是关注如何让Eclipse运行得更快。每个技巧都针对Windows、Linux和MacOS用户详细说明。在使用所有优化技巧之后，Eclipse应该能在10秒内启动，并且比以前运行得更流畅。
+
+这些技巧不仅仅缩短了Eclipse的启动时间，其中大部分技巧还改善了用户体验。例如，更快地打开类、从一处定义跳到另外一处、查看javadoc等。但这些提速无法用时间精确的测量，所以对每条技巧带来的提速效果也没有特定的基准。
+
+提示：假设你已经装了固态硬盘，并且有至少8Gb的内存。如果没有的话，带来的性能提升可能不大。
+
+技巧一：运行最新版本的JDK和Eclipse
+
+通常，新版本的JDK和Eclipse都会有性能上的优化。请确保你使用的是64位Eclipse并且使用了Oracle的JDK。对于网络开发，需要使用Eclipse for Java EE而不是Eclipse for Java。
+
+Oracle JDK : http://www.oracle.com/technetwork/java/javase/downloads
+Eclipse : https://eclipse.org/downloads/
+将Eclipse和workspace放在固态硬盘上。启动Eclipse吧。
+
+技巧二：调整Eclipse的Preferences
+
+General > Startup and Shutdown : 移除所有在启动时加载的插件。
+General > Editors > Text Editors > Spelling : 关闭拼写检查。
+General > Validation > 勾选“Suspend all validator”。
+Window > Customize Perspective > 移除所有用不到或不想用的内容（尽量使用快捷键），菜单栏也是如此（你用过几次菜单栏的打印按钮？）。
+Install/Update > Automatic Updates > 取消勾选“Automatically find new updates and notify me”。
+General > Appearance > 取消勾选“Enable Animations”。
+使用默认的主题。其他主题可能会降低运行速度。
+我自己还关闭了自动提示，这样在输入代码时不会拖累我。替代方案是使用Ctrl+Space在需要的使用手动提示。可以通过下面的配置来完成：（译者注：Ctrl+Space？中国人不会答应的）。
+
+Java > Editor > Content Assist > 禁用“Enable Auto Activation”。在Advanced中移除所有不需要的内容（在Eclipse 4.2.2中没找到）。
+技巧3：将JDK放在内存盘（RAM Disk）上
+
+内存盘是将计算机内存的作为虚拟磁盘或硬盘使用。用来加速位于其中的软件的IO性能。内存中创建的RAM盘就像是计算机上的一块硬盘。由于这些内存当作硬盘使用，所以其他程序就不能使用这些内存空间。我们只是将JDK放到那里，300MB就足够了。
+
+警告：不要将任何内容永久性的放到内存盘中，每次重启时，里面的内容都会消失并重新创建。
+
+对于Linux用户：
+
+这个链接中有详细的描述。
+
+对于Mac用户：
+
+使用diskutil工具创建内存盘
+
+1. 创建一个新的脚本，例如：~/tools/batch/ramdisk.sh
+将其中的x、y、z替换为你的JDK版本：
+
+1
+2
+3
+#!/bin/bash
+diskutil erasevolume HFS+ 'JDK RAMDISK' `hdiutil attach -nomount ram://614400`
+cp -r /Library/Java/JavaVirtualMachines/jdk1.x.y_z.jdk /Volumes/JDKRAMDISK
+（注意：diskutil期望的参数是512字节扇区的整数倍：对于300MB，应该是300 * 1024 ^ 2 / 512 = 614400）
+
+2. 保存脚本，将其改为可执行模式：
+
+1
+chmod 755 ~/tools/batch/ramdisk.sh
+运行ramdisk.sh将创建内存盘：
+
+1
+2
+3
+4
+5
+6
+7
+$ ramdisk.sh
+Started erase on disk4
+Unmounting disk
+Erasing
+Initialized /dev/rdisk4 as a 300 MB case-insensitive HFS Plus volume
+Mounting disk
+Finished erase on disk4 JDKRAMDISK
+现在用Finder应该能发现一个名为JDKRAMDISK的新设备，其中含有的就是JDK。点击“弹出”按钮可以移除RAM Disk并释放相应的内存。
+
+如果想使用这个技巧，那么每次启动Eclipse都需要有这个内存盘，不然会看到“A Java Runtime … must be available in order to run Eclipse”错误。可以配置系统，用Automator或一个unchtl守护程序确保每次启动时会自动执行ramdisk.sh脚本。
+
+对于Windows用户：
+
+1. 下载并安装名为imdisk的工具
+
+2. 创建一个新的批处理文件，如：C:/tools/batch/ramdisk.bat
+将其中的x、y、z替换为你的JDK版本号：
+
+1
+2
+3
+4
+5
+6
+7
+8
+@echo Placing JDK on Virtual Disk N:/
+@echo off
+sc config imdisk start= auto
+net start imdisk
+imdisk -a -t vm -s 300m -m n:
+format n: /q /Y
+call xcopy C:<path_jdk>jdk1.x.y_z N:jdk1.x.y_z /S /E /Y /Q
+label n: JDK RAMDISK
+运行ramdisk.bat后，将看到创建了一个名为“JDK RAMDISK”的新磁盘N，其中含有的就是JDK。
+
+3. 确保文件以管理员模式运行。右击文件，选择“属性——兼容性——勾选“以管理员身份运行此程序”。
+
+如果想使用这个技巧，那么每次启动Eclipse都需要有这个内存盘，不然会看到“A Java Runtime … must be available in order to run Eclipse”错误。可以配置系统，将ramdisk.bat脚本放到启动文件夹中。
+
+为了让技巧3能够工作，需要在eclipse.ini文件中添加-vm设置（详见下一节）。
+
+技巧4：调整你的eclipse.ini
+
+在Eclipse的优化中，这是最令人困惑的地方。网上有海量的文章介绍不同的配置方案。我只是介绍我自己的配置方案。
+
+找到你的eclipse.ini文件：
+
+Windows/Linux：位于$ECLIPSE_HOME（译者注：$ECLIPSE_HOME是Eclipse的路径，这里假设Linux下也是自行安装，而不是通过源安装）
+MacOS：位于$ECLIPSE_HOME/Eclipse.app/Contents/MacOS
+明白接下来的工作的含义……
+
+eclipse.ini中有两种类型的属性：与Eclipse应用相关的属性；与JVM相关的属性。这些选项具体取决于JDK和Eclipse的版本。下面的是我在网上找到的最新的列表。
+
+要理解这些属性，首先要了解Oracle JVM的内存布局。一般来说，JVM内存分成几个内存池，对象根据不同存在时间位于不同的内存池中。
+
+Eden空间（堆）是用于许多刚创建的对象。垃圾收集器每趟一般都是在这里处理”新代的“对象，并移除所有不再使用的对象。
+Survivor空间（堆）含有那些在Eden空间中GC两三趟都没有销毁的对象。这些对象依然属于新生代，但将其移动到更安全的地方，被收集的风险大大降低。垃圾收集器在这里运行的频率要低很多（GC根据以往的经验来判断这里的对象都是经常使用的）。
+Tenured空间（堆）含有在Survior空间存活相当一段时间的对象。
+永生代（非堆）含有JVM的元数据，如类属性、方法、枚举等。由于这些数据可以在多个JVM间共享。所以永生代分只读和读写两个区域。
+代码缓存（非堆）提供了用于编译并存储代码的内存空间。
+如果你对此感兴趣，Oracle含有一篇很不错的关于配置垃圾收集的文章，其中详细介绍了所有这些空间的用途。
+
+在eclipse.ini中，可以控制每个内存池的大小。下面的配置是针对我的16G内存设定的，但也可用于8G的内存。
+
+使用位于RAM Disk中的JDK（使用在步骤三中的版本号）：
+
+1
+-vm /Volumes/JDKRAMDISK/jdk1.x.y_z.jdk/Contents/Home/
+1
+-vm N:/jdk1.x.y_z/bin
+禁用字节码验证（有风险）
+
+这是跳过了class文件的验证（class文件的验证的信息参见这里），意味着JVM不会检测使用的class文件。如果使用的class文件被修改过，会有安全风险。自己承担风险（我仅仅是玩的时候用，不会在工作中启用这个选项）。
+
+打开编译器性能优化
+
+1
+-XX:+AggressiveOpts
+增加永生代空间（分配新对象的地方）（译者注：在JDK 8中，取消了永生代）
+
+1
+2
+-XX:PermSize=512m
+-XX:MaxPermSize=512m
+增加最小最大堆的空间（含有新生代和年老代）
+
+1
+2
+-Xms2048m
+-Xmx2048m
+为新生代增加堆的大小
+
+1
+-Xmn512m
+为每个线程设置栈大小
+
+1
+-Xss2m
+调整垃圾收集
+
+1
+-XX:+UseParallelOldGC
+最后，这里列出其他可能在网上看到的选项。就我个人而言，这些选项都没有加速效果，所以仅仅是用来参考。读者可以在网上找到相应的文档，来了解并使用对应的选项：
+
+1
+2
+3
+4
+5
+6
+7
+8
+-XX:MaxGCPauseMillis=10
+-XX:+UseG1GC
+-XX:CompileThreshold=5
+-XX:MaxGCPauseMillis=10
+-XX:MaxHeapFreeRatio=70
+-XX:+CMSIncrementalPacing
+-XX:+UseFastAccessorMethods
+-server
+最后，移除所有重复的选项，包括launcher.XXMaxPermSize，因为启用了XX:MaxPermSize选项后，这个选项就没用了。
+
+技巧5：关闭杀毒软件
+
+如果有杀毒软件，要确保这些软件不会检查代码文件夹。将JDK、Eclipse、你的.m2/jar代码库和代码文件夹添加到杀毒软件的白名单。
+
+技巧6：不要在Eclipse中运行SVN和GIT
+
+这是个人偏好。有些人喜欢将Eclipse与团队协同工具结合起来。就我个人而言，这样速度很慢，我宁愿Eclipse专注于开发工作，而不是同时做许多事。我还非常喜欢SVN/GIT命令行。不管怎么说，我把这些工具从Eclipse中移除，发现响应速度更快了。
+
+技巧7：使用键盘
+
+Eclipse的一个有点是其中含有大量快捷键。读者可以自行设置相关快捷键。一般我会重新设置调试键，这样就和Visual Studio & Chrome Dev Env的行为相同了。花点时间去学习快捷键。用的快捷键越多，使用Eclipse的体验就越快。
+
+这里不会深入介绍快捷键，读者可以很容易的在网上找到相关资料。下面列出一些必备的快捷键：
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+Ctrl+Shift+R : jump to resource
+Ctrl+Shift+T : jump to class
+Ctrl+. : jump to next error
+Ctrl+Shift+G : search for references
+Ctrl+Shift+P : select matching bracket
+Alt+Arrows : go forward / backwards
+Ctrl+Space : autocomplete
+Ctrl+Shift+F : format source
+Ctrl+Shift+O : organize imports
+Ctrl+D : delete line
+……
+差不多就是这些了。这里没有将Eclipse与其他IDE进行对比，我认为Eclipse是非常强大且快速的Java代码编辑工具。
+
+如果你有其他技巧，请告诉我。
+
+原文链接： nicolasbize 翻译： ImportNew.com - 孙 波翔
+译文链接： http://www.importnew.com/13942.html
+[ 转载请保留原文出处、译者和译文链接。]
+
+关于作者： 孙 波翔
+
+（新浪微博：@Sunny2038）
+
+查看孙 波翔的更多文章 >>
