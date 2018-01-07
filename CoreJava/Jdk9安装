@@ -1,0 +1,12 @@
+由于 yum -y install java-openjdk*  这样安装不能跑jmap,jinfo,jstack,jstat命令 所以索性安装jdk9完整配置到linux上。
+I  wget http://download.oracle.com/otn-pub/java/jdk/9.0.1+11/jdk-9.0.1_linux-x64_bin.tar.gz
+
+II    tar -zxvf ./jdk-9.0.1_linux-x64_bin.tar.gz -C /usr/local
+
+III   vi /etc/profile
+
+IV  source /etc/profile
+
+V   java -version  
+
+
