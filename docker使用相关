@@ -1,4 +1,5 @@
 
+
 sudo docker run -it -p 8080:80 centos /bin/bash
 
 --  docker 命令都忘光了，赶紧在这里整理一下，备忘。
