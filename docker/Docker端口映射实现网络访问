@@ -1,3 +1,6 @@
 http://blog.csdn.net/wanglei_storage/article/details/48471753
 
 用上这个之后，我们就不用拿到腾讯云主机之后每次都要从头开始配置了
+
+
+http://blog.csdn.net/wangtaoking1/article/details/44494847  试试这个看看能不能给docker进程开通网络，这样他还是通过宿主机的ip去远程访问镜像容器
