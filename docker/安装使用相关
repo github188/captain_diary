@@ -21,6 +21,20 @@ service docker restart
 下载镜像
 下载一个官方的 CentOS 镜像到本地
 docker pull centos
+```
+[root@VM_186_227_centos ~]# docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+docker.io/tomcat    latest              5e402de638b8        5 hours ago         557.4 MB
+docker.io/centos    latest              ff426288ea90        2 days ago          207.2 MB
+docker.io/nginx     latest              3f8a4339aadd        2 weeks ago         108.5 MB
+docker.io/python    latest              c1e459c00dc3        3 weeks ago         691.6 MB
+docker.io/ubuntu    latest              00fd29ccc6f1        3 weeks ago         110.5 MB
+docker.io/redis     latest              1e70071f4af4        4 weeks ago         106.7 MB
+docker.io/mysql     latest              7d83a47ab2d2        4 weeks ago         408.2 MB
+docker.io/java      latest              d23bdf5b1b1b        11 months ago       643.1 M
+```
+
+
 下载好的镜像就会出现在镜像列表里
 docker images
 运行容器
