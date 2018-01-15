@@ -1,3 +1,4 @@
 https://www.cnblogs.com/linzheng/archive/2011/01/23/1942328.html
 
 web容器  soa 都是用socket来达到网络通信的目的
+http://blog.csdn.net/defonds/article/details/7971259   手写httpserver前需要用这个项目来热身一下
