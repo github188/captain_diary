@@ -1,0 +1,22 @@
+http://blog.csdn.net/yczz/article/details/38761237
+
+字节流 带Reader/Writer  BufferedReader/FileReader   writer类接口是一样的    操作文本文档
+
+字符流带 InputStream/OutputStream   BufferedInputStream/FileInputStream   操作二进制文件
+反正一个Buffered  一个File就搞定
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
