@@ -6,6 +6,13 @@ http://blog.csdn.net/yczz/article/details/38761237
 反正一个Buffered  一个File就搞定
 
 
+字节流：一次读入或读出是8位二进制。
+
+字符流：一次读入或读出是16位二进制。
+
+字节流和字符流的原理是相同的，只不过处理的单位不同而已。后缀是Stream是字节流，而后缀是Reader，Writer是字符流。
+
+
 
 
 
