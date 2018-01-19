@@ -1,0 +1,9 @@
+搜索引擎，是根据搜索条件从搜索库中查找，那么这个搜索库是怎么样构建出来的，显然不是直接从数据库里面去直接搜索，
+比如谷歌搜索，显然没有数据库能存储这么多网页。其实找了这么久，很少有es的教程把这块说清楚。
+那么还得从他自己的index库里面去搜索，那么这个index库怎么实时更新数据呢，
+同步mysql数据到ElasticSearch的最佳实践   
+https://www.cnblogs.com/mignet/p/MySQL_ElasticSearch_sync_By_logstash_jdbc.html   这块是个关键
+
+百度  logstash-input-jdbc 这个东西也是挺有意思的
+
+http://blog.csdn.net/yeyuma/article/details/50240595
