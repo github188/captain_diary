@@ -1,6 +1,6 @@
-
+哨兵 机制  监控和失效转移 http://blog.csdn.net/a67474506/article/details/50435498   
 redis 被广泛应用于各开发平台 php C# C C++ python
-支持5种数据类型，包括String，Set,ZSet,List,hash   
+支持5种数据类型，包括String，Set,SortedSet,List,hash     hl加三个s
 支持事务  使用关键操作字  watch multi exec discard unwatch
 可用作分布式锁（因为redis是单线程单进程） setnx 返回1表示上锁成功 返回0表示获取锁失败  再对锁加个时间限制  防止死锁 
 
