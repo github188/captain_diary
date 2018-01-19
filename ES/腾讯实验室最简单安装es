@@ -1,0 +1,15 @@
+http://blog.csdn.net/ty4315/article/details/52216135  这个系列博客不错
+
+
+1.   yum  -y install java-openjdk*
+
+2. wget  https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.4.4.tar.gz
+
+3.mv elasticsearch-1.4.4 /usr/local/
+
+4 cd /usr/local
+5. tar -zxvf elasticsearch-1.4.4
+
+6.  cd elasticsearch-1.4.4/bin
+
+7. sh elasticsearch-1.4.4 
