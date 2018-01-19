@@ -13,3 +13,57 @@ http://blog.csdn.net/ty4315/article/details/52216135  这个系列博客不错
 6.  cd elasticsearch-1.4.4/bin
 
 7. sh elasticsearch-1.4.4 
+
+xshell复制一个会话出来，继续  
+Put创建索引
+curl -X PUT http://localhost:9200/shb02/student/1 -d '{"name":"jack","age":30,"info":"Ilove you"}'
+
+返回  {"_index":"shb02","_type":"student","_id":"1","_version":5,"created":false} 多执行几次，每次version都会加1  id没有变化，说明
+put是幂等操作，也就是如果存在该id的数据，那么就修改这条数据，如果不存在，就创建这条数据。
+
+执行put后有返回值
+
+_index索引名称
+
+_type类型名
+
+_version版本号
+
+created:true表示是新创建的。
+
+上面的命令每执行一次version就会加1，-XPUT必须制定id
+POST创建索引
+curl -X POST http://localhost:9200/shb01/student -d '{"name":"tom","age":21,"info":"tom"}'
+
+Post创建索引
+
+curl -XPOST http://localhost:9200/shb01/student -d '{"name":"tom","age":21,"info":"tom"}'
+
+{"_index":"shb01","_type":"student","_id":"AVadzuNgxskBS1Rg2tdp","_version":1,"created":true}
+
+使用post创建索引数据，-XPOST可以指定id，此时如果存在相同数据则是修改，不指定id的话会随机生成id，且每次执行都会生成新数据。
+
+ 
+
+如果需要每次执行都产生新的数据可以使用post命令且不指定id。
+
+如果使用put命令则需要增加create，命令格式如下
+
+curl -XPUT http://localhost:9200/shb01/student/1/_create-d '{"name":"jackk","age":31}'
+
+curl -XPUT http://localhost:9200/shb01/student/1?op_type=create -d'{"name":"jackk","age":31}'
+
+以上两条命令执行时如果存在id相同的数据则会给出error信息
+
+{"error":"DocumentAlreadyExistsException[[shb01][2][student][1]: document already exists]","status":409}
+
+ 
+
+Post与put的区别
+
+Put是等幂操作，即无论执行多少次结果都一样，例如DEL无论删除多少次索引库中的结果都一样，put只要指定了id且数据不变无论执行多少次索引库中的数据都不变，
+只有version会变化。
+
+Post每次执行都会产生新数据。
+
+
