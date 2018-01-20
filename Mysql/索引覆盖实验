@@ -1,0 +1,47 @@
+DROP TABLE IF EXISTS `user`;
+
+CREATE TABLE `user` (
+  `id` bigint(32) NOT NULL,
+  `username` varchar(30) NOT NULL COMMENT '账户名',
+  `password` varchar(20) DEFAULT NULL,
+  `email` varchar(30) DEFAULT NULL,
+  `age` tinyint(4) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index1` (`username`),
+  UNIQUE KEY `index2` (`password`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+/*Data for the table `user` */
+
+insert  into `user`(`id`,`username`,`password`,`email`,`age`) values 
+
+(0,'admin','admin','admin@qq.com',12),
+
+(1,'root','root','root@qq.com',12),
+
+(2,'hi','hi','hi@qq.com',12),
+
+(3,'3','3','3@qq.com',4),
+
+(8,'8','8','8@qq.com',3);
+
+索引覆盖的标识： 执行计划里面extra中出现using index 则说明索引覆盖了  发生索引覆盖的要求是没有回行
+比如上面 
+
+EXPLAIN
+SELECT
+  id
+FROM
+  USER u
+WHERE u.id = 0  这个就实现了索引覆盖   
+------
+SELECT
+  id
+FROM
+  USER u
+WHERE u.id = 0
+  AND username = 'admin'
+  AND u.password = 'admin'   这样就没有实现索引覆盖  
+  
+  如果你要查多个列的话，要用联合索引，才能实现索引覆盖。
+  
