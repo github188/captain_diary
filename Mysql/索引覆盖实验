@@ -1,3 +1,6 @@
+https://www.cnblogs.com/chenpingzhao/p/4776981.html  mysql高效索引之索引覆盖
+
+
 DROP TABLE IF EXISTS `user`;
 
 CREATE TABLE `user` (
