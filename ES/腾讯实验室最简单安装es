@@ -80,6 +80,9 @@ http://192.168.79.131:9200/shb01/student/1?pretty
 
 http://192.168.79.131:9200/shb01/student/1?_source&pretty
 http://192.168.79.131:9200/shb01/student/1?_source=name&pretty
+
+注意：这种写法是错误的  http://123.207.56.239:9200/shb01/student/1/_search?pretty   /_search是多余的
+
 可以通过source指定显示那些字段
 
 3：查询所有索引库信息
