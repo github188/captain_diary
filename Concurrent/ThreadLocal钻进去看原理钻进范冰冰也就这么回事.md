@@ -33,6 +33,32 @@ public class MultiThreadDemo2 {
 	}
 }
 ``` 
+写这个案例1是想告诉你，ThreadLocal用起来其实很简单set，get就可以了，而且这两个方法是支持泛型的，可以用Object下面的任意类型参数。
+在某个线程里面去set，然后在这个线程里面get，我靠，如果要存放多个值怎么办呢，用多个ThreadLocal实例就可以了。一个ThreadLocal实例只能存放一个值，
+当然你可以把多个值放在一个集合里面，然后存这个集合。  2.ThreadLocal保证线程安全的原理是什么，他是以当前线程的实例作为key来将set进来的值存放在
+一个ThreadLocalMap里面的
+``` java
+  /**
+     * Sets the current thread's copy of this thread-local variable
+     * to the specified value.  Most subclasses will have no need to
+     * override this method, relying solely on the {@link #initialValue}
+     * method to set the values of thread-locals.
+     *
+     * @param value the value to be stored in the current thread's copy of
+     *        this thread-local.
+     */
+    public void set(T value) {
+        Thread t = Thread.currentThread();
+        ThreadLocalMap map = getMap(t);
+        if (map != null)
+            map.set(this, value);
+        else
+            createMap(t, value);
+    }
+```
+但是 “副本”的含义体现在什么地方呢？  没瞧出来
+
+
 
 ``` java
 public class MultiThreadDemo {
