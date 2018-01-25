@@ -1,0 +1,14 @@
+-- 答案是用BigDecimal
+import java.io.IOException;
+import java.math.BigDecimal;
+public class Base64Demo {
+	public static void main(String[] args) throws IOException {
+			byte[] de =	new sun.misc.BASE64Decoder().decodeBuffer("OTYzNjY4ODg5OTA2MTYyMDczNg==");
+			System.out.println(new String(de));
+			BigDecimal b = null;
+			b = new BigDecimal(1000).multiply(new BigDecimal("1").subtract(new BigDecimal(0.99d+"")));
+			System.out.println(b.longValue());
+			System.out.println(1-0.99d);
+			System.out.println(1-0.99f);
+	}
+}
