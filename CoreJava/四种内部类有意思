@@ -1,3 +1,19 @@
 从外到内, 成员内部类（普通内部类），静态内部类，局部内部类（在方法里面），匿名内部类（在方法里面，写多线程常用）
 
 有一种情况，不是内部类，两个class 并行的写到一起，放在同一个java文件中
+
+匿名内部类经常用  局部内部类很好理解  普通内部类和静态内部类的区别看下面百度知道的内容就很好理解了
+
+四种内部类及其作用？
+可可love倩倩 | 浏览 170 次 |举报
+我有更好的答案
+1条回答
+1 静态内部类，在类里可以直接new
+2 成员内部类，new Class().new InnerClass()
+3 局部内部类, 不知道啥意思
+4 匿名内部类 多用于swing中的事件操作比如java.awt.event 接口 ActionListener
+new ActionListener() {
+public void actionPerformed(ActionEvent e) {
+}
+}
+zkin
