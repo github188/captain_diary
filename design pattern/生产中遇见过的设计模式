@@ -19,6 +19,8 @@ http://blog.csdn.net/u012124438/article/details/70039943   在业务类A下面�
 不再新建，直接返回该对象。 比如JDK中的String类的实例化，就用了享元模式，多个相同的字符串其实是同一个实例。
 这个博客讲的很清楚。    http://blog.csdn.net/jason0539/article/details/22908915
 
+有几个模式长的真他妈像啊： 桥梁模式  代理模式  策略模式  适配器模式  中介模式
+
 
 
 
