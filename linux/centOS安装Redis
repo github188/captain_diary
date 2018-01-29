@@ -36,6 +36,18 @@ http://blog.csdn.net/zhangxiaoyang0/article/details/65632828
 19. cd /usr/local/bin 
 20. ./redis-server /etc/redis/redis.conf
 21. ps -ef | grep redis
+22. ./redis-cli -h 127.0.0.1 -p 6379   ----这样就进入了redis
+
+-- 增加密码登录  
+cd /usr/local/bin
+vim redis.conf
+用 斜杠加回车命令 找到  # requirepass foobared
+去掉前面的#  foobared改为自己的密码  123456
+
+
+
+-------如何设置用户名密码
+
 
 
 
