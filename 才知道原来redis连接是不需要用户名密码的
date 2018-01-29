@@ -1,0 +1,16 @@
+spring.resources.add-mappings=true
+
+spring.redis.cluster.nodes=10.10.202.52:7001,10.10.202.52:7002,10.10.202.53:7001,10.10.202.53:7002,10.10.202.54:7001,10.10.202.54:7002
+spring.redis.cluster.timeout=2000
+
+spring.redis.cluster.maxRedirects=8
+
+spring.redis.cluster.expireTime=3600
+
+spring.redis.cluster.dailyExpireTime=86400
+
+spring.redis.cluster.baseExpireTime=3000
+
+spring.cache.cache-names=keyUserInfoCache,keyUserLoginInfoCache
+
+spring.cache.type=REDIS
