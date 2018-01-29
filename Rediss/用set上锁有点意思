@@ -1,0 +1,37 @@
+
+
+
+
+Redis SET命令用于在Redis键中设置一些字符串值。
+
+返回值
+
+如果在键中设置了值，返回简单字符串回复：OK。如果值没有设置则返回 Null。
+语法
+下面是Redis SET命令的基本语法。
+
+redis 127.0.0.1:6379> SET KEY_NAME VALUE
+Shell
+示例
+
+redis 127.0.0.1:6379> SET mykey "redis" 
+OK
+Shell
+选项
+在SET命令中，有很多选项可用来修改命令的行为。 以下是SET命令可用选项的基本语法。
+
+redis 127.0.0.1:6379> SET KEY VALUE [EX seconds] [PX milliseconds] [NX|XX]
+Shell
+EX seconds − 设置指定的到期时间(以秒为单位)。
+PX milliseconds - 设置指定的到期时间(以毫秒为单位)。
+NX - 仅在键不存在时设置键。
+XX - 只有在键已存在时才设置。
+示例
+
+ redis 127.0.0.1:6379> SET mykey "redis" EX 60 NX
+OK
+Shell
+以上示例将在键“mykey”不存在时，设置键的值，到期时间为60秒。
+
+
+易百教程移动端：请扫描本页面底部(右侧)二维码并关注微信公众号，回复："教程" 选择相关教程阅读或直接访问：http://m.yiibai.com 。
