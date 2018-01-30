@@ -1,0 +1,177 @@
+我为什么要在这里写这个东西，因为我发现 前面直接yum -y install java-openjdk-  这种形式是不行的
+jinfo  jmap jstat jstack 这种监控命令都用不了 因为没有配置java_home  在搭建hadoop伪分布式这个实验里面是很详细讲了完整的配置。
+
+ 来， 黄执中，
+ 1. 安装ssh，方便分布式连接  
+ sudo yum install openssh-clients openssh-server
+ 2.ssh localhost   
+ 输入密码，如果发现可以正常登录，说明这个ssh安装没有问题。
+ 3.sudo yum install java-1.8.0-openjdk java-1.8.0-openjdk-devel
+ 前面要加sudo，这才专业
+ 安装完成后，输入 java 和 javac 命令，如果能输出对应的命令帮助，则表明jdk已正确安装。
+ 4.vim ~/.bashrc
+ 在结尾追加
+ export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
+ 保存 退出  
+ 5.  执行 source ~/.bashrc 让环境变量生效
+ 6.为了检测系统中 JAVA 环境是否已经正确配置并生效，可以分别执行下面命令:
+java -version
+$JAVA_HOME/bin/java -version
+若两条命令输出的结果一致，且都为我们前面安装的 openjdk-1.8.0 的版本，则表明 JDK 环境已经正确安装并配置。
+安装 Hadoop
+下载 Hadoop
+本教程使用 hadoop-2.7 版本，使用 wget 工具在线下载（注：本教程是从清华大学的镜像源下载，如果下载失败或报错，可以自己在网上找到国内其他一个
+镜像源下载 2.7 版本的 hadoop 即可）： 
+wget https://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/common/hadoop-2.7.4/hadoop-2.7.4.tar.gz
+
+安装 Hadoop
+将 Hadoop 安装到 /usr/local 目录下:
+tar -zxf hadoop-2.7.4.tar.gz -C /usr/local
+对安装的目录进行重命名，便于后续操作方便:
+cd /usr/local
+mv ./hadoop-2.7.4/ ./hadoop
+检查Hadoop是否已经正确安装:
+/usr/local/hadoop/bin/hadoop version
+
+如果成功输出hadoop的版本信息，表明hadoop已经成功安装。
+
+设置 Hadoop 的环境变量
+编辑 ~/.bashrc，在结尾追加如下内容：
+export HADOOP_HOME=/usr/local/hadoop
+export HADOOP_INSTALL=$HADOOP_HOME
+export HADOOP_MAPRED_HOME=$HADOOP_HOME
+export HADOOP_COMMON_HOME=$HADOOP_HOME
+export HADOOP_HDFS_HOME=$HADOOP_HOME
+export YARN_HOME=$HADOOP_HOME
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
+
+使Hadoop环境变量配置生效:
+source ~/.bashrc 
+修改 Hadoop 的配置文件
+Hadoop的配置文件位于安装目录的 /etc/hadoop 目录下，在本教程中即位于 /url/local/hadoop/etc/hadoop 目录下，需要修改的配置文件为如下两个:
+/usr/local/hadoop/etc/hadoop/core-site.xml
+/usr/local/hadoop/etc/hadoop/hdfs-site.xml
+
+编辑 core-site.xml，修改<configuration></configuration>节点的内容为如下所示：
+<configuration>
+    <property>
+        <name>hadoop.tmp.dir</name>
+        <value>file:/usr/local/hadoop/tmp</value>
+        <description>location to store temporary files</description>
+    </property>
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://localhost:9000</value>
+    </property>
+</configuration>
+
+同理，编辑 hdfs-site.xml，修改<configuration></configuration>节点的内容为如下所示：
+<configuration>
+    <property>
+        <name>dfs.replication</name>
+        <value>1</value>
+    </property>
+    <property>
+        <name>dfs.namenode.name.dir</name>
+        <value>file:/usr/local/hadoop/tmp/dfs/name</value>
+    </property>
+    <property>
+        <name>dfs.datanode.data.dir</name>
+        <value>file:/usr/local/hadoop/tmp/dfs/data</value>
+    </property>
+</configuration>
+
+
+格式化 NameNode
+格式化NameNode:
+/usr/local/hadoop/bin/hdfs namenode -format
+在输出信息中看到如下信息，则表示格式化成功:
+Storage directory /usr/local/hadoop/tmp/dfs/name has been successfully formatted.
+Exiting with status 0
+
+启动 NameNode 和 DataNode 守护进程
+启动 NameNode 和 DataNode 进程:
+/usr/local/hadoop/sbin/start-dfs.sh
+执行过程中会提示输入用户密码，输入 root 用户密码即可。另外，启动时ssh会显示警告提示是否继续连接，输入 yes 即可。
+检查 NameNode 和 DataNode 是否正常启动:
+jps
+
+如果NameNode和DataNode已经正常启动，会显示NameNode、DataNode和SecondaryNameNode的进程信息:
+[hadoop@VM_80_152_centos ~]$ jps
+3689 SecondaryNameNode
+3520 DataNode
+3800 Jps
+3393 NameNode
+
+运行 Hadoop 伪分布式实例
+Hadoop自带了丰富的例子，包括 wordcount、grep、sort 等。下面我们将以grep例子为教程，输入一批文件，
+从中筛选出符合正则表达式 dfs[a-z.]+ 的单词并统计出现的次数。
+查看 Hadoop 自带的例子
+Hadoop 附带了丰富的例子, 执行下面命令可以查看：
+cd /usr/local/hadoop
+./bin/hadoop jar ./share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.4.jar
+
+在 HDFS 中创建用户目录
+在 HDFS 中创建用户目录 hadoop：
+
+/usr/local/hadoop/bin/hdfs dfs -mkdir -p /user/hadoop
+
+准备实验数据
+本教程中，我们将以 Hadoop 所有的 xml 配置文件作为输入数据来完成实验。执行下面命令在 HDFS 中新建一个 input 文件夹并将 
+hadoop 配置文件上传到该文件夹下：
+cd /usr/local/hadoop
+./bin/hdfs dfs -mkdir /user/hadoop/input
+./bin/hdfs dfs -put ./etc/hadoop/*.xml /user/hadoop/input
+
+使用下面命令可以查看刚刚上传到 HDFS 的文件:
+
+/usr/local/hadoop/bin/hdfs dfs -ls /user/hadoop/input
+运行实验
+运行实验:
+cd /usr/local/hadoop
+./bin/hadoop jar ./share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.4.jar grep /user/hadoop/input /user/hadoop/output 'dfs[a-z.]+'
+上述命令以 HDFS 文件系统中的 input 为输入数据来运行 Hadoop 自带的 grep 程序，提取其中符合正则表达式 dfs[a-z.]+ 的数据并进行次数统计，
+将结果输出到 HDFS 文件系统的 output 文件夹下。
+查看运行结果
+上述例子完成后的结果保存在 HDFS 中，通过下面命令查看结果:
+/usr/local/hadoop/bin/hdfs dfs -cat /user/hadoop/output/*
+如果运行成功，可以看到如下结果:
+1       dfsadmin
+1       dfs.replication
+1       dfs.namenode.name.dir
+1       dfs.datanode.data.dir
+删除 HDFS 上的输出结果
+删除 HDFS 中的结果目录:
+/usr/local/hadoop/bin/hdfs dfs -rm -r /user/hadoop/output
+运行 Hadoop 程序时，为了防止覆盖结果，程序指定的输出目录不能存在，否则会提示错误，因此在下次运行前需要先删除输出目录。
+关闭 Hadoop 进程
+关闭 Hadoop 进程：
+/usr/local/hadoop/sbin/stop-dfs.sh
+再起启动只需要执行下面命令：
+/usr/local/hadoop/sbin/start-dfs.sh
+
+OK that is  all
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
