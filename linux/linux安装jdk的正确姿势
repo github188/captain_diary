@@ -1,0 +1,17 @@
+ 来， 黄执中，
+ 1. 安装ssh，方便分布式连接  
+ sudo yum install openssh-clients openssh-server
+ 2.ssh localhost   
+ 输入密码，如果发现可以正常登录，说明这个ssh安装没有问题。
+ 3.sudo yum install java-1.8.0-openjdk java-1.8.0-openjdk-devel
+ 前面要加sudo，这才专业
+ 安装完成后，输入 java 和 javac 命令，如果能输出对应的命令帮助，则表明jdk已正确安装。
+ 4.vim ~/.bashrc
+ 在结尾追加
+ export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk
+ 保存 退出  
+ 5.  执行 source ~/.bashrc 让环境变量生效
+ 6.为了检测系统中 JAVA 环境是否已经正确配置并生效，可以分别执行下面命令:
+java -version
+$JAVA_HOME/bin/java -version
+若两条命令输出的结果一致，且都为我们前面安装的 openjdk-1.8.0 的版本，则表明 JDK 环境已经正确安装并配置。
