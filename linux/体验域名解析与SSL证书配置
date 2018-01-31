@@ -1,0 +1,77 @@
+1.域名购买完成后, 需要将域名解析到实验云主机上，实验云主机的 IP 为：
+119.29.141.98
+
+2.在腾讯云购买的域名，可以到控制台添加解析记录，过程可参考下面的视频：
+视频 - 如何在腾讯云上解析域名
+域名设置解析后需要过一段时间才会生效，通过 ping 命令检查域名是否生效 
+，如：
+ping www.yourdomain.com
+如果 ping 命令返回的信息中含有你设置的解析的 IP 地址，说明解析成功。
+
+3.安装 Web 服务
+安装 Nginx
+使用 yum 命令安装 Nginx
+yum install -y nginx
+修改完成后，启动 Nginx：
+nginx
+设置 Nginx 开机启动：
+systemctl enable nginx.service
+此时，可访问实验机器外网 HTTP 服务（http://119.29.141.98）来确认是否已经安装成功。
+在 /usr/share/nginx/html 目录下添加 hello.html 文件并保存，内容如下：
+hello.html
+<h3>Hello, World!</h3>
+此时，访问 http://119.29.141.98/hello.html 可浏览到我们刚刚创建的 hello.html 页面了
+
+
+配置 SSL 证书
+申请 SSL 证书
+腾讯云提供了 SSL 证书的免费申请，申请方式可参考下面视频：
+视频 - 在腾讯云上申请 SSL 证书
+申请提交后，审批结果会以短信的形式通知。审批通过后，可以到 SSL 控制台下载您的证书文件，可参考下面的视频：
+视频 - 在腾讯云上下载 SSL 证书
+将证书文件上传到服务器
+编辑 Nginx 配置文件
+编辑 /etc/nginx/conf.d/ssl.conf 文件 ，配置示例如下：
+server {
+        listen 443;
+        server_name www.domain.com; # 改为绑定证书的域名
+        ssl on;
+        ssl_certificate 1_www.domain.com_bundle.crt; # 改为自己申请得到的 crt 文件的名称
+        ssl_certificate_key 2_www.domain.com.key; # 改为自己申请得到的 key 文件的名称
+        ssl_session_timeout 5m;
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+        ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:HIGH:!aNULL:!MD5:!RC4:!DHE;
+        ssl_prefer_server_ciphers on;
+
+        location / {
+            root   /usr/share/nginx/html; #站点目录
+            index  index.html index.htm;
+        }
+    }
+    
+ 修改配置完成后，重启 nginx 服务
+nginx -s reload
+使用 https 协议访问你的域名， 如 https://www.yourdomain.com/hello.html 检查是否成功，如果地址栏出现绿色带安全字样的锁头标志，说明 SSL 配置已成功
+完成实验
+恭喜！您已经成功完成了域名注册与 SSL 配置的实验任务。   
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
