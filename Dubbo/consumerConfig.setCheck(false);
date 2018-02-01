@@ -1,0 +1,87 @@
+据伟东说加了这个东西，能解决服务提供方重启的之后，客户端不报空指针
+package com.jst.market.common.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import com.alibaba.dubbo.config.ApplicationConfig;
+import com.alibaba.dubbo.config.ConsumerConfig;
+import com.alibaba.dubbo.config.ProtocolConfig;
+import com.alibaba.dubbo.config.ProviderConfig;
+import com.alibaba.dubbo.config.RegistryConfig;
+import com.alibaba.dubbo.config.spring.AnnotationBean;
+import com.jst.market.common.util.ConfigUtil;
+
+@Configuration  
+public class DubboConfig {
+
+	@Bean
+    public static AnnotationBean annotationBean() {
+        AnnotationBean annotationBean = new AnnotationBean();
+        annotationBean.setPackage("com.jst.market.dubbo.service,com.jst.prodution.park,com.jst.market.service,com.jst.market.common.config,com.jst.market.rabbit");
+        return annotationBean; 
+    }
+	
+	
+	@Bean
+    public ApplicationConfig applicationConfig() {
+        // 当前应用配置
+        ApplicationConfig applicationConfig = new ApplicationConfig();
+        applicationConfig.setName(ConfigUtil.getProperty("dubbo.applicationName"));
+        return applicationConfig;
+    }
+	
+	
+	@Bean
+    public RegistryConfig registryConfig() {
+        // 连接注册中心配置
+        RegistryConfig registry = new RegistryConfig();
+        registry.setProtocol(ConfigUtil.getProperty("dubbo.protocol"));
+        registry.setAddress(ConfigUtil.getProperty("dubbo.registryAddress"));
+        registry.setCheck(false);
+        return registry;
+    }
+	
+	
+	@Bean
+    public ProtocolConfig protocolConfig() {
+        // 服务提供者协议配置
+        ProtocolConfig protocolConfig = new ProtocolConfig();
+        protocolConfig.setName(ConfigUtil.getProperty("dubbo.protocolName"));
+        protocolConfig.setPort(ConfigUtil.getIntProperty("dubbo.protocolPort"));
+        protocolConfig.setThreads(ConfigUtil.getIntProperty("dubbo.pootThreads"));
+        protocolConfig.setThreadpool(ConfigUtil.getProperty("dubbo.poolType"));
+        protocolConfig.setAccepts(ConfigUtil.getIntProperty("dubbo.protocolAccepts"));
+        //protocolConfig.setServer(dubboConfigSettings.getProtocolServer());
+        return protocolConfig;
+    }
+	
+	
+	@Bean(name="defaultProvider")
+    public ProviderConfig providerConfig(@Autowired ApplicationConfig applicationConfig,@Autowired RegistryConfig registryConfig,
+    		@Autowired ProtocolConfig protocolConfig) {
+        ProviderConfig providerConfig = new ProviderConfig();
+        //providerConfig.setTimeout(dubboConfigSettings.getTimeout());
+        //providerConfig.setRetries(dubboConfigSettings.getRetries());
+        providerConfig.setDelay(ConfigUtil.getIntProperty("dubbo.delay"));
+        providerConfig.setConnections(ConfigUtil.getIntProperty("dubbo.referenceConnections"));
+        providerConfig.setApplication(applicationConfig);
+        providerConfig.setRegistry(registryConfig);
+        providerConfig.setProtocol(protocolConfig);
+        return providerConfig;
+    }
+	
+	
+	@Bean
+	public ConsumerConfig consumerConfig() {
+		ConsumerConfig consumerConfig = new ConsumerConfig() ;
+		consumerConfig.setTimeout(ConfigUtil.getIntProperty("dubbo.timeout"));
+		consumerConfig.setRetries(ConfigUtil.getIntProperty("dubbo.retries"));
+		consumerConfig.setCheck(false);
+		return consumerConfig ;
+	} 
+
+
+	
+}
