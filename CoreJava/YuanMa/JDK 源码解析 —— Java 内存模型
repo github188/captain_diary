@@ -1,0 +1,78 @@
+
+标签： jdk源码解析内存模型并发JVM
+2015-09-27 23:09 4907人阅读 评论(3) 收藏 举报
+ 分类： JDK 源码分析（12）  
+版权声明：本文为博主原创文章，未经博主允许不得转载。 转发请注明来自 http://blog.csdn.net/wenniuwuren
+零. 为什么需要 Java 内存模型
+
+为了让程序员忽略掉各种硬件和操作系统的内存访问差异， 也既无需关心不同架构上内存模型的差异， Java 在代码和硬件内存模型间又提供了一个 Java 内存模型。
+
+
+一. 并发模型的分类
+
+在并发编程中，需要处理两个关键问题：线程之间如何通信（线程之间以何种机制来交换信息， 有两种方式：共享内存和消息传递）及线程之间如何同步。
+
+在共享内存的并发模型里（如 Java），线程之间共享程序的公共状态，线程之间通过写-读内存中的公共状态（主存）来隐式（对程序员透明）进行通信。
+在消息传递的并发模型里，线程之间没有公共状态，线程之间必须通过明确的发送消息来显式进行通信。
+
+同步是指程序用于控制不同线程之间操作发生相对顺序的机制。在共享内存并发模型里，同步是显式进行的。程序员必须显式指定某个方法或某段代码需要在线程之间
+互斥执行。在消息传递的并发模型里，由于消息的发送必须在消息的接收之前，因此同步是隐式进行的。
+
+虽然 Java 是共享内存并发模型， 对程序员透明， 但是不理解 Java 内存模型， 就会对内存可见性， 有序性等问题出现时找不到解决方法。
+
+
+
+二. Java 虚拟机运行时数据区
+
+
+虚拟机栈描述的是 Java 执行的内存模型： 每个方法在执行的同时都会创建一个栈帧（Stack Frame）用于存储局部变量表、  操作数栈、 动态链接、 
+方法出口等信息。
+
+Java 内存模型的主要目标是定义程序中各个变量的访问规则， 既在虚拟机中对变量的读写操作， 监视器的加锁和释放操作， 以及线程的启动和合并操作。
+
+
+
+三. 原子性、 可见性和有序性
+
+Java 内存模型是围绕着在并发过程中如何处理原子性、 可见性和有序性来建立的。 
+
+原子性： 操作不可再分。 如在 Java 代码中使用 synchronized 和 ReentrantLock 来保障。
+可见性： A 线程操作， 对 B 线程可见， 既 A 变量赋值 1， B 线程能看见变量已经变为 1。 synchronized 、final、 volatile 和 ReentrantLock 都能提供。
+有序性： 在本线程内观察， 所有操作都是有序的（线程内表现为串行语义）； 如果在另一个线程中观察另一个线程， 所有操作都是无序的（指令重排序与工作内存
+与主内存同步延迟）。synchronized 、 volatile 和 ReentrantLock 都能提供有序性保证。
+ 
+从上述可以得出 synchronized 和 ReentrantLock 是万能的， 但是效率却有巨大的差别， ReentrantLock 会比 synchronized 好很多， ConcurrentHashMap
+的源码实现中就利用了 ReentrantLock 分段锁来提升并发安全和效率。
+
+
+
+四. Happens-Before 规则
+
+要保证 A 线程看到 B线程的操作结果（无论 A 和 B 是否在同一线程中执行）， 那么 A 和 B 之间必须满足 Happens-Before 关系。
+Happens-Before 规则如下：
+
+    程序次序规则（Program Order Rule）：程序中 操作 A 在操作 B 之前， 那么在线程中 A 操作将在 B 操作之前进行。
+
+    管程锁定规则（Monitor Lock Rule）：一个 unlock 操作 happen—before 后面（时间上的先后顺序，下同）对同一个锁的 lock 操作。
+
+    volatile 变量规则：对一个 volatile 变量的写操作 happen—before 后面对该变量的读操作。
+
+    线程启动规则：Thread 对象的 start() 方法 happen—before 此线程的每一个动作。
+
+    线程终止规则：线程的所有操作都 happen—before 对此线程的终止检测，可以通过 Thread.join() 方法结束、Thread.isAlive() 的返回值等手段检测到线程
+    已经终止执行。
+
+    线程中断规则：对线程 interrupt() 方法的调用 happen—before 发生于被中断线程的代码检测到中断时事件的发生。
+
+    终结器规则（Finalizer Rule）：一个对象的初始化完成（构造函数执行结束）happen—before 它的 finalize() 方法的开始。
+
+    传递性：如果操作A happen—before 操作 B，操作 B happen—before 操作 C，那么可以得出 A happen—before 操作 C。
+
+如果两个操作间缺乏 Happens-Before 关系， 那么 JVM 可以对它们进行任意排序。
+
+
+
+五. 参考资料
+                     《Java 并发编程实战》
+                     《深入理解 Java 虚拟机》
+                       http://www.infoq.com/cn/articles/java-memory-model-1 
