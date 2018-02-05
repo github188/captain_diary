@@ -1,0 +1,177 @@
+JDK 源码解析 —— CyclicBarrier
+标签： Concurrent并发源码解析CyclicBarrierCondition
+2016-05-31 22:59 2376人阅读 评论(0) 收藏 举报
+ 分类： JDK 源码分析（12）  
+版权声明：本文为博主原创文章，未经博主允许不得转载。 转发请注明来自 http://blog.csdn.net/wenniuwuren
+一. 简介
+CyclicBarrier 是一个让一系列线程集合互相等待直到一个公共屏障点(barrier point)的同步辅助工具。这个屏障被称为循环屏障，是因为它可以在等待线程释放后被重用。
+
+CyclicBarrier 支持一个可选的 Runnable 命令，在最后一个线程到达后执行一次 Runnable 命令。
+
+
+二. 简单使用示例
+ CyclicBarrier(3) 等到 3 个线程都到了，这个对象还可以重用，而 CountDownLatch 则不能重用，从 Cyclic 名字就可以看出这个类对象可以循环使用
+[java] view plain copy print?
+public class CyclicBarrierTest {  
+  
+    public static void main(String[] args) {  
+        ExecutorService service = Executors.newCachedThreadPool();  
+        final  CyclicBarrier cb = new CyclicBarrier(3);//创建CyclicBarrier对象并设置3个公共屏障点  
+        for(int i=0;i<3;i++){  
+            Runnable runnable = new Runnable(){  
+                    public void run(){  
+                    try {  
+                        Thread.sleep((long)(Math.random()*10000));  
+                        System.out.println("线程" + Thread.currentThread().getName() +  
+                                "即将到达集合地点1，当前已有" + cb.getNumberWaiting() + "个已经到达，正在等候");  
+                        cb.await();//到此如果没有达到公共屏障点，则该线程处于等待状态，如果达到公共屏障点则所有处于等待的线程都继续往下运行  
+  
+                        Thread.sleep((long)(Math.random()*10000));  
+                        System.out.println("线程" + Thread.currentThread().getName() +  
+                                "即将到达集合地点2，当前已有" + cb.getNumberWaiting() + "个已经到达，正在等候");  
+                        cb.await();  
+                        Thread.sleep((long)(Math.random()*10000));  
+                        System.out.println("线程" + Thread.currentThread().getName() +  
+                                "即将到达集合地点3，当前已有" + cb.getNumberWaiting() + "个已经到达，正在等候");  
+                        cb.await();  
+                    } catch (Exception e) {  
+                        e.printStackTrace();  
+                    }  
+                }  
+            };  
+            service.execute(runnable);  
+        }  
+        service.shutdown();  
+    }  
+}  
+
+三. CyclicBarrier 作用图示
+让所有线程都运行到同一个点（屏障点）后，再继续运行
+
+四. 代码解析
+重要变量
+[java] view plain copy print?
+// 每次对栅栏的使用可以表现为一个 generation 实例。当条件 trip 改变或者重置 generation 也会  
+    // 随之改变。可以有多个 generation 和使用栅栏的线程关联，但是只有一个可以获得锁。  
+    private static class Generation {  
+        boolean broken = false;  
+    }  
+  
+    /** 守护栅栏入口的锁 */  
+    private final ReentrantLock lock = new ReentrantLock();  
+    /** 等待条件，直到所有线程到达栅栏 */  
+    private final Condition trip = lock.newCondition();  
+    /** 要屏障的线程数 */  
+    private final int parties;  
+    /* 当线程都到达栅栏，运行的 Runnable */  
+    private final Runnable barrierCommand;  
+    /** The current generation */  
+    private Generation generation = new Generation();  
+  
+    //还要等待多少个线程到达。线程到达屏障点就减去 1。  
+    //每次新建 generation 的时候或者屏障 broken，count重新设置为 parties 参数值  
+    private int count;  
+
+
+await() 方法：等待到所有参与的线程都到达屏障点。如果当前线程不是最后一个到达的，当前线程停止运行，进入睡眠，直到以下几种情况发生
+最后的线程到达
+其他线程中断当前线程
+其他线程中断中断等待线程中的一条
+在等待所有线程到达屏障前有线程超时
+其他线程在此屏障中调用 reset(将屏障设置为初始状态)
+
+如果当前线程：
+设置了中断状态
+在等待时中断
+那么，就会抛出 InterruptedException，并且当前线程中断状态被清除。
+
+如果在任何线程等待过程中屏障被重置(即调用 reset() 方法)，那么所有的线程都会抛出 BrokenBarrierException，并且这个屏障置于 broken 状态。
+
+如果当前线程是最后一个到达屏障的线程，并且屏障的构造器传入了 Runnable 参数，那么在其他线程执行前，先执行 Runnable。如果在屏障运行中发生了异常，那么异常会在当前线程中被传播，屏障将被置于 broken 状态。
+
+返回值：返回当前线程到达的下标 
+[java] view plain copy print?
+public int await() throws InterruptedException, BrokenBarrierException {  
+    try {  
+        return dowait(false, 0L);  
+    } catch (TimeoutException toe) {  
+        throw new Error(toe); // cannot happen;  
+    }  
+}  
+  
+private int dowait(boolean timed, long nanos)  
+    throws InterruptedException, BrokenBarrierException,  
+           TimeoutException {  
+    final ReentrantLock lock = this.lock;  
+    lock.lock();// 加了锁，以下操作为线程安全操作  
+    try {  
+        final Generation g = generation;  
+  
+        if (g.broken)  // 如果屏障状态 broken，则抛出屏障 broken 异常  
+            throw new BrokenBarrierException();  
+  
+        if (Thread.interrupted()) {  
+            breakBarrier();  
+            throw new InterruptedException();  
+        }  
+  
+       int index = --count;  
+       if (index == 0) {  // tripped 说明是最后一个到达的线程  
+           boolean ranAction = false;  
+           try {  
+               final Runnable command = barrierCommand;  
+               if (command != null) // 如果有 Runnable，先执行  
+                   command.run();  
+               ranAction = true;  
+               nextGeneration();// 唤醒 Condition 队列的所有线程，既然是 Cyclic 的，所以也会重置状态以便重用屏障，这是和 CountDownLatch 的区别  
+               return 0;  
+           } finally {  
+               if (!ranAction)  
+                   breakBarrier();  
+           }  
+       }  
+  
+        // loop until tripped, broken, interrupted, or timed out  
+        for (;;) {// 如果不是最后一个到达的线程，就进入循环等待  
+            try {  
+                if (!timed)  
+                    trip.await();  
+                else if (nanos > 0L)  
+                    nanos = trip.awaitNanos(nanos);  
+            } catch (InterruptedException ie) {  
+                if (g == generation && ! g.broken) {  
+                    breakBarrier();  
+                    throw ie;  
+                } else {  
+                    // We're about to finish waiting even if we had not  
+                    // been interrupted, so this interrupt is deemed to  
+                    // "belong" to subsequent execution.  
+                    Thread.currentThread().interrupt();  
+                }  
+            }  
+  
+            if (g.broken)  
+                throw new BrokenBarrierException();  
+  
+            if (g != generation)  
+                return index;  
+  
+            if (timed && nanos <= 0L) {  
+                breakBarrier();  
+                throw new TimeoutException();  
+            }  
+        }  
+    } finally {  
+        lock.unlock();  
+    }  
+}  
+
+
+
+五. 总结
+CyclicBarrier 是利用了 Condition 接口，定义了一个叫做 trip 的 Condition，当所有线程到达后线程才能从 Condition 队列中移到 AQS 的等待队列继续运行。关于 Condition，可以参考博主的另一篇博文：http://blog.csdn.net/wenniuwuren/article/details/51447767
+
+
+
+六. 参考资料
+JDK 7 源码 
