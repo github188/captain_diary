@@ -1,0 +1,63 @@
+ 
+标签： ExecutorServiceExecutors线程池newCachedThreadPool
+2016-06-17 15:11 11885人阅读 评论(0) 收藏 举报
+ 分类： JDK 源码分析（12）  
+版权声明：本文为博主原创文章，未经博主允许不得转载。 转发请注明来自 http://blog.csdn.net/wenniuwuren
+看一段测试代码： 
+[java] view plain copy print?
+package com.wenniuwuren.concurrent;  
+  
+import java.util.concurrent.ExecutorService;  
+import java.util.concurrent.Executors;  
+  
+/** 
+ * Created by zhuyb on 16/6/16. 
+ */  
+public class newCachedThreadPoolTest {  
+  
+    public static void main(String[] args) {  
+  
+        ExecutorService executorService = Executors.newCachedThreadPool();  
+        for (int i = 1; i < 10000; i++)  
+            executorService.submit(new task());  
+  
+    }  
+  
+}  
+  
+class task implements Runnable {  
+  
+    @Override  
+    public void run() {  
+        try {  
+            Thread.sleep(5000);  
+        } catch (InterruptedException e) {  
+            e.printStackTrace();  
+        }  
+  
+    }  
+}  
+
+运行结果为：
+[html] view plain copy print?
+Exception in thread "main" java.lang.OutOfMemoryError: unable to create new native thread  
+    at java.lang.Thread.start0(Native Method)  
+    at java.lang.Thread.start(Thread.java:714)  
+    at java.util.concurrent.ThreadPoolExecutor.addWorker(ThreadPoolExecutor.java:950)  
+    at java.util.concurrent.ThreadPoolExecutor.execute(ThreadPoolExecutor.java:1368)  
+    at java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:112)  
+    at com.wenniuwuren.concurrent.newCachedThreadPoolTest.main(newCachedThreadPoolTest.java:15)  
+    at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)  
+    at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)  
+    at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)  
+    at java.lang.reflect.Method.invoke(Method.java:497)  
+    at com.intellij.rt.execution.application.AppMain.main(AppMain.java:140)  
+
+可以看出来是堆外内存溢出，因为我们新建的线程都在工作（代码中用sleep表示在工作中），newCachedThreadPool 只会重用空闲并且可用的线程，所以上述代码
+只能不停地创建新线程，在 64-bit JDK 1.7 中 -Xss 默认是 1024k，也就是 1M，那就是需要 10000*1M = 10G 的堆外内存空间来给线程使用，但是我的机器总
+共就 8G 内存，不够创建新的线程，所以就 OOM 了。
+
+
+总结一下：所以这个 newCachedThreadPool 大家一般不用就是这样的原因，因为它的最大值是在初始化的时候设置为 Integer.MAX_VALUE，一般来说机器都没那么
+大内存给它不断使用。当然知道可能出问题的点，就可以去重写一个方法限制一下这个最大值，但是出于后期维护原因，一般来说用 newFixedThreadPool 
+也就足够了。 
