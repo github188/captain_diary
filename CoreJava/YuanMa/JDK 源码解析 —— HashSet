@@ -1,0 +1,49 @@
+JDK 源码解析 —— HashSet
+标签： jdkHashSetHashMap源码解析
+2016-05-06 10:41 2205人阅读 评论(0) 收藏 举报
+ 分类： JDK 源码分析（12）  
+版权声明：本文为博主原创文章，未经博主允许不得转载。 转发请注明来自 http://blog.csdn.net/wenniuwuren
+零. 简介
+这个类实现了 Set 接口，内部是由 HashMap 实例辅助实现的。它不保证元素的顺序，数据允许为 null。
+
+假如 hash 方法将数据分散地比较合理，比如一个 bucket 一个数据，那么 add、remove、contains、size 性能开销是常数时间。
+
+这个类非线程安全的，如果多线程并发访问，并且至少一个线程在做修改操作，那么必须在外部做好同步处理。例如使用：Set s = Collections.synchronizedSet(new HashSet(...));
+
+
+
+一. 源码解析（JDK1.7 源码）
+类结构：实现了 Set 接口，Set 特征是没有重复元素，因为 key 在 HashMap 中是唯一的，所以本类把元素放到 HashMap 的 key 中，就可以保证没有重复元素
+[java] view plain copy print?
+public class HashSet<E>  
+    extends AbstractSet<E>  
+    implements Set<E>, Cloneable, java.io.Serializable  
+
+
+构造函数：可以看出数据是存在 HashMap 里的
+[java] view plain copy print?
+private transient HashMap<E,Object> map;  
+public HashSet() {  
+    map = new HashMap<>();  
+}  
+
+
+看下 Set 接口需要实现的方法
+add 方法：利用 HashMap put 方法的特点，put 成功会返回旧的 value 值，所以 add 一个没有重复的数据，那么返回的旧值必然是 null，所以 add 就 return true 说明插入成功，否则说明插入的值已经存在，插入失败
+[java] view plain copy print?
+public boolean add(E e) {  
+    return map.put(e, PRESENT)==null;  
+}  
+
+
+remove 方法：利用 HashMap 的 remove 方法，如果删除成功就返回当前被 remove key 所对应的 value，因为存的 value 都是 PRESENT，所以删除成功则返回 true
+[java] view plain copy print?
+public boolean remove(Object o) {  
+    return map.remove(o)==PRESENT;  
+}  
+
+
+
+
+二. 总结
+HashSet 依赖 HashMap 的已实现的方法来实现的，所以看懂 HashSet 的前提是看懂 HashMap。 
