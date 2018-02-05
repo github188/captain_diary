@@ -1,0 +1,250 @@
+
+标签： ThreadLocal源码jdkJava分析
+2017-03-17 17:23 3005人阅读 评论(0) 收藏 举报
+ 分类： JDK 源码分析（12）  
+版权声明：本文为博主原创文章，未经博主允许不得转载。 转发请注明来自 http://blog.csdn.net/wenniuwuren
+零. 简介
+这个类提供本地线程变量。不同于一般的变量，这些变量在他们各自的线程里通过 get、set 访问一个它自己的变量，这是一个独立初始化的变量副本。在一个类中，ThreadLocal 实例一般是 private static 的，期望和一个线程关联状态（如 userId，transactionId 等）。简单地说，就是此类提供了线程的本地变量，线程修改本地变量不互相影响。
+
+举个例子，下面的类给每个线程生成一个唯一的标识。一个线程 id 在第一次调用 ThreadId.get() 被赋值，并且在后续的调用上保持不变。
+[java] view plain copy print?
+public class ThreadId {  
+       // Atomic integer containing the next thread ID to be assigned  
+       private static final AtomicInteger nextId = new AtomicInteger(0);  
+  
+       // Thread local 变量保存着每个线程的ID  
+       private static final ThreadLocal<Integer> threadId =  
+           new ThreadLocal<Integer>() {  
+               @Override protected Integer initialValue() {  
+                   return nextId.getAndIncrement();  
+           }  
+       };  
+  
+       // 返回当前线程的唯一ID，如果没有值的话先赋值  
+       public static int get() {  
+           return threadId.get();  
+       }  
+}  
+
+只要线程还存活并且 ThreadLocal 实例可访问，那么每个线程持有一个确定的引用指向本地的变量副本，当线程消失，它的本地变量副本将会被GC（除非还被其他对象引用）。
+
+
+一. 使用案例
+[java] view plain copy print?
+package com.wenniuwuren.java.threadlocal;  
+  
+/** 
+ * 执行结果： 
+ * Thread[Thread-0,5,main]---------count=0 
+ * Thread[Thread-0,5,main]---------count=1 
+ * Thread[Thread-0,5,main]---------count=2 
+ * Thread[Thread-0,5,main]---------count=3 
+ * Thread[Thread-0,5,main]---------count=4 
+ * Thread[Thread-2,5,main]---------count=0 
+ * Thread[Thread-2,5,main]---------count=1 
+ * Thread[Thread-2,5,main]---------count=2 
+ * Thread[Thread-1,5,main]---------count=0 
+ * Thread[Thread-2,5,main]---------count=3 
+ * Thread[Thread-2,5,main]---------count=4 
+ * Thread[Thread-1,5,main]---------count=1 
+ * Thread[Thread-1,5,main]---------count=2 
+ * Thread[Thread-1,5,main]---------count=3 
+ * Thread[Thread-1,5,main]---------count=4 
+ * 可以看出线程的变量更新没有相互影响 
+ * Created by hzzhuyibin on 2017/3/14. 
+ */  
+public class ThreadLocalTest {  
+  
+    private static ThreadLocal<Integer> count = new ThreadLocal<Integer>() {  
+        public Integer initialValue() {  
+            return 0;  
+        }  
+    };  
+  
+    public static void main(String[] args) {  
+  
+        NewThread thread1 = new NewThread(count);  
+        NewThread thread2 = new NewThread(count);  
+        NewThread thread3 = new NewThread(count);  
+  
+        thread1.start();  
+        thread3.start();  
+        thread2.start();  
+  
+    }  
+  
+    public static class NewThread extends Thread {  
+        ThreadLocal<Integer> threadLocal = null;  
+  
+        public NewThread(ThreadLocal<Integer> threadLocal) {  
+            this.threadLocal = threadLocal;  
+        }  
+  
+        @Override  
+        public void run() {  
+            for (int i = 0; i < 5; i++) {  
+                System.out.println(Thread.currentThread() + "---------count=" + threadLocal.get());  
+                threadLocal.set(threadLocal.get() + 1);  
+            }  
+        }  
+    }  
+  
+}  
+二. 源码分析
+ThreadLocal 的数据结构：实线表示强引用，虚线表示弱引用
+每个 Thread 维护一个ThreadLocalMap 映射 table，映射 table 的 key 是 ThreadLocal 实例，value 就是线程存独立的变量副本的地方。
+为什么这么设计，而不是由 ThreadLocal 来维护一个以 Thread 为 key 的映射呢？原因如下：
+减小 Entry 数组大小：ThreadLocal 数量多，还是 Thread 的数量多，显而易见，使用 ThreadLocal 来当 key 可以减少 Entry 数量
+减小内存占用：当 Thread 消亡，对 Thread 实例不在引用，则 GC 后就会清除相关数据
+
+1.先看字段含义
+[java] view plain copy print?
+/** ThreadLocals 依赖每个线程的线性嗅探哈希映射到每个线程(Thread.threadLocals and inheritableThreadLocals)。 
+ * ThreadLocal 对象作为 key，通过 threadLocalHashCode 来搜索。这是一个定制化的减少冲突的哈希码（只在 ThreadLocalMaps 有用）， 
+ * 其中连续构造的ThreadLocals由相同的线程使用，在较不常见的情况下保持良好行为。 
+ */  
+private final int threadLocalHashCode = nextHashCode();  
+  
+ /** 
+     * 生成下一个 Hash Code。原子更新。从零开始。 
+     */  
+    private static AtomicInteger nextHashCode =  
+        new AtomicInteger();  
+  
+/** 
+     *连续生成的散列码之间的差异 - 将隐式顺序线程本地ID转换为二次幂表的近似最优扩展的乘法散列值。 
+     *简单来说就是偏移量，offetset 
+     */  
+    private static final int HASH_INCREMENT = 0x61c88647;  
+  
+/** 
+     * 返回下一个 Hash 值 
+     */  
+    private static int nextHashCode() {  
+        return nextHashCode.getAndAdd(HASH_INCREMENT);  
+    }  
+
+2.主要方法：
+[java] view plain copy print?
+/**   返回当前线程的线程本地变量值。这个方法将会在线程第一次通过 get() 访问变量的时候调用， 
+     * 除非这个线程之前调用过 set() 那么 initialValue() 才不会被调用。通常，这个方法只会被调用一次, 
+     * 但是它在 get() 后调用 remove()，能被再次调用。 
+     * 这里实现是简单返回 null，如果想赋其他值需要重写这个方法。 
+     */  
+    protected T initialValue() {  
+        return null;  
+    }  
+
+（1）核心方法 get() 相关内容：
+[java] view plain copy print?
+/** 
+* 返回当前线程的本地变量副本值。如果这个变量没有值，则返回 initialValue() 初始化的值 
+*/  
+public T get() {  
+    Thread t = Thread.currentThread();  
+    // ThreadLocalMap 是一个为了保存线程本地变量定制化的 hash map。  
+    ThreadLocalMap map = getMap(t);  
+    if (map != null) {  
+        ThreadLocalMap.Entry e = map.getEntry(this);  
+        if (e != null) {  
+            @SuppressWarnings("unchecked")  
+            T result = (T)e.value;  
+            return result;  
+        }  
+    }  
+    return setInitialValue();  
+}  
+
+其中的 getMap(Thread t)：
+[java] view plain copy print?
+/**   获取和ThreadLocal相关的 map。在 InheritableThreadLocal中重写 
+ */  
+ThreadLocalMap getMap(Thread t) {  
+    return t.threadLocals;  
+}  
+
+Thread 类中的代码：这里可以看到是 Thread 持有 ThreadLocal.ThreadLocalMap 引用
+[java] view plain copy print?
+/* 与此线程有关的ThreadLocal值。 此 map 由ThreadLocal类维护。 */  
+dLocal.ThreadLocalMap threadLocals = null;  
+
+其中的 map.getEntry(this)：
+[java] view plain copy print?
+/** 
+ * 获取和key关联的Entry。 此方法本身仅处理快速路径：直接命中现有键。 
+ *  这是为了最大限度地提高直接命中的性能，部分通过使这种方法很容易嵌入。 
+ */  
+private Entry getEntry(ThreadLocal<?> key) {  
+    int i = key.threadLocalHashCode & (table.length - 1);  
+    Entry e = table[i];  
+    // 命中 hash slot  
+    if (e != null && e.get() == key)  
+        return e;  
+    else  
+        // 如果在 hash slot 里面没有直接查到就进入这个方法  
+        return getEntryAfterMiss(key, i, e);  
+}  
+  
+/** 
+ * 如果在 hash slot 里面没有直接查到就进入这个方法 
+ */  
+private Entry getEntryAfterMiss(ThreadLocal<?> key, int i, Entry e) {  
+    Entry[] tab = table;  
+    int len = tab.length;  
+  
+    while (e != null) {  
+        ThreadLocal<?> k = e.get();  
+        if (k == key)  
+            return e;  
+        if (k == null) // 清理无用 entry  
+            expungeStaleEntry(i);  
+        else // 可以看出这里使用开放定址法来解决哈希冲突  
+            i = nextIndex(i, len);  
+        e = tab[i];  
+    }  
+    return null;  
+}  
+
+（2）核心方法 set() 相关内容：
+[java] view plain copy print?
+/** 
+ * 设置 key 的 value 
+ * 这里不使用 get() 方法中的快速路径，因为新建和更新的比例差不多， 
+ * 使用快速路径查找失败率很高 
+ */  
+private void set(ThreadLocal<?> key, Object value) {  
+  
+    Entry[] tab = table;  
+    int len = tab.length;  
+    int i = key.threadLocalHashCode & (len-1);  
+  
+    // 开发地址法，遍历查找  
+    for (Entry e = tab[i];  
+         e != null;  
+         e = tab[i = nextIndex(i, len)]) {  
+        ThreadLocal<?> k = e.get();  
+  
+        if (k == key) {  
+            e.value = value;  
+            return;  
+        }  
+  
+            // key 为 null，说明 ThreadLocal 实例已被回收，  
+            // 所以这里的 value 可以被覆盖。减少内存泄露的可能  
+        if (k == null) {  
+            replaceStaleEntry(key, value, i);  
+            return;  
+        }  
+    }  
+  
+    // 没有找到 Entry 则新建一个  
+    tab[i] = new Entry(key, value);  
+    int sz = ++size;  
+    if (!cleanSomeSlots(i, sz) && sz >= threshold)  
+        rehash();  
+}  
+
+
+
+三. 参考资料
+ThreadLocal JDK 1.8 源码
