@@ -1,0 +1,85 @@
+
+标签： 并发JDKCondition锁源码解析
+2016-05-18 21:48 3643人阅读 评论(0) 收藏 举报
+ 分类： JDK 源码分析（12）  
+版权声明：本文为博主原创文章，未经博主允许不得转载。 转发请注明来自 http://blog.csdn.net/wenniuwuren
+一. 简介
+使用 Condition 可以让线程等待不同条件，典型的例子就是 ArrayBlockingQueue。
+
+
+
+二. 源码解析
+Condition 接口的具体实现是在 AbstractQueuedSynchronized 类中一个叫做 ConditionObject 的内部类。
+
+核心字段：
+        /** condition 队列的第一个节点 */
+        private transient Node firstWaiter;
+        /** condition 队列的最后一个节点 */
+        private transient Node lastWaiter;
+
+
+await() 方法：实现了可中断的条件等待
+（1）如果当前线程中断，抛出中断异常
+（2）保存锁状态通过 getStat 返回
+（3）调用 release，参数是已保存的状态
+（4）线程阻塞直到 signal 或者中断
+（5）调用特定的 acquire 重新获取
+（6）如果在（4）中断的话，抛出中断异常 
+[java] view plain copy print?
+public final void await() throws InterruptedException {  
+    if (Thread.interrupted())  
+        throw new InterruptedException();  
+    Node node = addConditionWaiter(); // 当前线程加入等待队列，此时Node状态为等待状态  
+    int savedState = fullyRelease(node); // 释放当前线程占有的锁（await 是在 lock 后才能调用）  
+    int interruptMode = 0;  
+    while (!isOnSyncQueue(node)) {   // 不在AQS的同步等待队列里，说明还没达到获取锁的条件，这时线程还在Condition的队列里，得//signal了才能进入AQS同步队列。所以现在只能卡在这  
+        LockSupport.park(this);  
+        if ((interruptMode = checkInterruptWhileWaiting(node)) != 0)// 如果线程中断，则退出死循环  
+            break;  
+    }  
+    if (acquireQueued(node, savedState) && interruptMode != THROW_IE) // 因为上述线程释放锁，所以AQS等待队列节点可以获取锁  
+        interruptMode = REINTERRUPT;  
+    if (node.nextWaiter != null) // clean up if cancelled  
+        unlinkCancelledWaiters();  
+    if (interruptMode != 0)  
+        reportInterruptAfterWait(interruptMode);  
+}  
+
+2. signal() 方法：
+[java] view plain copy print?
+public final void signal() {  
+    if (!isHeldExclusively())  
+        throw new IllegalMonitorStateException();  
+    Node first = firstWaiter;  
+    if (first != null)  
+        doSignal(first);  
+}  
+  
+private void doSignal(Node first) {  
+    do {  
+        if ( (firstWaiter = first.nextWaiter) == null)  
+            lastWaiter = null;  
+        first.nextWaiter = null;  
+// 将节点从 Condition 队列移动到 AQS 的同步队列，移出一个节点循环就会结束  
+    } while (!transferForSignal(first) &&  
+             (first = firstWaiter) != null);  
+}  
+
+3. signalAll() 方法：
+[java] view plain copy print?
+public final void signalAll() {  
+    if (!isHeldExclusively())  
+        throw new IllegalMonitorStateException();  
+    Node first = firstWaiter;  
+    if (first != null)  
+        doSignalAll(first);  
+}  
+private void doSignalAll(Node first) {  
+    lastWaiter = firstWaiter = null;  
+    do {  
+        Node next = first.nextWaiter;  
+        first.nextWaiter = null;  
+        transferForSignal(first);  
+        first = next;  
+    } while (first != null);// 全部移出 Condition 等待队列  
+}  
