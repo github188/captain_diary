@@ -1,1 +1,21 @@
 一次从多个文件中去搜索 某些关键字
+
+[looklog@jst-dev9 01]$ less appAllLog_2018-01-15.0.log 
+[looklog@jst-dev9 01]$ grep '解码' appAllLog_2018-01-*.log
+appAllLog_2018-01-15.0.log:2018-01-15 14:56:02.912[INFO ][com.jst.app.controller.mblrchg.MblRchgCallBackController] 解码responseMsg：{
+appAllLog_2018-01-17.0.log:2018-01-17 17:26:13.790[INFO ][com.jst.app.controller.mblrchg.MblRchgCallBackController] 解码responseMsg：{
+appAllLog_2018-01-17.0.log:2018-01-17 19:46:23.628[INFO ][com.jst.app.controller.mblrchg.MblRchgCallBackController] 解码responseMsg：{
+appAllLog_2018-01-19.0.log:2018-01-19 16:00:38.240[INFO ][com.jst.app.controller.mblrchg.MblRchgCallBackController] 解码responseMsg：{
+appAllLog_2018-01-25.0.log:2018-01-25 12:30:32.630[INFO ][com.jst.app.controller.mblrchg.MblRchgCallBackController] 解码responseMsg：{
+appAllLog_2018-01-25.0.log:2018-01-25 14:28:43.462[INFO ][com.jst.app.controller.mblrchg.MblRchgCallBackController] 解码responseMsg：{
+appAllLog_2018-01-25.0.log:2018-01-25 14:28:43.462[INFO ][com.jst.app.controller.mblrchg.MblRchgCallBackController] 解码responseMsg：{
+appAllLog_2018-01-26.0.log:2018-01-26 15:19:09.961[INFO ][com.jst.app.controller.mblrchg.MblRchgCallBackController] 解码responseMsg：{
+appAllLog_2018-01-26.0.log:2018-01-26 15:39:08.716[INFO ][com.jst.app.controller.mblrchg.MblRchgCallBackController] 解码responseMsg：{
+appAllLog_2018-01-29.0.log:2018-01-29 10:40:35.817[INFO ][com.jst.app.controller.mblrchg.MblRchgCallBackController] 解码responseMsg：{
+appAllLog_2018-01-29.0.log:2018-01-29 10:43:06.658[INFO ][com.jst.app.controller.mblrchg.MblRchgCallBackController] 解码responseMsg：{
+[looklog@jst-dev9 01]$ less appAllLog_2018-01-17.0.log 
+[looklog@jst-dev9 01]$ grep '解码成功' appAllLog_2018-01-*.log
+
+
+
+
