@@ -48,6 +48,8 @@ vim redis.conf
 
 -------如何设置用户名密码
 
+连接redis是不需要用户名和密码的，只需要ip和port
+
 
 
 
