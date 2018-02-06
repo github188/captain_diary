@@ -1,0 +1,243 @@
+
+原创 2016年12月30日 09:25:21 5811
+受一篇“五分钟看懂”的启发，来个哗众取宠的标题
+
+一致性哈希算法，作为分布式计算的数据分配参考，比传统的取模，划段都好很多。
+
+在电信计费中，可以作为多台消息接口机和在线计费主机的分配算法，根据session_id来分配，这样当计费主机动态伸缩的时候，因为session_id缓存缺失而需要放通的会话，会明显减少。
+
+
+
+传统的取模方式
+
+例如10条数据，3个节点，如果按照取模的方式，那就是
+
+node a: 0,3,6,9
+
+node b: 1,4,7
+
+node c: 2,5,8
+
+ 
+
+当增加一个节点的时候，数据分布就变更为
+
+node a:0,4,8
+
+node b:1,5,9
+
+node c: 2,6
+
+node d: 3,7
+
+ 
+
+总结：数据3,4,5,6,7,8,9在增加节点的时候，都需要做搬迁，成本太高
+
+ 
+
+一致性哈希方式
+
+最关键的区别就是，对节点和数据，都做一次哈希运算，然后比较节点和数据的哈希值，数据取和节点最相近的节点做为存放节点。这样就保证当节点增加或者减少的时候，影响的数据最少。
+
+还是拿刚刚的例子，（用简单的字符串的ascii码做哈希key）：
+
+十条数据，算出各自的哈希值
+
+0：192
+
+1：196
+
+2：200
+
+3：204
+
+4：208
+
+5：212
+
+6：216
+
+7：220
+
+8：224
+
+9：228
+
+ 
+
+有三个节点，算出各自的哈希值
+
+node a: 203
+
+node g: 209
+
+node z: 228
+
+ 
+
+这个时候比较两者的哈希值，如果大于228，就归到前面的203，相当于整个哈希值就是一个环，对应的映射结果：
+
+node a: 0,1,2
+
+node g: 3,4
+
+node z: 5,6,7,8,9
+
+ 
+
+这个时候加入node n, 就可以算出node n的哈希值：
+
+node n: 216
+
+ 
+
+这个时候对应的数据就会做迁移：
+
+node a: 0,1,2
+
+node g: 3,4
+
+node n: 5,6
+
+node z: 7,8,9
+
+ 
+
+这个时候只有5和6需要做迁移
+
+另外，这个时候如果只算出三个哈希值，那再跟数据的哈希值比较的时候，很容易分得不均衡，因此就引入了虚拟节点的概念，通过把三个节点加上ID后缀等方式，每个节点算出n个哈希值，均匀的放在哈希环上，这样对于数据算出的哈希值，能够比较散列的分布（详见下面代码中的replica）
+
+ 
+
+通过这种算法做数据分布，在增减节点的时候，可以大大减少数据的迁移规模。
+
+ 
+
+下面转载的哈希代码，已经将gen_key改成上述描述的用字符串ascii相加的方式，便于测试验证。
+
+
+
+
+[python] view plain copy
+import md5  
+class HashRing(object):  
+    def __init__(self, nodes=None, replicas=3):  
+        """Manages a hash ring. 
+        `nodes` is a list of objects that have a proper __str__ representation. 
+        `replicas` indicates how many virtual points should be used pr. node, 
+        replicas are required to improve the distribution. 
+        """  
+        self.replicas = replicas  
+        self.ring = dict()  
+        self._sorted_keys = []  
+        if nodes:  
+            for node in nodes:  
+                self.add_node(node)  
+    def add_node(self, node):  
+        """Adds a `node` to the hash ring (including a number of replicas). 
+        """  
+        for i in xrange(0, self.replicas):  
+            key = self.gen_key('%s:%s' % (node, i))  
+            print "node %s-%s key is %ld" % (node, i, key)  
+            self.ring[key] = node  
+            self._sorted_keys.append(key)  
+        self._sorted_keys.sort()  
+    def remove_node(self, node):  
+        """Removes `node` from the hash ring and its replicas. 
+        """  
+        for i in xrange(0, self.replicas):  
+            key = self.gen_key('%s:%s' % (node, i))  
+            del self.ring[key]  
+            self._sorted_keys.remove(key)  
+    def get_node(self, string_key):  
+        """Given a string key a corresponding node in the hash ring is returned. 
+        If the hash ring is empty, `None` is returned. 
+        """  
+        return self.get_node_pos(string_key)[0]  
+    def get_node_pos(self, string_key):  
+        """Given a string key a corresponding node in the hash ring is returned 
+        along with it's position in the ring. 
+        If the hash ring is empty, (`None`, `None`) is returned. 
+        """  
+        if not self.ring:  
+            return None, None  
+        key = self.gen_key(string_key)  
+        nodes = self._sorted_keys  
+        for i in xrange(0, len(nodes)):  
+            node = nodes[i]  
+            if key <= node:  
+                print "string_key %s key %ld" % (string_key, key)   
+                print "get node %s-%d " % (self.ring[node], i)  
+                return self.ring[node], i  
+        return self.ring[nodes[0]], 0  
+    def print_ring(self):  
+        if not self.ring:  
+            return None, None  
+        nodes = self._sorted_keys  
+        for i in xrange(0, len(nodes)):  
+            node = nodes[i]  
+            print "ring slot %d is node %s, hash vale is %s" % (i, self.ring[node], node)  
+    def get_nodes(self, string_key):  
+        """Given a string key it returns the nodes as a generator that can hold the key. 
+        The generator is never ending and iterates through the ring 
+        starting at the correct position. 
+        """  
+        if not self.ring:  
+            yield None, None  
+        node, pos = self.get_node_pos(string_key)  
+        for key in self._sorted_keys[pos:]:  
+            yield self.ring[key]  
+        while True:  
+            for key in self._sorted_keys:  
+                yield self.ring[key]  
+    def gen_key(self, key):  
+        """Given a string key it returns a long value, 
+        this long value represents a place on the hash ring. 
+        md5 is currently used because it mixes well. 
+        """  
+        m = md5.new()  
+        m.update(key)  
+        return long(m.hexdigest(), 16)  
+        """ 
+        hash = 0 
+        for i in xrange(0, len(key)): 
+            hash += ord(key[i])  
+        return hash 
+        """  
+  
+  
+memcache_servers = ['a',  
+                   'g',  
+                    'z']  
+ring = HashRing(memcache_servers,1)  
+ring.print_ring()  
+server = ring.get_node('0000')  
+server = ring.get_node('1111')  
+server = ring.get_node('2222')  
+server = ring.get_node('3333')  
+server = ring.get_node('4444')  
+server = ring.get_node('5555')  
+server = ring.get_node('6666')  
+server = ring.get_node('7777')  
+server = ring.get_node('8888')  
+server = ring.get_node('9999')  
+  
+print '----------------------------------------------------------'  
+  
+memcache_servers = ['a',  
+                   'g',  
+                   'n',  
+                    'z']  
+ring = HashRing(memcache_servers,1)  
+ring.print_ring()  
+server = ring.get_node('0000')  
+server = ring.get_node('1111')  
+server = ring.get_node('2222')  
+server = ring.get_node('3333')  
+server = ring.get_node('4444')  
+server = ring.get_node('5555')  
+server = ring.get_node('6666')  
+server = ring.get_node('7777')  
+server = ring.get_node('8888')  
+server = ring.get_node('9999')  
