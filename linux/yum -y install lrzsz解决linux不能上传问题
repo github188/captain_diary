@@ -5,3 +5,13 @@ yum -y install lrzsz
 安装jdk，zk，rabbitmq，redis，那就可以基本环境不缺啥了。docker都不需要了。
 yum -y install java-1.8.0-openjdk*  非常好用，直接能下载最新的jdk，并且安装完成，非常好用。
 
+今天跟宇恒又学了一招，sz  rz  这个东西  其实就是安装了lrzsz之后，就可以用的命令。
+sz  是当前linux服务器向PC机发送文件
+
+rz  就是从pc机从linux服务器获取文件。
+
+今天发现eclipse 的maven插件package出来的jar包跟我的eclipse中的源码对不上，多了几行我今天下午已经删除的代码。
+宇恒直接打开jar包 用斜杠命令找出这个class文件，然后用sz命令发送到桌面上用jad工具打开看源码，比对是否打包有问题。这个操作链很有用，
+以后经常用得上。
+
+
