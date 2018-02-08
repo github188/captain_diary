@@ -5,6 +5,7 @@ org.springframework.amqp.rabbit.listener.BlockingQueueConsumer
 
 <springProfile name="dev,test,cj,yzhd,yzpro">      解决关键就是加上这个  
 ,yzhd,yzpro  不信在dev环境关闭掉这个，去掉dev 你试试看刷不刷 【DEBUG】org.springframework.amqp.rabbit.listener.BlockingQueueConsumer
+加上之后这个org.springframework.amqp开头的class日志级别就是Info了，这种debug日志就不会打印出来了。rabbit真他娘恶心，打这种debug日志
 	<property name="ROOT_LEVEL" value="INFO" />
 	 <property name="SPRING_LEVEL" value="INFO" />
 </springProfile>
