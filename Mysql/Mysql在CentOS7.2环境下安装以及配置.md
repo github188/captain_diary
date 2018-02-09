@@ -1,4 +1,4 @@
-1.
+1.  非常好，这里直接配置了主从复制
 yum install mysql-server -y
 
 (如果不成功，则换用以下办法)
