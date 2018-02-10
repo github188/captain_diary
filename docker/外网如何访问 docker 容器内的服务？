@@ -1,0 +1,144 @@
+
+原创 2016年12月03日 21:45:11 5800
+为什么有端口映射？
+
+
+通过容器 id 获取 ip $ sudo docker inspect <container_id> | grep IPAddress | cut -d ’"’ -f 4
+
+1 这些 ip 是基于本地系统的
+
+2 容器的端口非本地主机是访问不到的，即端口只能本地访问外。
+
+3 ip地址 在容器每次启动的时候都会改变
+
+
+第二个问题怎么解决的？
+
+外网可以访问主机IP地址和端口，主机又可以访问容器端口，所以只要做一个映射，把主机的ip地址和端口信息映射到容器的某个端口上，换句话说就是
+
+当访问主机的某个端口时候，等于访问容器的某个端口，容器在启动的时候就做好这样一个映射，那就实现了容器被外网所访问。
+
+
+
+Docker 解决了容器的这两个问题，并且给容器内部服务的访问提供了一个简单而可靠的方法。Docker 通过端口绑定主机系统的接口，允许非本地客户端访问容器内部运行的服务。为了简便的使得容器间通信，Docker 提供了这种连接机制。
+
+
+
+
+1 自动映射端口
+
+
+-P使用时需要指定--expose选项，指定需要对外提供服务的端口
+
+
+$ sudo docker run -t -P --expose 22 --name server  ubuntu:14.04
+使用docker run -P自动绑定所有对外提供服务的容器端口，映射的端口将会从没有使用的端口池中 (49000..49900) 自动选择，你可以通过docker ps、docker inspect <container_id>或者docker port <container_id> <port>确定具体的绑定信息。
+
+
+2 绑定端口到指定接口
+
+
+基本语法
+
+
+$ sudo docker run -p [([<host_interface>:[host_port]])|(<host_port>):]<container_port>[/udp] <image> <cmd>
+默认不指定绑定 ip 则监听所有网络接口。
+
+
+绑定 TCP 端口
+# Bind TCP port 8080 of the container to TCP port 80 on 127.0.0.1 of the host machine.
+ $ sudo docker run -p 127.0.0.1:80:8080 <image> <cmd> 
+# Bind TCP port 8080 of the container to a dynamically allocated TCP port on 127.0.0.1 of the host machine. 
+$ sudo docker run -p 127.0.0.1::8080 <image> <cmd> 
+# Bind TCP port 8080 of the container to TCP port 80 on all available interfaces of the host machine. 
+$ sudo docker run -p 80:8080 <image> <cmd>
+ # Bind TCP port 8080 of the container to a dynamically allocated TCP port on all available interfaces
+ $ sudo docker run -p 8080 <image> <cmd>
+绑定 UDP 端口
+# Bind UDP port 5353 of the container to UDP port 53 on 127.0.0.1 of the host machine. $ sudo docker run -p 127.0.0.1:53:5353/udp <image> <cmd>
+
+
+由以上例子可以得出结论，如果没有指定主机端口，则会动态分配一个端口，
+
+如果没有指定主机ip ,则默认所有可用的主机。
+
+
+
+
+Nginx部署示例：
+
+
+
+
+# 创建映射端口为80的交互式界面：
+docker run -p 80 --name web -i -t ubuntu /bin/bash
+
+
+# 第一次使用更新源
+apt-get update
+
+
+# 安装nginx
+apt-get install nginx
+
+
+# 安装vim
+apt-get install vim
+
+
+whereis nginx
+nginx: /usr/sbin/nginx /etc/nginx /usr/share/nginx
+
+
+vim /etc/nginx/conf.d/localhost.conf
+发现配置文件在/etc/nginx/conf.d下面：
+
+
+conf.d/localhost.conf
+
+
+server {
+    listen       80;
+    server_name  localhost;
+    
+    location / {
+        root   /var/www/; 
+        index  index.html index.htm;
+    }   
+    
+}
+新建个目录：
+
+
+mkdir -p /var/www/
+
+
+vim /var/www/index.html
+内容随便写。
+
+
+# 启动nginx
+nginx
+使用Crtl+P(即Crtl+shift+p)退出容器，并后台运行。查看：
+
+
+[root@localhost ~]# docker port web
+80/tcp -> 0.0.0.0:32769
+
+
+[root@localhost ~]# docker top web
+UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD
+root                12123               12113               0                   07:14               pts/2               00:00:00            /bin/bash
+root                12159               12123               0                   07:14               ?                   00:00:00            nginx: master process nginx
+33                  12160               12159               0                   07:14               ?                   00:00:00            nginx: worker process
+
+
+[root@localhost ~]# curl http://127.0.0.1:32769
+正常的话会显示网页内容。
+
+
+如果exit退出了容器，想开启nginx服务，还可以：
+
+
+docker start web
+docker exec web nginx
