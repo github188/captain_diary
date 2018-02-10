@@ -17,5 +17,12 @@ appAllLog_2018-01-29.0.log:2018-01-29 10:43:06.658[INFO ][com.jst.app.controller
 [looklog@jst-dev9 01]$ grep '解码成功' appAllLog_2018-01-*.log
 
 
+过滤
+过滤出 /etc/passwd 文件中包含 root 的记录
+grep 'root' /etc/passwd
+递归地过滤出 /var/log/ 目录中包含 linux 的记录  -r 增加一个递归的作用
+grep -r 'linux' /var/log/
+
+
 
 
