@@ -1,3 +1,7 @@
+
+
+
+``` java
 /*
 * Copyright (c) 2015-2018 SHENZHEN  SCIENCE AND TECHNOLOGY DEVELOP CO., LTD. All rights reserved.
 *
@@ -326,3 +330,6 @@ public class QccrController extends BaseController {
 		
 	    
 }
+
+
+```
