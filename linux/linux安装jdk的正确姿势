@@ -16,3 +16,14 @@ java -version
 $JAVA_HOME/bin/java -version
 若两条命令输出的结果一致，且都为我们前面安装的 openjdk-1.8.0 的版本，则表明 JDK 环境已经正确安装并配置。
 这样，jps jinfo jmap jstack jstat 这些命令都可以用了
+
+
+
+
+
+
+
+
+
+
+
