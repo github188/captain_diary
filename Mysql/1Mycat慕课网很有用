@@ -8,6 +8,13 @@ Mycat 不光是数据库中间件，他还是数据库中间层，
 下载地址   https://github.com/MyCATApache/Mycat-download/tree/master/1.6-RELEASE
 
 
+在/usr/local路径下 将Mycat-server-1.6-RELEASE-20161028204710-linux.tar.gz 解压缩
+tar -zvxf Mycat-server-1.6-RELEASE-20161028204710-linux.tar.gz   
+cd mycat
+
+
+https://www.cnblogs.com/ivictor/p/5111495.html   这个下载安装讲的是很牛逼的  很全面了 
+
 
 
 
