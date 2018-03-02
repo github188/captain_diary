@@ -5,7 +5,7 @@ Mycat 不光是数据库中间件，他还是数据库中间层，
 1是可以分库分表，
 2是可以做读写分离；
 3是可以做连接池，这种连接池比app应用里面的连接池还不一样，它属于各个应用链接该数据库的一个统一连接池。
-
+下载地址   https://github.com/MyCATApache/Mycat-download/tree/master/1.6-RELEASE
 
 
 
