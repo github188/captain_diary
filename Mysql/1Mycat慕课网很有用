@@ -1,5 +1,5 @@
 1. Mycat安装：
-安装java环境  -  下载Mycat -  新建mycat用户  -   解压mycat -  配置环境变量
+安装java环境  -  下载Mycat -  新建mycat用户（ useradd mycat）  -   解压mycat -  配置环境变量
 
 Mycat 不光是数据库中间件，他还是数据库中间层，
 1是可以分库分表，
