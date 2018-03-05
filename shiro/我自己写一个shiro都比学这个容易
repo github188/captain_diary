@@ -2,6 +2,8 @@
 假设自己要写一个shiro，基于 用户-角色-资源访问来做，怎么做，
 用户-角色关联  角色资源关联   
 
+userId -  roleId - resource
+
 
 
 
