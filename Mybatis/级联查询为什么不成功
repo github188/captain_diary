@@ -28,6 +28,12 @@
     </collection> 
   </resultMap>
   
+   select  o.id,o.addr_id,DATE_FORMAT(o.create_time,'%Y-%m-%d %H:%i:%s') create_time,o.food_amount,o.mark,o.open_id,
+   o.pay_status,o.send_amount,o.send_status,d.food_id,
+    d.num,d.order_id order_id,d.price,a.id,a.addr,a.mobile,a.name,a.sex,f.food_name,f.pic_path,f.spice_level,f.type_id
+ from t_order o,t_order_detail d,t_addr a ,t_food f
+ where o.id = d.order_id and o.addr_id = a.id and d.food_id = f.food_id
+  
   package com.jst.bean;
 
 import java.util.List;
