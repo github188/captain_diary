@@ -1,0 +1,29 @@
+<resultMap id="BaseResultMap" type="com.jst.bean.Order" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="open_id" property="openId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="pay_type" property="payType" jdbcType="VARCHAR" />
+    <result column="pay_status" property="payStatus" jdbcType="INTEGER" />
+    <result column="mark" property="mark" jdbcType="VARCHAR" />
+    <result column="send_status" property="sendStatus" jdbcType="INTEGER" />
+    <result column="food_amount" property="foodAmount" jdbcType="INTEGER" />
+    <result column="send_amount" property="sendAmount" jdbcType="INTEGER" />
+    <result column="addr_id" property="addrId" jdbcType="VARCHAR" />
+    <result column="addr" property="addr" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <collection property="foodList" column="order_id" ofType="com.jst.bean.OrderDetail">  
+        <id property="id" column="id" jdbcType="VARCHAR" />  
+        <result property="foodId" column="food_id" jdbcType="VARCHAR" /> 
+        <result property="price" column="price" jdbcType="INTEGER" />
+        <result property="num" column="num" jdbcType="INTEGER" />
+	    <result column="type_id" property="typeId" jdbcType="VARCHAR" />
+	    <result column="food_name" property="foodName" jdbcType="VARCHAR" />
+	    <result column="pic_path" property="picPath" jdbcType="VARCHAR" />
+	    <result column="sale_price" property="salePrice" jdbcType="INTEGER" />
+	    <result column="old_price" property="oldPrice" jdbcType="INTEGER" />
+	    <result column="status" property="status" jdbcType="INTEGER" />
+	    <result column="spice_level" property="spiceLevel" jdbcType="INTEGER" />
+    </collection> 
+  </resultMap>
