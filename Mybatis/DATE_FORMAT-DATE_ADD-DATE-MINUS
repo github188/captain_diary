@@ -1,0 +1,5 @@
+select DATE_FORMAT(now(),'%Y-%m-%d %T') from t_order t
+好用的东西，java属性用字符串来接收
+
+
+http://www.w3school.com.cn/sql/func_date_format.asp
