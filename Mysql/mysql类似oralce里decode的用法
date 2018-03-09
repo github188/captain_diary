@@ -1,0 +1,9 @@
+mysql类似oralce里decode的用法
+原创 2015年03月02日 14:26:15 3870
+oracle中decode的用法
+
+select decode(条件,值1,翻译值1,值2,翻译值2,缺省值) from tableName ;
+
+mysql中的用法
+
+select case when 条件1  then 翻译值1  when 条件2  then 翻译值2  else  缺省值 from tableName;
