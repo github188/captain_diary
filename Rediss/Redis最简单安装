@@ -20,7 +20,10 @@ http://blog.csdn.net/zhangxiaoyang0/article/details/65632828
 redis-check-aof redis-check-dump redis-cli redis-sentinel
              -------- redis-server redis-trib.rb 可手动拷贝redis-server、redis-cli、redis-check-aof、
              redis-check-dump等至/usr/local/bin目录下，也可执行make install，此处执行make install
-8. make install      ----可查看，/usr/local/bin下已有上面这些文件         
+8. make install      ----可查看，/usr/local/bin下已有上面这些文件   
+
+下面这些都没必要  
+在/usr/local/bin 下面添加  这三个文件夹就行了 ，不添加执行set命令会报错  mkdir data log run
 
 9.  cd /etc/
 10.  mkdir redis
