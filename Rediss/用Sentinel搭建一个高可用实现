@@ -1,0 +1,18 @@
+切勿用root账号开启服务，因为redis很容易对服务器进行进行root账号的提取，具体重现可以看利用Redis对linux服务器root提权。
+所以现在需要设置一个专门的账号来启动，并且对相关目录进行授权。
+
+1：添加一个用户
+useradd redis
+
+2：对配置文件里的相关目录进行授权
+chown -R redis.redis /var/lib/redis_7021/
+chown -R redis.redis /var/lib/sentinel_17021
+chown -R redis.redis /var/log/redis/
+chown -R redis.redis /var/run/redis/
+chown -R redis.redis /etc/redis/
+
+这里要说一说 linux用户user登录进来之后，默认进入到~目录，这个目录是什么呢，/home/user/ ,
+那么root用户近来之后，也是~目录，这个是/root/,
+当你执行useradd user1 ,的时候，linux默认的就给建了/home/user1/,   
+
+
