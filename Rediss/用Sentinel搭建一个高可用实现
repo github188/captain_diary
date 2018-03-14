@@ -16,3 +16,18 @@ chown -R redis.redis /etc/redis/
 当你执行useradd user1 ,的时候，linux默认的就给建了/home/user1/,   
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
