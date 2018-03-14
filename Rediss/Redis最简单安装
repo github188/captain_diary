@@ -16,7 +16,8 @@ http://blog.csdn.net/zhangxiaoyang0/article/details/65632828
 
 6.  make distclean
 
-7.  make   ------------ 编译Make成功之后，会在/usr/local/bin目录下多出一些文件：  redis-check-aof redis-check-dump redis-cli redis-sentinel
+7.  make   ------------ 编译Make成功之后，会在/usr/local/bin目录下多出一些文件： 
+redis-check-aof redis-check-dump redis-cli redis-sentinel
              -------- redis-server redis-trib.rb 可手动拷贝redis-server、redis-cli、redis-check-aof、
              redis-check-dump等至/usr/local/bin目录下，也可执行make install，此处执行make install
 8. make install      ----可查看，/usr/local/bin下已有上面这些文件         
