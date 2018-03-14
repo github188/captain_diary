@@ -49,3 +49,11 @@ vim redis.conf
 -------如何设置用户名密码
 
 连接redis是不需要用户名和密码的，只需要ip和port
+上面的redis安装还可以简化，不用拷贝启动文件到etc下面，直接启动./redis-server 就可以了   
+启动sentinel，直接用./redis-sentinel,前提是执行过了slaveof命令，再去执行启动所有机器上的sentinel
+
+
+
+
+
+
