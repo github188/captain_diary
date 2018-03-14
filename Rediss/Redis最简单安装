@@ -52,8 +52,14 @@ vim redis.conf
 上面的redis安装还可以简化，不用拷贝启动文件到etc下面，直接启动./redis-server 就可以了   
 启动sentinel，直接用./redis-sentinel,前提是执行过了slaveof命令，再去执行启动所有机器上的sentinel
 
+sentinel需要在55和56做好主从之后才能开启，即：在56上执行slaveof，搭建好主从之后，再开启3个sentinel监控服务，一个高可用的（主从自动切换）搭建完成。可以通过在master上执行debug sleep命令来模拟故障转移，来测试sentinel故障转移是否搭建成功：
+
+debug sleep 30
+
+不明白这里第三台是怎么去做哨兵的 
 
 
+https://www.cnblogs.com/zhoujinyi/p/6430116.html
 
 
 
