@@ -1,6 +1,5 @@
 http://www.cnblogs.com/wucg/p/6143204.html
 
-
 Linux 防火墙开放特定端口 （iptables）
 查看状态:
 iptables -L -n
