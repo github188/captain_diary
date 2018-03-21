@@ -1,3 +1,6 @@
+-2018-3-21 15：26
+git push origin  HEAD:branch-dev -f
+
 
 有的时候，新增文件，或修改文件不能被git识别，用命令行来强制add  真的很好用
 >  cmy@jst-cmy MINGW32 ~/git/root-member1206/src/test/java/com/jst/prodution/member                                                                                                                /service (stress)
