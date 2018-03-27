@@ -1,4 +1,5 @@
-http://blog.itpub.net/29733787/viewspace-2049139   从下面这个操作过程，可以很清晰的看出来
+http://blog.itpub.net/29733787/viewspace-2049139   从下面这个操作过程，可以很清晰的看出来mycat是一个中间层服务，
+可以当作是mycat集群的一个代理，他将分库分表的逻辑全封装起来了，可以将它当作一个mysql
  
 svoid
 博客访问： 393378
