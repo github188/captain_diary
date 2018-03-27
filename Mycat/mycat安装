@@ -1,0 +1,284 @@
+http://blog.itpub.net/29733787/viewspace-2049139   从下面这个操作过程，可以很清晰的看出来
+ 
+svoid
+博客访问： 393378
+博文数量： 67
+用 户 组： 普通用户
+注册时间： 2014-07-02 09:20
+加关注
+短消息
+论坛
+加好友
+个人简介
+不忘初心，方得始终
+ITPUB论坛APP
+
+ITPUB论坛APP
+
+
+APP发帖 享双倍积分
+文章分类
+全部博文（67）
+
+监控（5）
+PostgreSQL（2）
+Linux（11）
+Python（6）
+Oracle（2）
+MySQL（39）
+未分配的博文（2）
+文章存档
+2016年（9）
+
+2015年（45）
+
+2014年（13）
+
+我的朋友
+ 
+urgel_ba
+ 
+壹頁書
+最近访客
+ 
+symbol79
+ 
+wyj_0605
+ 
+wittzhan
+ 
+jiqing10
+ 
+JDektong
+ 
+风陵渡口
+ 
+fuxig12
+ 
+timmyyan
+ 
+gaopengt
+微信关注
+
+IT168企业级官微
+
+
+微信号：IT168qiye
+
+系统架构师大会
+
+
+微信号：SACC2013
+推荐博文
+·MySQL主从复制Last_SQL_Errno...
+·【RMAN】Oracle中如何备份控...
+·MySQL 5.7 GR Single Primary...
+·mysql myisam的锁机制
+·MySQL:简单insert 一秒原因排...
+MyCAT安装使用及简单测试
+ 分类： MySQL2016-03-06 23:08:15
+MyCAT安装
+
+mycat运行依赖于jre环境，需要首先安装jdk7以上版本
+
+检查jdk版本
+shell> java -version
+java version "1.7.0_79"
+Java(TM) SE Runtime Environment (build 1.7.0_79-b15)
+Java HotSpot(TM) 64-Bit Server VM (build 24.79-b02, mixed mode)
+
+下载解压mycat server1.5安装文件
+shell> tar zxvf Mycat-server-1.5-RELEASE-20160301083012-linux.tar.gz
+
+创建mycat用户，并设置环境变量
+shell> groupadd mycat
+shell> useradd -g mycat mycat
+shell> passwd mycat
+shell> chown -R mycat.mycat /usr/local/mycat
+shell> vim /etc/profile 添加如下内容
+export MYCAT_HOME=/usr/local/mycat
+shell> source /etc/profile
+测试环境介绍
+
+Master：10.106.58.178
+Slave：10.106.58.179
+mycat：10.106.58.174
+
+mycat配置
+
+mycat1.5配置文件可以根据本地XML文件配置，也可以使用zookeeper来实现，本例介绍使用本地XML来配置。
+
+配置文件介绍
+
+conf/rule.xml 定义分片规则
+conf/schema.xml 定义逻辑库、表以及分片节点等内容
+conf/server.xml 定义用户授权及服务器参数相关配置
+shell> more conf/schema.xml
+<?xml version="1.0"?>
+<!DOCTYPE mycat:schema SYSTEM "schema.dtd">
+<mycat:schema xmlns:mycat="http://org.opencloudb/">
+        <schema name="test" checkSQLschema="false" sqlMaxLimit="100" dataNode="dn1" />
+        <dataNode name="dn1" dataHost="cluster1" database="test" />
+        <dataHost name="cluster1" maxCon="1000" minCon="10" balance="0"
+                writeType="0" dbType="mysql" dbDriver="native" switchType="1"  slaveThreshold="100">
+                <heartbeat>select user()</heartbeat>
+                <writeHost host="hostM1" url="10.106.58.178:3306" user="root" password="123456" >
+                        <readHost host="hostS1" url="10.106.58.179:3306" user="root" password="123456" />
+                </writeHost>
+        </dataHost>
+</mycat:schema>
+
+shell> more conf/rule.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mycat:rule SYSTEM "rule.dtd">
+<mycat:rule xmlns:mycat="http://org.opencloudb/">
+        <tableRule name="rule1">
+                <rule>
+                        <columns>id</columns>
+                        <algorithm>func1</algorithm>
+                </rule>
+        </tableRule>
+
+        <function name="func1" class="org.opencloudb.route.function.PartitionByLong">
+                <property name="partitionCount">8</property>
+                <property name="partitionLength">128</property>
+        </function>
+</mycat:rule>
+
+server.xml的user定义了客户端连接mycat使用的用户验证
+schema.xml的user是mycat连接数据库使用的用户
+shell> more conf/server.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mycat:server SYSTEM "server.dtd">
+<mycat:server xmlns:mycat="http://org.opencloudb/">
+        <system>
+        <property name="defaultSqlParser">druidparser</property>
+        </system>
+        <user name="test">
+                <property name="password">test</property>
+                <property name="schemas">test</property>
+        </user>
+</mycat:server>
+启动测试mycat
+
+查看wrapper.log，查看启动是否成功
+shell> /usr/local/mycat/bin/mycat start
+
+通过mycat连接数据库
+shell> mysql -h 10.106.58.174 -P8066  -u test -p
+mysql> select @@hostname;
++------------+
+| @@hostname |
++------------+
+| mysql178   |
++------------+
+1 row in set (0.13 sec)
+
+mysql> create table user(id int primary key,name varchar(100));
+Query OK, 0 rows affected (0.13 sec)
+
+mysql> insert into user(id,name) values(1,'xiaoming');
+Query OK, 1 row affected (0.07 sec)
+
+查询从库
+mysql> select @@hostname; select * from test.user;
++------------+
+| @@hostname |
++------------+
+| mysql179   |
++------------+
+1 row in set (0.00 sec)
+
++----+----------+
+| id | name     |
++----+----------+
+|  1 | xiaoming |
++----+----------+
+1 row in set (0.00 sec)
+测试读写分离
+
+mycat提供了几种请求负载均衡分发形式，通过定义dataHost标签的balance属性来修改
+balance=0，不开启读写分离机制，所有读写操作都发送到当前可用的writeHost上
+balance=1，全部的readHost和stand by writeHost参与select语句的负载均衡，如双主双从模式，M2、S1、S2都分发请求
+balance=2，所有读操作随机在writeHost和readHost上分发
+balance=3，所有读请求随机的分发到writeHost上对应的readHost上执行，writeHost不承担读压力。(balance=3只支持mycat1.4以上版本)
+
+设置balance=1并将log4j修改为debug模式，观察执行结果。
+
+执行写入操作，可以看出分发到writeHost
+mysql> insert into test.user(id,name) values(2,'xiaoli');
+
+
+
+执行查询操作，可以看出分发到readHost
+mysql> select * from test.user where id = 2;
+
+
+
+测试故障切换
+
+mycat通过dataHost标签的writeType和switchType来定义故障切换方式。
+writeType=0，表示所有写都发送到配置的第一个writeHost上，第一个挂了切换到第二个writeHost上，重启后以切换后的为准，
+切换记录在conf/dnindex.properties
+writeType=1，表示所有写都随机发送到配置的writeHost上，mycat1.5以上已废弃不推荐。
+switchType=-1，表示不自动切换
+switchType=1，默认值，表示自动切换
+switchType=2，基于MySQL主从同步的状态决定是否切换，心跳语句为show slave status。
+switchType=3，基于galaru cluster的切换机制（合适集群），mycat1.4以上支持，心跳语句为show status like 'wsrep%'。
+
+修改switchType=2，writeType=0，心跳语show slave status
+
+关闭Master
+shell> service mysql stop
+
+
+通过mycat执行插入操作，发现请求分发到第二个writeHost上
+mysql> insert into test.user values(3,'xiaowang');
+Query OK, 1 row affected (0.04 sec)
+
+
+重新启动原Master
+shell> service mysql start
+
+查看当前写入节点，0表示第一个，1表示第二个
+shell> more conf/dnindex.properties
+#update
+#Fri Mar 04 15:51:39 CST 2016
+cluster1=1
+
+通过mycat写入数据
+mysql> insert into test.user values(4,'xiaozheng');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from test.user where id = 4;
++----+-----------+
+| id | name      |
++----+-----------+
+|  4 | xiaozheng |
++----+-----------+
+1 row in set (0.01 sec)
+
+查看主库数据
+mysql> select * from test.user;
++----+----------+
+| id | name     |
++----+----------+
+|  1 | xiaoming |
+|  2 | xiaoli   |
++----+----------+
+2 rows in set (0.00 sec)
+
+查看从库数据
+mysql> select * from test.user;
++----+-----------+
+| id | name      |
++----+-----------+
+|  1 | xiaoming  |
+|  2 | xiaoli    |
+|  3 | xiaowang  |
+|  4 | xiaozheng |
++----+-----------+
+4 rows in set (0.00 sec)
+当原主库恢复之后，mycat并没有切换回第一个写入节点，而是需要重新配置主从状态。
+mycat的故障切换不会同步主从binlog差异数据，不能完整的保证数据一致性，而且没有记录切换后的writeHost提供服务时的binlog位置，
+其他从库指定新主库时，需要手工备份完整的数据，可考虑与MHA结合使用。
