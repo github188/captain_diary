@@ -1,0 +1,39 @@
+IntelliJ IDEA 2017 下载和破解方法
+原创 2017年05月21日 10:32:16 39800
+一、IntelliJ IDEA 2017 下载地址 
+
+http://www.jetbrains.com/idea/#chooseYourEdition
+
+
+
+要下载付费版的，免费版的很多功能不能用
+
+二、破解
+
+下载破解文件JetbrainsCrack-2.6.2.jar
+下载地址： 
+http://download.csdn.net/detail/gnail_oug/9824630
+
+http://idea.lanyus.com/   从这里可以直接拿到激活码
+
+2.1开始破解
+
+将下载的 JetbrainsCrack-2.6.2.jar 破解补丁放在你的安装idea下面的bin的目录下面（如图）。 
+
+我的是F:\idea\IntelliJ IDEA 2017.1\bin 
+这里写图片描述
+
+2.2修改配置文件 
+在安装的idea下面的bin目录下面有2个文件 ： 一个是idea64.exe.vmoptions，还有一个是idea.exe.vmoptions（如上图篮框）。 
+用记事本打开 分别在最下面一行增加一行：
+
+-javaagent:F:\idea\IntelliJ IDEA 2017.1\bin\JetbrainsCrack-2.6.2.jar
+1
+1
+“F:\idea\IntelliJ IDEA 2017.1\bin\JetbrainsCrack-2.6.2.jar”是对应的JetbrainsCrack-2.6.2.jar的位置。
+
+2.3 重启，填写注册码（到2099年到期） 
+重启一下软件，在进入出现有active code选择界面的时候，选择active code选项，在下方输入框随便输入几个字母即可 
+能够进入应用界面则表示安装破解成功。
+
+版权声明：本文为博主原创文章，未经博主允许不得转载。 https://blog.csdn.net/linyanqing21/article/details/72594352
