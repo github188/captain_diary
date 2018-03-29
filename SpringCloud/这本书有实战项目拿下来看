@@ -16,8 +16,8 @@ http://book.51cto.com/art/201803/567361.htm
   第九章 坑也多  
   eureka-feign-client pom.xml要添加下面依赖    版本号不可错
   
-  </dependency>
-				<dependency>
+  
+		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.5.2</version>
