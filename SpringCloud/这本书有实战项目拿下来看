@@ -1,3 +1,51 @@
 http://book.51cto.com/art/201803/567361.htm
 
 讲原理的地方打印出来看
+
+深入理解SpringCloud微服务构建   
+
+第七章eureka-server这个工程不能package的坑终于被我解决了
+
+	<parent>
+		<groupId>com.forezp</groupId>
+		<artifactId>chapter5-2</artifactId>
+		<version>1.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>  <!-- 这里要指向父工程的pom.xml路径  -->
+	</parent>
+  
+  第九章 坑也多  
+  eureka-feign-client pom.xml要添加下面依赖    版本号不可错
+  
+  </dependency>
+				<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.4</version>
+		</dependency>
+/**
+	 * http://localhost:8765/hi?name=333
+	 */
+   
+   
+   eureka-ribbon-client    pom.xml 
+   		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.4</version>
+		</dependency>
+
+   
+   
+   
+    
+  
