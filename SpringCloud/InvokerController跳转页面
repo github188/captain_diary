@@ -1,0 +1,77 @@
+package org.crazyit.cloud;
+
+import java.io.IOException;
+import java.util.HashMap;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.crazyit.cloud.contract.HelloClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.netflix.feign.support.ResponseEntityDecoder;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@Configuration
+public class InvokerController {
+
+	@Autowired
+	private PersonClient personClient;
+	
+	@RequestMapping(value = "/invokeHello", method = RequestMethod.GET)
+	public String invokeHello() {
+		return personClient.hello();
+	}
+	
+	@RequestMapping(value = "/baidu", method = RequestMethod.GET)
+	public String baidu() {
+		return personClient.baidu();
+	}
+	
+	@RequestMapping(value = "/router", method = RequestMethod.GET, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public String router() {
+		// 调用服务提供者的接口
+		Person p = personClient.getPerson(2);
+		return p.getMessage();
+	}
+	
+	@Autowired
+	private HelloClient helloClient;
+	
+	@RequestMapping(value = "/testContract", method = RequestMethod.GET, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public String testContract() {
+		String springResult = helloClient.springHello();
+		System.out.println("使用 @RequestMapping 注解的接口返回结果：" + springResult);
+		String myResult = helloClient.myHello();
+		System.out.println("使用 @MyUrl 注解的接口返回结果：" + myResult);
+		return "";
+	}
+	
+	/**
+	 * 测试请求拦截器
+	 */
+	@RequestMapping(value = "/testInterceptors", method = RequestMethod.GET, 
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public String testInterceptors() {
+		String springResult = helloClient.springHello();
+		return springResult;
+	}
+    /**
+     * 本地访问内容地址 ：http://localhost:8080/lmycc/hello
+     * @param map
+     * @return
+     * @throws IOException 
+     */
+    @RequestMapping("/index")
+    public void helloHtml(HashMap<String, Object> map,HttpServletRequest req,HttpServletResponse resp) throws IOException {
+    	String url = personClient.baidu();
+    	resp.sendRedirect(url);   
+    }
+}
