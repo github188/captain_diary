@@ -32,7 +32,7 @@ http://book.51cto.com/art/201803/567361.htm
 	 */
    
    
-   eureka-ribbon-client    pom.xml 
+   eureka-ribbon-client    pom.xml    在家里面这个httpclinet的4.5.3这个版本会依赖出错   4.5.2就没有问题
    		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
