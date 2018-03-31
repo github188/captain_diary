@@ -1,0 +1,3 @@
+@FeignClient("zuul-book-service") // 声明调用书本服务
+
+或者说像dubbo里面的@Reference注解  服务端就是一个restful接口
