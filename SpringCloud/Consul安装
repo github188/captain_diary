@@ -1,1 +1,4 @@
 https://blog.csdn.net/forezp/article/details/70188595
+
+linux  安装的时候要注意 这个 -client后面的IP地址必须是该服务器的内网IP地址
+
