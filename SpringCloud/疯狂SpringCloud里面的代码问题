@@ -1,0 +1,16 @@
+我:
+大仙  Building jar: D:\codes_fk_sc\07\03\zuul-eureka-server\target\zuul-eureka-server-0.0.1-SNAPSHOT.jar
+我:
+我在构建07/03  这个eureka-serve
+我:
+r的时候  
+我:
+发现 pom里面如果不添加这个  会构建失败 
+我:
+No plugin found for prefix 'spring-boot'  报这个错
+我:
+pom添加这个  <parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.2.7.RELEASE</version>
+	</parent>
