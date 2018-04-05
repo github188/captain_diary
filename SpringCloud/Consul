@@ -1,0 +1,14 @@
+https://blog.csdn.net/forezp/article/details/70188595
+
+linux  安装的时候要注意 这个 -client后面的IP地址必须是该服务器的内网IP地址
+
+https://blog.csdn.net/forezp/article/details/70245644  consul注册发现，有三个重点：
+1.要启动consul服务，端口8500
+2.添加consul客户端依赖
+<dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+</dependency>
+
+3,main方法所在类上方添加@EnableDiscoveryClient，服务发现客户端注解
+
