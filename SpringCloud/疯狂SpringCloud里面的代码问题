@@ -15,6 +15,7 @@ pom添加这个  <parent>
 		<version>1.2.7.RELEASE</version>
 	</parent>
 	
-	  如果实在本地跑 就不需要上面这个parent了
+	  如果实在本地跑 就不需要上面这个parent了  使我们的maven构建命令有问题  ，不要用package spring-boot:repackage了，直接用complie和package
+	  就行了额。
 
 07/03 z这个    http://localhost:8080/sale/sale-book/143535    可以吊桶子这个  
