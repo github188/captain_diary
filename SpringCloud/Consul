@@ -4,6 +4,7 @@ linux 安装 consul   https://blog.csdn.net/harris135/article/details/74178384?u
 linux  安装的时候要注意 这个 -client后面的IP地址必须是该服务器的内网IP地址
 nohup ./consul agent -dev -ui -node=consul-dev -client=10.254.107.136 &   启动的时候记得加上这个nohup 和末尾的& 否则ctrl+c 就杀掉这个服务了
 
+eureka跑一段时间，几个小时吧，就自己死掉了，我自己在滴滴云上面发现有这种情况发生。 那么究竟consul会不会这样呢，我们拭目以待。
 
 https://blog.csdn.net/forezp/article/details/70245644  consul注册发现，有三个重点：
 1.要启动consul服务，端口8500
