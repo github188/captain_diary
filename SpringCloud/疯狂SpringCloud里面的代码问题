@@ -14,5 +14,7 @@ pom添加这个  <parent>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.2.7.RELEASE</version>
 	</parent>
+	
+	  如果实在本地跑 就不需要上面这个parent了
 
 07/03 z这个    http://localhost:8080/sale/sale-book/143535    可以吊桶子这个  
