@@ -102,7 +102,19 @@ https://github.com/huangleisir/pics/blob/master/%E7%96%AF%E7%8B%82Springcloud%E7
 这个sc-user-service 和 sc-book-service 这两个工程打包，注意要先将，sc-parent工程在dos框里面mvn install一下 ，然后sc-commons也要mvn install一下
 
 
-
+为什么 linux 上不能用 localhost 链接数据库？
+原创 2017年03月22日 13:59:10 标签：localhost /localhost访问数据库 /linux /linux访问数据库 873
+     因为 linux 连接的时候不是通过 tcp 协议，而是通过 sockect 来连接。所以 写localhost 之后就会默认去找 sockect 链接
+     【此文件在 /var/lib/mysql/mysql.sock】。所以要用 ip【127.0.0.1】来连接，强制让它走 tcp 协议。
+ 
+ 
+      如果想强制用 localhost 链接：
+                vim /usr/local/php/lib/php.ini
+                 /sock                                            //寻找 sock
+                mysql.default_socket=/var/lib/mysql/mysql.sock
+                wq
+                pkill -p php-fpm
+                /usr/local/fastphp/sbin/php-fpm         //重启 php
 
 
 
