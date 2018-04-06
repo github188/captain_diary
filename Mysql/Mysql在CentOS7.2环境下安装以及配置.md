@@ -18,13 +18,17 @@ chkconfig mysqld on  (腾讯实验室上跑，这个没有也没关系)
 /usr/bin/mysqladmin -u root password '123456'
 5.
 mysql -uroot -p123456
+
 5.1 show databases;   看看刚安装好的mysql都有什么库实例
 5.2 use mysql ;  使用mysql库
 5.3 show tables;
 
 登录之后才能执行grant语句
+
 6.设置该用户及密码可以从任何服务器连接mysql服务器的任何实例
+
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;
+
 FLUSH PRIVILEGES;
 -------OK了，可以从sql yog登录进来了--------------
 
