@@ -14,8 +14,19 @@ pom添加这个  <parent>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.2.7.RELEASE</version>
 	</parent>
+虽然打包是能成功，可是没法java -jar来执行    
 	
 	  如果实在本地跑 就不需要上面这个parent了  使我们的maven构建命令有问题  ，不要用package spring-boot:repackage了，直接用complie和package
 	  就行了额。
 
 07/03 z这个    http://localhost:8080/sale/sale-book/143535    可以吊桶子这个  
+
+https://github.com/spring-microservices-demo/eureka-server  这个既可以在本地和服务器执行，又可以打包成功，所以这个，差别在pom文件，
+
+打包命令总结
+springboot工程可以用eclipse插件打包，前面就不用跟mvn命令， 直接用 package spring-boot:repacakge  这还是在捷顺时候跟何文学的
+springcloud，就不能用springboot来打包了，要用mvn，  mvn build  编译  mvn package 打包    同样可以用eclipse插件打包，前面就不用跟mvn命令
+所以  下载安装mvn是非常有必要的。
+
+
+
