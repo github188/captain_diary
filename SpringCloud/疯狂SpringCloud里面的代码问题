@@ -99,6 +99,7 @@ zuul-gateway  这个工程mvn package出来的jar包只有12.8KB
 
 https://github.com/huangleisir/pics/blob/master/%E7%96%AF%E7%8B%82Springcloud%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0%E6%9E%B6%E6%9E%84%E5%9B%BE.png
 有了eureka注册中心，为什么还要zuul，我估计是为了充分解耦。
+这个sc-user-service 和 sc-book-service 这两个工程打包，注意要先将，sc-parent工程在dos框里面mvn install一下 ，然后sc-commons也要mvn install一下
 
 
 
