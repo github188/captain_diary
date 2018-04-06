@@ -97,6 +97,8 @@ zuul-gateway  这个工程mvn package出来的jar包只有12.8KB
 
 第十二章这个架构图，你可以先画一画
 
+https://github.com/huangleisir/pics/blob/master/%E7%96%AF%E7%8B%82Springcloud%E7%AC%AC%E5%8D%81%E4%BA%8C%E7%AB%A0%E6%9E%B6%E6%9E%84%E5%9B%BE.png
+有了eureka注册中心，为什么还要zuul，我估计是为了充分解耦。
 
 
 
