@@ -28,5 +28,77 @@ springboot工程可以用eclipse插件打包，前面就不用跟mvn命令， �
 springcloud，就不能用springboot来打包了，要用mvn，  mvn build  编译  mvn package 打包    同样可以用eclipse插件打包，前面就不用跟mvn命令
 所以  下载安装mvn是非常有必要的。
 
+关于第七章的工程package有问题的情况，已经反馈给作者
+我:
+@杨大仙的空间    我发现这本书的案例 有个问题 在于 没法打包
+我:
+一打包 就出错  
+杨大仙的空间:
+哪个项目？
+我:
+07/03  
+我:
+这个 你用eclipse maven插件 打包试试看
+杨大仙的空间:
+哪个？
+杨大仙的空间:
+不知道你的环境 有什么问题，我在命令行是可以的
+我:
+你拿这个包  java -jar
+我:
+执行以=一下看看
+杨大仙的空间:
+是不可以打包还是怎么样？
+杨大仙的空间:
+打包是正常的
+杨大仙的空间:
+@Bluestone ？
+我:
+zuul-gateway  打出来的包 执行以下看看
+杨大仙的空间:
+这个章节的包，书上并没有叫你执行啊
+杨大仙的空间:
+你要执行的话，拿最后一章的项目来执行
+杨大仙的空间:
+第7章重点并不是打包、部署啊
+我:
+package spring-boot:repackage   你是用这个命令 打包的吗
+我:
+还是  mvn package
+杨大仙的空间:
+mvn package
+杨大仙的空间:
+都不知道你为什么要打包
+杨大仙的空间:
+在eclipse里面启动就好了
+杨大仙的空间:
+你要拿可运行的项目，到第12章就行了，有一个完整的项目
+我:
+zuul-gateway  这个工程mvn package出来的jar包只有12.8KB  
+我:
+我试试12章的项目
+
+
+关于第十二章，可以在parent的pom里面
+添加  		
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.4</version>
+		</dependency>
+		
+		
+省的一个一个子模块去添加，麻烦事。
+
+
+
+
+
+
 
 
