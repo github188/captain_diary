@@ -30,6 +30,8 @@ mysql -uroot -p123456
 GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '123456' WITH GRANT OPTION;
 
 FLUSH PRIVILEGES;
+
+注意linux环境下安装mysql，默认是区分大小写的，windows是默认忽略大小写，这里是个坑。
 -------OK了，可以从sql yog登录进来了--------------
 
 ------配置master数据库--------
