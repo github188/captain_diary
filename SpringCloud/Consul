@@ -45,4 +45,167 @@ https://blog.csdn.net/stpeace/article/details/69934763
 
 
          从形式上看， netstat -nap 更好记忆， 但lsof的用法也要熟练。
+         
+ 
+ eureka 换成consul  滴滴云上面的eureka服务真他娘的不靠谱
+三部曲：
+ 1.换jar包   eureka jar包一定要丢掉，否则会报错
+ 
+ <dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<!-- <dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-eureka</artifactId>
+		</dependency> -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.crazyit.test</groupId>
+			<artifactId>sc-commons</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+                        <groupId>org.springframework.cloud</groupId>
+                        <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+                        </dependency>
+</dependencies>
+ 
+ 
+  2.application文件换配置 
+  
+  
+  
+  
+  3.主方法入口类换注解 
+  
+  server:
+  port: 8010
+spring:
+  application:
+    name: sc-user-service
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://116.85.53.248:3306/sc_cloud
+    username: root
+    password: 123456
+  cloud:
+    consul:
+      host: 127.0.0.1
+      port: 8500
+      discovery:
+        healthCheckPath: ${management.contextPath}/health
+        healthCheckInterval: 15s
+        instance-id: sc-user-service
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 2000
+#eureka:
+#  instance:
+#    hostname: localhost
+#  client:
+#    serviceUrl:
+#      defaultZone: http://116.85.53.248:8761/eureka/
+ 
+ 
+ package org.crazyit.test;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+//import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+
+@SpringBootApplication
+//@EnableEurekaClient
+@EnableDiscoveryClient
+public class UserServiceApp {
+
+	public static void main(String[] args) {
+		new SpringApplicationBuilder(UserServiceApp.class).run(args);
+	}
+
+}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
 
