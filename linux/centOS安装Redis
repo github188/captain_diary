@@ -7,7 +7,7 @@ http://blog.csdn.net/zhangxiaoyang0/article/details/65632828
 1.  wget http://download.redis.io/redis-stable.tar.gz  ---------wget下载安装包   
 
 2.  tar -zxvf redis-stable.tar.gz    ----------解压    
-
+       
 3.  cd redis-stable       --------------编译，安装
 
 4.  yum -y install  gcc    -- 安装gcc
