@@ -1,0 +1,449 @@
+
+
+package com.forezp;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.feign.EnableFeignClients;
+import org.springframework.cloud.netflix.hystrix.EnableHystrix;
+/**
+ * Created by  on 2018/3/20.
+ */
+@SpringBootApplication
+@EnableDiscoveryClient
+@EnableFeignClients
+@EnableHystrix
+public class ServiceFeignApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ServiceFeignApplication.class, args);
+	}
+}
+
+------------
+package com.forezp.dao;
+
+
+import com.forezp.dto.User;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+@Repository
+public interface UserDao {
+
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(User record);
+
+    int insertSelective(User record);
+
+    User selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(User record);
+
+    int updateByPrimaryKey(User record);
+
+    List<User> getAllUsers();
+}
+----------------------------------
+package com.forezp.dataConfig;
+
+import java.util.Properties;
+import javax.sql.DataSource;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import com.alibaba.druid.pool.DruidDataSourceFactory;
+
+/**
+ * @ClassName: MyBatisConfig
+ * @Description: Spring Boot集成Mybatis的基本入口
+ * @author Created by huxinglong
+ * @date 2018年3月23日 上午9:59:56
+ *
+ */
+@Configuration
+@MapperScan(basePackages="com.forezp.dao")
+public class MyBatisConfig {
+
+    @Autowired
+    private Environment env;
+
+    /**
+     * @Title: getDataSource
+     * @Description: 创建数据源
+     * @param @return
+     * @return DataSource
+     * @throws
+     */
+    @Bean("ds")
+    public DataSource getDataSource(){
+        Properties props = new Properties();
+        props.put("driverClass", env.getProperty("jdbc.driverClassName"));
+        props.put("url", env.getProperty("jdbc.url"));
+        props.put("username", env.getProperty("jdbc.username"));
+        props.put("password", env.getProperty("jdbc.password"));
+        try {
+            return DruidDataSourceFactory.createDataSource(props);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * @Title: sqlSessionFactory
+     * @Description:  根据数据源创建SqlSessionFactory
+     * @param @param ds
+     * @param @return
+     * @param @throws Exception
+     * @return SqlSessionFactory
+     * @throws
+     */
+    @Bean
+    public SqlSessionFactory sqlSessionFactory(@Qualifier("ds") DataSource ds) throws Exception{
+        SqlSessionFactoryBean sfb = new SqlSessionFactoryBean();
+        sfb.setDataSource(ds);
+        //下边两句仅仅用于*.xml文件，如果整个持久层操作不需要使用到xml文件的话（只用注解就可以搞定），则不加
+        sfb.setTypeAliasesPackage(env.getProperty("mybatis.typeAliasesPackage"));
+        sfb.setMapperLocations(new PathMatchingResourcePatternResolver().getResources(env.getProperty("mybatis.mapperLocations")));
+        return sfb.getObject();
+    }
+}
+------------------------
+package com.forezp.dto;
+
+public class User {
+    private String id;
+    private String name;
+    private String password;
+    private String phone;
+    private String city;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId( String id ) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName( String name ) {
+        this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword( String password ) {
+        this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone( String phone ) {
+        this.phone = phone;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity( String city ) {
+        this.city = city;
+    }
+}
+----------
+package com.forezp.service;
+
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.ribbon.proxy.annotation.Hystrix;
+import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+/**
+ * Created by huxinglong on 2018/3/20.
+ */
+@FeignClient(value = "service-hello", fallback =SchedualServiceHi.hiError.class)
+//@FeignClient(value = "consul-miya")
+public interface SchedualServiceHi {
+    //@HystrixCommand(fallbackMethod = "fallbackMethodTest")
+    @RequestMapping(value = "/hello",method = RequestMethod.GET)
+    String sayHiFromClientOne(@RequestParam(value = "name") String name);
+
+    @Component
+    class hiError implements SchedualServiceHi{
+        @Override
+        public String sayHiFromClientOne(String name) {
+            return "hi,"+name+",sorry,error!";
+        }
+    }
+}
+------------------------
+package com.forezp.service;
+
+
+import com.forezp.dao.UserDao;
+import com.forezp.dto.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class UserService {
+
+    @Autowired
+    private UserDao userDao;
+
+    public int addUser(User user){
+        return userDao.insert(user);
+    }
+
+    public User getUserById(int id){
+        return userDao.selectByPrimaryKey(id);
+    }
+
+    public List<User> getAllUsers(){
+        return userDao.getAllUsers();
+    }
+}
+--------------
+package com.forezp.web;
+
+import com.forezp.service.SchedualServiceHi;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+
+/**
+ * Created by huxinglong on 2018/3/20.
+ */
+@RestController
+public class HiController {
+
+    @Resource
+    SchedualServiceHi schedualServiceHi;
+    @RequestMapping(value = "/hi",method = RequestMethod.GET)
+    public String sayHi(@RequestParam String name){
+        return schedualServiceHi.sayHiFromClientOne(name);
+    }
+}
+--------------
+package com.forezp.web;
+
+
+import javax.annotation.Resource;
+
+import com.forezp.dto.User;
+import com.forezp.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+/**
+ * Created by huxinglong on 2018/3/29.
+ */
+@RestController
+@RequestMapping("/user")
+public class UserController {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    @Autowired
+    private UserService userService;
+
+    @Resource
+    private DiscoveryClient client;
+
+    @RequestMapping(value="/addUser",method=RequestMethod.POST)
+    @ResponseBody
+    public int addUser(@RequestBody User user){
+        return userService.addUser(user);
+    }
+
+    @RequestMapping(value="/getUserById",method=RequestMethod.GET)
+    @ResponseBody
+    public User getUserById(@RequestParam int id){
+        return userService.getUserById(id);
+    }
+
+    @RequestMapping(value="/getAllUsers",method=RequestMethod.GET)
+    @ResponseBody
+    public List<User> getAllUsers(){
+        List<User> listUser = userService.getAllUsers();
+        //获取服务信息
+        ServiceInstance instance = client.getLocalServiceInstance();
+        //输出服务信息
+        logger.info("uri={}，serviceId={}，result={}", instance.getUri(), instance.getServiceId(),listUser);
+        return listUser;
+    }
+}
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.forezp</groupId>
+	<artifactId>service-feign</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+
+	<name>service-feign</name>
+	<description>Demo project for Spring Boot</description>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.8.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-consul-discovery</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-feign</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<!--		<dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-test</artifactId>
+                    <scope>test</scope>
+                </dependency>-->
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-hystrix</artifactId>
+		</dependency>
+
+		<!-- 与数据库操作相关的依赖 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+
+		<!-- 使用数据源 -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>1.1.9</version>
+		</dependency>
+
+		<!-- mysql -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- mybatis -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.2.8</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.2.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid-spring-boot-starter</artifactId>
+			<version>1.1.9</version>
+		</dependency>
+
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>Edgware.SR2</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+	<!--<repositories>-->
+		<!--<repository>-->
+			<!--<id>spring-milestones</id>-->
+			<!--<name>Spring Milestones</name>-->
+			<!--<url>https://repo.spring.io/milestone<;/url>-->
+			<!--<snapshots>-->
+				<!--<enabled>false</enabled>-->
+			<!--</snapshots>-->
+		<!--</repository>-->
+	<!--</repositories>-->
+
+
+</project>
+
+huanglein@yonyou.com
