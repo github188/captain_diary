@@ -48,9 +48,21 @@ vim redis.conf
 用 斜杠加回车命令 找到  # requirepass foobared
 去掉前面的#  foobared改为自己的密码  123456
 
+今天在yjs安装redis踩到这个坑了
+linux安装redis后不能远程连接的问题：
+1.redis.conf 配置文件 
+    1.  daemon no  改为 daemon yes ，否则退出进程就死掉了
+    2.  bind  127.0.0.1  前面要加#给注释掉
+    3. protected-mode yes 要改为no
+    3. requirepassword foobared 后面改为123456
+等这些全都改好了，再来启动redis，
+如果改完配置文件要重启，需要kill掉 redis进程  ps -ef|grep redis   插到pid
+kill -9 pid
+再来重启  
+刚才踩了一个坑  修改了  配置文件   再次启动没有报错 可是 配置文件没有加载   必须kill掉原来的进程  重新启动 配置文件才生效
 
 
--------如何设置用户名密码
+-------如何设置用户名密码   ---- 只能设置密码  
 
 连接redis是不需要用户名和密码的，只需要ip和port
 上面的redis安装还可以简化，不用拷贝启动文件到etc下面，直接启动./redis-server 就可以了   
