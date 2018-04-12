@@ -1,0 +1,30 @@
+现在到了友尽所之后呢，身边的人不少人在用idea，所以呢用不好的时候有人问，这个挺好的。
+
+另外一点，有些不需要改代码吗，还需要一直启动的工程，就适合用这个idea，一直帮你启动着，还不用管他。像这样，逐渐逐渐的将这个idea，用起来，
+这东西还是挺酷的。就是快捷键短时间内没法掌握，还有不知道它到底好在什么地方。
+
+
+IntelliJ IDEA的main方法，for循环，syso的快捷键
+转载 2016年11月15日 20:04:54 14770
+原文链接：http://blog.csdn.net/tiantiandjava/article/details/42269173
+
+今天偶然发现了IntelliJ中 创建main函数的快捷键，依次还有for循环，System.out.println(); 
+在编写代码的时候直接输入psv就会看到一个psvm的提示，此时点击tab键一个main方法就写好了。
+
+main方法：
+
+psvm 也就是public static void main的首字母。 
+这里写图片描述
+
+for循环
+
+依次还有在方法体内键入for会有一个fori的提示，选中然后tab键，就会自动创建一个for循环。 
+这里写图片描述
+
+System.out.println()
+
+如何像写一个System.out.println();就是sout 
+这里写图片描述
+
+知道了这个规律，应该还有很多类似的用法。 
+更多的提示可以CTRL + j 可以查看，mac系统下是command＋j。
