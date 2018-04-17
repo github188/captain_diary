@@ -1,0 +1,9 @@
+public static void main(String[] ar) {
+		SpringApplication.run(Application.class, ar);
+	}
+	    
+	@RequestMapping(value = "/demo", method = RequestMethod.GET)
+	@ResponseBody
+	public String demo(){
+		return "hello world!";
+	}
