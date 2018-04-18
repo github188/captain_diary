@@ -43,5 +43,6 @@
    
      git bash 里面直接  git  merge  命令就可以了    这个应该是大多数人用的merge方法
    
-
+     git merge branch-1-name   
+     表示将branch-1-name 分支代码合并到当前分支
  
