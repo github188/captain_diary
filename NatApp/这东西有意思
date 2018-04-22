@@ -3,6 +3,8 @@
 
 https://natapp.cn/article/natapp_newbie   linux  在后台运行./natapp 
 
+nohup ./natapp -authtoken=xxxx -log=stdout &  
+
 linux  没法看 nohup.out 中是什么  
 
 可以这样  先不带nohup 跑一次  拿到这个给定的域名之后，再带上nohup跑一次，这样，域名还是原来那个
