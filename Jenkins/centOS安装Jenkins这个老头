@@ -18,3 +18,9 @@ cat /var/lib/jenkins/secrets/initialAdminPassword
 将密码 贴到初始化页面
 在网页上 我们选择默认的 select  plugins to install 来安装插件。
 选择all  ---  点击安装
+
+
+
+
+
+
