@@ -1,1 +1,91 @@
+code first 先看代码
+package com;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+@Target({ElementType.TYPE,ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Inherited
+@Documented
+public @interface Description {
+	String value();
+}
+-------------------------
+package com;
+@Description("这是类Child，我是注解在type上面的")
+public class Child{
+	@Description("成员变量name:我叫你daddy")
+	public String name() {
+		return null;
+	}
+	public int age() {
+		return 0;
+	}
+	@Deprecated
+	public void sing() {
+		System.out.println("sing a song");
+	}
+}
+-----------------------------
+package com;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+public class ParseAnnoDescrip {
+	private static Description annotation;
+	private static Method[] methods;
+	private static Annotation[] annotations;
+	public static void main(String[] args) {
+		//1. 使用类加载器加载被注解的类
+		Class<?> c = null;
+		try {
+			c = Class.forName("com.Child");
+			System.out.println(c.getName());
+		} catch (ClassNotFoundException e) {
+			System.out.println("找不到这个类啊:com.Child");
+		}
+		boolean annotationPresent = c.isAnnotationPresent(Description.class);
+		//判断这个类上面是否有Description
+		if(annotationPresent) {
+			annotation = c.getAnnotation(Description.class);
+			System.out.println(annotation.value());
+		}
+		//找到方法上面的注解
+		methods = c.getMethods();
+		for (Method method : methods) {
+			 annotationPresent = method.isAnnotationPresent(Description.class);
+			if(annotationPresent) {
+				Description methodAnno= method.getAnnotation(Description.class);
+				System.out.println(methodAnno.value());
+			}
+			System.out.println("对方法注解的另一种解析方式");
+		    annotations = method.getAnnotations();
+		    for (Annotation ann : annotations) {
+		    	if(ann instanceof Description) {
+		    		System.out.println(((Description)ann).value());
+		    	}
+			}			
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
