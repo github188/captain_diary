@@ -1,0 +1,232 @@
+Gson解析json，让json解析不再困难
+2016年05月04日 12:30:12
+阅读数：7386
+
+json解析，当然有很多办法，今天要讲的是用 Gson 解析 json，首先需要引用 jar 包，下载地址为：
+   http://mvnrepository.com/artifact/com.google.code.gson/gson
+
+此处，我用的是  gson-2.6.2.jar
+
+先往自己的项目中导入jar包
+
+   gson主要用到的方法有两个，gson.toJson（）是将对象，属性等转化成 json 串，gson.fromJson（，）是将json串转化成对象，属性等，下面做出详细介绍
+
+1. 将对象转化成 json 串
+
+   首先引入person类：
+
+   public class Person {
+private String name;
+private int age;
+
+public String getName() {
+return name;
+}
+public void setName(String name) {
+this.name = name;
+}
+public int getAge() {
+return age;
+}
+public void setAge(int age) {
+this.age = age;
+}
+}
+
+制造 person 对象用于测试
+
+      Person mPerson=new Person();
+      mPerson.setAge(23);
+      mPerson.setName("小明");
+
+将  mPerson 对象转化成 json串：
+
+       Gson gson =new Gson();
+       String personStr=gson.toJson(mPerson);
+
+        Log.e("","personStr="+personStr);
+
+运行，控制台打印  
+
+
+
+
+
+2. 将 person 的list 集合转化成 json 串
+
+   制造list用于测试
+
+   List<Person>persons=new ArrayList<Person>();
+   for(int i=0;i<3;i++){
+Person p=new Person();
+p.setAge(i+20);
+p.setName("小华"+i);
+persons.add(p);
+   }
+
+将 persons 转化成 json串：
+
+   Gson gson=new Gson();
+   String str=gson.toJson(persons);
+   Log.e("","==list转json串====="+str);
+
+控制台打印
+
+  
+
+3.将包含属性和list的对象转化成 json
+
+  在 person中增加一个 list，现在person类变成：
+
+  public class Person {
+   
+private String name;
+private int age;
+private List<Book>books;
+        。。。。。。
+}
+
+将 persons  转化成 json串：
+
+   Gson gson=new Gson();
+   String str=gson.toJson(persons);
+   Log.e("","==list转json串====="+str);
+
+控制台打印：
+
+   
+
+4.  将 map 转化成 json 串
+
+         Map<String,String>map=new HashMap<String,String>();
+   map.put("name", "小芳");
+   map.put("like", "reading");
+   Gson gson=new Gson();
+   String json=gson.toJson(map);
+   Log.e("","map to json==="+json);   
+
+控制台打印：
+
+
+
+5. 解析JSON对象，将其还原为JavaBean
+
+  String json="{\"name\":\"小明\",\"age\":\"23\"}";
+  Gson gosn=new Gson();
+  Person p=gosn.fromJson(json, Person.class);
+  Log.e("","p.getAge()="+p.getAge());
+  Log.e("","p.getName()="+p.getName());
+
+控制台打印：
+
+   
+
+6. 若 json 是 数组形式，则借助 TypeToken获取泛型参数的类型 进行转换
+
+  String json="[{\"name\":\"小明\",\"age\":\"23\"},{\"name\":\"小芳\",\"age\":\"22\"}]";
+  Gson gosn=new Gson();
+  //使用Type类，取得相应类型对象的class属性
+  java.lang.reflect.Type listType=new TypeToken<ArrayList<Person>>(){}.getType();//TypeToken内的泛型就是Json数据中的类型
+  ArrayList<Person>persons=gosn.fromJson(json, listType);
+  for(Person p:persons){
+      Log.e("","p.getAge()"+p.getAge());
+      Log.e("","p.getName()"+p.getName());
+  }
+
+控制台打印：
+
+    
+
+7.若json是对象，且其中含list，则按层解析
+
+   String json="{\"name\":\"小明\",\"age\":\"23\",\"books\":[{\"mBookName\":\"故事1\",\"mBookprice\":\"23\"},{\"mBookName\":\"故事2\",\"mBookprice\":\"25\"}]}";
+    Gson gson=new Gson();
+
+    Person p1=gson.fromJson(json, Person.class);
+
+    Log.e("","p.getAge()"+p1.getAge());
+    Log.e("","p.getName()"+p1.getName());
+    Log.e("","p.getBooks()"+gson.toJson(p1.getBooks()));
+
+    java.lang.reflect.Type listType=new TypeToken<ArrayList<Book>>(){}.getType();//TypeToken内的泛型就是Json数据中的类型
+    ArrayList<Book>books=gson.fromJson(gson.toJson(p1.getBooks()), listType);
+    for(Book b:books){
+Log.e("","b.getmBookName()"+b.getmBookName());
+Log.e("","b.getmBookprice()"+b.getmBookprice());
+    }
+
+控制台打印：
+
+    
+
+8.将 json 转化成 map
+
+  String json="{\"name\":\"小明\",\"age\":\"23\"}";
+  Gson gson=new Gson();
+  java.lang.reflect.Type listType=new TypeToken<Map<String,String>>(){}.getType();//TypeToken内的泛型就是Json数据中的类型
+  Map<String,String>map=gson.fromJson(json, listType);
+
+  Log.e("","==name=="+map.get("name"));
+  Log.e("","==age=="+map.get("age"));
+
+控制台打印：
+
+   
+
+
+
+9.Gson对于基本数据类型的解析
+  基本数据类型的解析
+  Gson gson = new Gson();
+  int i = gson.fromJson("100", int.class);              //100
+  double d = gson.fromJson("\"99.99\"", double.class);  //99.99
+  boolean b = gson.fromJson("true", boolean.class);     // true
+  String str = gson.fromJson("String", String.class);   // String
+  注：不知道你是否注意到了第2、3行有什么不一样没
+  
+  基本数据类型的生成 
+  Gson gson = new Gson();
+  String jsonNumber = gson.toJson(100);       // 100
+  String jsonBoolean = gson.toJson(false);    // false
+  String jsonString = gson.toJson("String"); //"String"
+
+
+
+10. @SerializedName 注解
+
+值得注意的是，当大家将 json 串解析成 对象的时候，对象中的属性一定要与 json串中的 属性完全一样，如 
+
+String json="{\"name\":\"小明\",\"age\":\"23\"}"时，那么person对象的属性名称必须为 name 和 age，若person中的属性 命名为 Name，Age或者其他在的名称，gson则解析不出来，必须和  json串中的 属性完全一样！！！谨记啊，同学们！
+
+最新：如果不想自定义的类和json数据相对应，你需要借助 @SerializedName 注解，
+   如，String json="{\"name\":\"小明\",\"age\":\"23\"}，你的类中的name属性为 String personName；则你需要这样写
+   @SerializedName("name");
+   private String personName;来转化json和你实体类间的关系，注解@SerializedName("name");中的name必须和json中的name一样
+
+
+
+11.支持泛型，
+   对于一般的json解析都有固定格式，如code，message，data，当我们需要解析的只有data层但又不知到data层是什么时，可以定义泛型类
+    public class Result<T> {
+    public int code;
+    public String message;
+    public T data;
+   }
+   解析data层：
+   //不再重复定义Result类  
+   (data层为user对象)
+   Type userType = new TypeToken<Result<User>>(){}.getType();
+   Result<User> userResult = gson.fromJson(json,userType);
+   User user = userResult.data;
+  (data层为List<user>)
+   Type userListType = new TypeToken<Result<List<User>>>(){}.getType();
+   Result<List<User>> userListResult = gson.fromJson(json,userListType);
+   List<User> users = userListResult.data;
+
+
+
+
+
+
+
+好了，gson解析今天就讲到这里吧，欢迎各位大神交流
