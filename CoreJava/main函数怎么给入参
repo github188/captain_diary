@@ -1,1 +1,4 @@
 看看百度这篇文章就知道了，动手试试看   http://jingyan.baidu.com/article/86f4a73e63862a37d6526909.html   
+
+你你如说 黎君给我的那个mybatis 自动生成代码的那个东西，就是用main方法传值进去，
+还有springboot java -jar  启动代码的时候，也是可以从main传值进去的
