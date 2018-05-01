@@ -1,5 +1,47 @@
-1. object转 json串
+1. object转 json串   JSONObject.fromObject(jsonStr);   new JSONObject(jsonStr);
 
 2. json串中根据key值取到value
 
-3.json串解析成javabean   JsonObject.toBean();
+3.json串解析成javabean   JsonObject.toBean();(不知道要哪一个版本的org.json才有这个方法) 如果不行 就只能用gson来转了
+
+package json;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class Main {
+	
+	public static void main(String[] args) throws JSONException {
+		// TODO Auto-generated constructor stub
+		JSONObject jsonObject = new JSONObject();
+		JSONObject jsonObject1 = new JSONObject();
+		jsonObject.put("name", "和千古");
+		jsonObject.put("age", 99);
+		jsonObject1.put("name", "和千古");
+		jsonObject1.put("age", 99);
+		List<String> list = new ArrayList<String>();
+		list.add("抽烟");
+		list.add("喝酒");
+		list.add("打牌");
+		jsonObject.put("favarites", list);
+		jsonObject.put("content",jsonObject1);
+		String json = jsonObject.toString();
+		System.out.println(json);	
+		jsonObject = new JSONObject(json);
+		int age = jsonObject.getInt("age");
+		JSONArray array = jsonObject.getJSONArray("favarites");
+		array.get(0);
+		array.length();
+		System.out.println(age);
+		String content = jsonObject.getString("content");
+		JSONObject jb = new JSONObject(content);
+		System.out.println(jb.getString("name"));
+		
+	}
+
+}
+
