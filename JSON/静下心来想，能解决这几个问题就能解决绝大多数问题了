@@ -1,0 +1,5 @@
+1. object转 json串
+
+2. json串中根据key值取到value
+
+3.json串解析成javabean   JsonObject.toBean();
