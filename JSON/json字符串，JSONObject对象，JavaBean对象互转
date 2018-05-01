@@ -1,0 +1,124 @@
+json字符串，JSONObject对象，JavaBean对象互转。
+2017年05月08日 22:51:10
+阅读数：16874
+ 1.json字符串转为JSONObject对象：
+
+[java] view plain copy
+String jsonStr = "{\"name\":\"1\",\"age\":1,\"id\":0}";  
+// json字符串转为JSONObject 对象  
+JSONObject jsonObject = JSONObject.fromObject(jsonStr);  
+System.out.println("name:" + jsonObject.get("name"));  
+System.out.println("age:" + jsonObject.get("age"));  
+System.out.println("id:" + jsonObject.get("id"));  
+2.JSONObject转为json字符串：
+
+[java] view plain copy
+// JSONObject转为json字符串  
+String string = jsonObject.toString();  
+System.out.println("string" + string);  
+javaBean对象如下：
+
+[html] view plain copy
+  
+[java] view plain copy
+package pojo;  
+public class People {  
+  
+  
+    private int id;  
+    private int age;  
+    private String name;  
+      
+      
+    public People(int id, int age, String name) {  
+        super();  
+        this.id = id;  
+        this.age = age;  
+        this.name = name;  
+    }  
+      
+    public People() {  
+        super();  
+    }  
+  
+  
+    public int getId() {  
+        return id;  
+    }  
+    public void setId(int id) {  
+        this.id = id;  
+    }  
+    public int getAge() {  
+        return age;  
+    }  
+    public String getName() {  
+        return name;  
+    }  
+    public void setAge(int age) {  
+        this.age = age;  
+    }  
+    public void setName(String name) {  
+        this.name = name;  
+    }  
+    @Override  
+    public String toString() {  
+        return "People [id=" + id + ", age=" + age + ", name=" + name + "]";  
+    }  
+      
+}  
+3.JSONObject对象转化为javaBean对象：
+
+[java] view plain copy
+// JSONObject转为javaBean  
+People people = (People)JSONObject.toBean(jsonObject, People.class);  
+System.out.println(people);  
+4.javaBean对象转为 JSONObject对象:
+
+[java] view plain copy
+  
+[java] view plain copy
+// javaBean转为JSONObject对象  
+People javaBean = new People();  
+javaBean.setAge(100);  
+javaBean.setId(1);  
+javaBean.setName("samllking");  
+JSONObject peopleJson = JSONObject.fromObject(javaBean);  
+String string2 = peopleJson.toString();  
+System.out.println("String2 : " + string2);  
+5.通常更多的时候，我们需要将一个集合json转化为一个java的List<T>集合：
+例如如下的一个json字符串：
+
+[html] view plain copy
+  
+[java] view plain copy
+[{"age":1,"id":1,"name":"first"},  
+{"age":2,"id":2,"name":"second"},  
+{"age":3,"id":3,"name":"third"}]  
+这个json字符串中包含的数据可以转化为一个List<People>集合，代码如下：
+[java] view plain copy
+// 将List的Json字符串转化为List<T>集合  
+        String listStr = "[{\"age\":1,\"id\":1,\"name\":\"first\"},{\"age\":2,\"id\":2,\"name\":\"second\"},{\"age\":3,\"id\":3,\"name\":\"third\"}]";  
+        JSONArray jsonArray2 = JSONArray.fromObject(listStr);  
+        List<People> peopleList2 = (List<People>)JSONArray.toCollection(jsonArray2, People.class);  
+        for(People peo : peopleList2)  
+        {  
+            System.out.println(peo);  
+        }  
+6.JSONArray的遍历：
+[java] view plain copy
+List<People> peopleList = new ArrayList<People>();  
+        peopleList.add(new People(1,1,"first"));  
+        peopleList.add(new People(2,2,"second"));  
+        peopleList.add(new People(3,3,"third"));  
+        JSONArray jsonArray = JSONArray.fromObject(peopleList);  
+        // JSONArray的遍历  
+        for (int i = 0; i < jsonArray.size(); i++) {  
+            JSONObject jsonObject2 = jsonArray.getJSONObject(i);  
+            People people1 = (People)jsonObject.toBean(jsonObject2, People.class);  
+            System.out.println(people1);  
+        }  
+
+
+总结：当然这里面Json字符串转为javaBean的步骤底层肯定是通过java的反射，用一定的字符串匹配规则调用javaBean的Getter和Setter方法，
+这里面还有一些坑，以后单独写一篇详解。
+
