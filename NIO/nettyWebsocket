@@ -9,6 +9,7 @@ http://blog.csdn.net/sanchan/article/details/54846806   这个是个不错的spr
 基于netty实现websocket
 
 慕课网的代码敲出来了，但是跑不起来  以后有时间，有必要的时候一行一行的来对一下   
+websocket一个重要特性是 服务端可以主动向客户端发消息
 ------------
 
 package netty;
