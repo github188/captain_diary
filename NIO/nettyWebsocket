@@ -8,4 +8,285 @@ http://blog.csdn.net/sanchan/article/details/54846806   这个是个不错的spr
 慕课网的这个案例可以把它敲出来
 基于netty实现websocket
 
+慕课网的代码敲出来了，但是跑不起来  以后有时间，有必要的时候一行一行的来对一下   
+------------
+
+package netty;
+import io.netty.channel.group.ChannelGroup;
+import io.netty.channel.group.DefaultChannelGroup;
+import io.netty.util.concurrent.GlobalEventExecutor;
+/**
+ * 存储整个工程的全局配置
+ * @author Administrator
+ */
+public class NettyConfig {
+//	存储每一个客户端接入进来时的channel对象
+	public static ChannelGroup group = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+}
+--------------
+package netty;
+
+import java.util.Date;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http.websocketx.CloseWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.PingWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.PongWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.WebSocketFrame;
+import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
+import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
+import io.netty.util.CharsetUtil;
+/**
+ * 接收/处理、响应客户端websocket请求的核心业务处理类
+ * @author Administrator
+ *  这里必须要使用netty 5.0 这个抽象类定义的方法都不同
+ */
+public class MyWebSocketHandler extends SimpleChannelInboundHandler<Object>{
+	private WebSocketServerHandshaker handshaker;
+	private static final String WEB_SOCKET_URL = "ws://localhost:8888/websocket";
+
+//客户端与服务端创建连接的时候调用
+	@Override
+	public void channelActive(ChannelHandlerContext ctx) throws Exception {
+		// TODO Auto-generated method stub
+		NettyConfig.group.add(ctx.channel());
+		System.out.println("客户端与服务端连接开启");
+	}
+//服务端处理客户端websocket请求的核心方法
+	@Override
+	protected void messageReceived(ChannelHandlerContext context, Object msg) throws Exception {
+		if(msg instanceof FullHttpRequest) {
+			System.out.println("处理客户端向服务端发起http握手请求的业务");
+			handHttpRequest(context, (FullHttpRequest )msg);
+			
+		}else if(msg instanceof WebSocketFrame) {
+			System.out.println("处理客户端向服务端发起websocket请求");
+			handWebsocketFrame(context, (WebSocketFrame)msg);
+			
+		}
+	}
+	//处理客户端与服务端之间的websocket业务
+	private void handWebsocketFrame(ChannelHandlerContext ctx,WebSocketFrame frame) {
+		//判断是否是关闭websocket的指令
+		if(frame instanceof WebSocketFrame) {
+			handshaker.close(ctx.channel(), (CloseWebSocketFrame)frame.retain());
+		}
+		//判断是否是ping消息
+		if(frame instanceof PingWebSocketFrame) {
+			ctx.channel().write(new PongWebSocketFrame(frame.content().retain()));
+		}
+		//判断是否是二进制消息，如果是二进制消息，抛出异常
+		if(!(frame instanceof TextWebSocketFrame)) {
+			System.out.println(" 目前我们不支持二进制消息");
+			throw new RuntimeException("~~~~~~"+this.getClass().getName()+ "不支持二进制消息 ");
+		}
+		//返回应答消息
+		//先获取客户端向服务端发送的消息
+		String request = ((TextWebSocketFrame)frame).text();
+		System.out.println("服务端收到客户端的消息"+request);
+		TextWebSocketFrame tws = new TextWebSocketFrame(new Date().toString()+ctx.channel().id()+"====>>>"+request);
+		//群发，服务端向每个连接上来的客户端群发消息
+		NettyConfig.group.writeAndFlush(tws);
+	}
+	//客户端向服务端发起http握手请求的业务
+	private void handHttpRequest(ChannelHandlerContext ctx,FullHttpRequest req) {
+		if(req.getDecoderResult().isSuccess()||!"websocket".equals(req.headers().get("Upgrade"))) {
+			sendHttpResponse(ctx,req,new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
+					HttpResponseStatus.BAD_REQUEST));
+			return ;
+		}
+		WebSocketServerHandshakerFactory wsFactory = 
+				new WebSocketServerHandshakerFactory(WEB_SOCKET_URL, null, false);
+		handshaker = wsFactory.newHandshaker(req);
+		if(handshaker == null) {
+			WebSocketServerHandshakerFactory.sendUnsupportedWebSocketVersionResponse(ctx.channel());
+		}else {
+			handshaker.handshake(ctx.channel(), req);
+		}
+	}
+	//服务端主动向客户端发送信息
+	private void sendHttpResponse(ChannelHandlerContext ctx,FullHttpRequest req,
+			DefaultFullHttpResponse res) {
+		if(res.getStatus().code()==200) {
+			ByteBuf buf = Unpooled.copiedBuffer(res.getStatus().toString(), CharsetUtil.UTF_8);
+			res.content().writeBytes(buf);
+			buf.release();
+		}
+		ChannelFuture f = ctx.channel().writeAndFlush(res);
+		//服务端向客户端发送数据
+		if(res.getStatus().code()!=200) {
+			f.addListener(ChannelFutureListener.CLOSE);
+		}
+	
+		
+	}
+	//客户端与服务端断开连接的时候调用
+	@Override
+	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+		NettyConfig.group.remove(ctx.channel());
+		System.out.println("客户端与服务端连接关闭");
+	}
+//服务端接收客户端发送过来的数据结束之后调用
+	@Override
+	public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+		ctx.flush();
+	}
+
+//工程出现异常的时候调用
+	@Override
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+		cause.printStackTrace();
+		ctx.close();
+	}
+}
+
+
+-----------、、
+package netty;
+
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.codec.http.HttpServerCodec;
+import io.netty.handler.stream.ChunkedWriteHandler;
+/**
+ * 初始化连接时的各个组件
+ * @author Administrator
+ *
+ */
+public class MyWebSocketChannelHandler extends ChannelInitializer<SocketChannel> {
+
+	@Override
+	protected void initChannel(SocketChannel e) throws Exception {
+		e.pipeline().addLast("http-codec",new HttpServerCodec());
+		e.pipeline().addLast("http-chunked",new ChunkedWriteHandler());
+		e.pipeline().addLast("handler",new MyWebSocketHandler());
+	}
+
+}
+
+------------
+package netty;
+
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+
+/**
+ * 程序的入口
+ * @author Administrator
+ *
+ */
+public class Main {
+
+	public static void main(String[] args) {
+		 EventLoopGroup bossGroup =  new NioEventLoopGroup();
+		 EventLoopGroup workGroup =  new NioEventLoopGroup();
+		try {
+			ServerBootstrap b = new ServerBootstrap();
+			b.group(bossGroup,workGroup);
+			b.channel(NioServerSocketChannel.class);
+			b.childHandler(new MyWebSocketChannelHandler());
+			System.out.println("服务端开发等待客户端连接。。。。。");
+			Channel channel =  b.bind(8888).sync().channel();
+			channel.closeFuture().sync();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			bossGroup.shutdownGracefully();
+			workGroup.shutdownGracefully();
+		}
+
+	}
+
+}
+
+
+-----
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset= utf-8"  />
+		<title>Websocket客户端</title>
+		<script type="text/javascript" >
+			var socket;
+			if(!window.WebSocket){
+				window.WebSocket = window.MozWebSocket;
+			}
+				
+			if(window.WebSocket){
+				debugger;
+				socket = new WebSocket("ws://localhost:8888/websocket");
+				socket.onmessage = function(event){
+					var ta = document.getElementById('responseContent');
+					ta.value += event.data +"\r\n";
+					
+					
+				};
+				socket.onopen = function(event){
+					var ta = document.getElementById('responseContent');
+					ta.value = "您当前的浏览器支持websocket,请进行后续操作\r\n";
+					
+					
+				};
+				socket.onclose = function(event){
+					var ta = document.getElementById('responseContent');
+					ta.value = "";
+					ta.value = "websocket连接已经关闭\r\n";
+					
+					
+				};
+				
+				
+			}else{
+				alert('您的浏览器不支持WebSocket，不支持H5');
+			}
+			
+			function send(message){
+					if(!window.WebSocket){
+						return;
+					}
+					if(socket.readyState == WebSocket.OPEN){ //socket.readyState == WebSocket.OPEN
+						socket.send(message);
+					}else{
+						alert('websocket连接没有建立成功');
+						}
+			}
+			
+		</script>
+		
+	</head>
+	<body>
+		<form onSubmit="return false;">
+			<input type="text" name="message" value="" />
+			<br/>   <br />
+			<input type="button" value="发送websocket请求消息" onClick="send(this.form.message.value)" />
+			<hr color="red" />
+			<h2> 客户端接收到服务端返回的基本消息 </h2>
+			<textarea id="responseContent" style="width:1024px;height:300px">
+				
+				
+				
+			</textarea>
+		</form>
+		
+		
+	</body>
+	
+	
+	
+	
+</html>
 
