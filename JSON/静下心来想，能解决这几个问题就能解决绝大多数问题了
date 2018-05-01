@@ -1,3 +1,6 @@
+
+这种东西的使用率是非常高的，但是面试是不会去问到的。
+
 1. object转 json串   JSONObject.fromObject(jsonStr);   new JSONObject(jsonStr);
 
 2. json串中根据key值取到value
