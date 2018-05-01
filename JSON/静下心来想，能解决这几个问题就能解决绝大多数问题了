@@ -3,18 +3,15 @@
 2. json串中根据key值取到value
 
 3.json串解析成javabean   JsonObject.toBean();(不知道要哪一个版本的org.json才有这个方法) 如果不行 就只能用gson来转了
-
 package json;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 public class Main {
-	
 	public static void main(String[] args) throws JSONException {
 		// TODO Auto-generated constructor stub
 		JSONObject jsonObject = new JSONObject();
@@ -40,8 +37,10 @@ public class Main {
 		String content = jsonObject.getString("content");
 		JSONObject jb = new JSONObject(content);
 		System.out.println(jb.getString("name"));
-		
+		Gson gson = new Gson();
+		Person p =gson.fromJson(jsonObject.toString(), Person.class);
+		System.out.println(p);
 	}
-
 }
+
 
