@@ -49,6 +49,8 @@ read this script when you are not so busy.
 友金所还可以继续呆下去，就是社保按最低标准来，有点低了。
 
 
+20180503  今天 将这个 postman上面尝试上传文件，成功了，这个厉害了。
+
 
 
 
