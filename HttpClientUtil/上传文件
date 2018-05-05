@@ -1,0 +1,79 @@
+友金所里面上传文件不知道怎么办了，幸亏百度到了这个文章  不然 玩不下去了  
+https://blog.csdn.net/user_xiangpeng/article/details/73650567
+<dependency>  
+    <groupId>org.apache.httpcomponents</groupId>  
+    <artifactId>httpclient</artifactId>  
+    <version>4.5.2</version>  
+</dependency>  
+  
+<dependency>  
+          <groupId>org.apache.httpcomponents</groupId>    
+          <artifactId>httpmime</artifactId>    
+          <version>4.5.2</version>    
+      </dependency>   
+        
+      <dependency>  
+    <groupId>org.apache.httpcomponents</groupId>  
+    <artifactId>httpcore</artifactId>  
+    <version>4.4.5</version>  
+</dependency>  
+  
+<dependency>  
+    <groupId>org.apache.httpcomponents</groupId>  
+    <artifactId>httpasyncclient</artifactId>  
+    <version>4.1.2</version>  
+</dependency>  
+
+
+    public static String post(String serverUrl, String fileParamName, File file, Map<String, String> params)
+            throws ClientProtocolException, IOException {
+        HttpPost httpPost = new HttpPost(serverUrl);
+        MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+        // 上传的文件
+        builder.addBinaryBody(fileParamName, file);
+        // 设置其他参数
+        for (Entry<String, String> entry : params.entrySet()) {
+            builder.addTextBody(entry.getKey(), entry.getValue(), ContentType.TEXT_PLAIN.withCharset("UTF-8"));
+        }
+        HttpEntity httpEntity = builder.build();
+        httpPost.setEntity(httpEntity);
+        HttpClient httpClient = HttpClients.createDefault();
+        HttpResponse response = httpClient.execute(httpPost);
+        if (null == response || response.getStatusLine() == null) {
+            logger.info("Post Request For Url[{}] is not ok. Response is null", serverUrl);
+            return null;
+        } else if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+            logger.info("Post Request For Url[{}] is not ok. Response Status Code is {}", serverUrl,
+                    response.getStatusLine().getStatusCode());
+            return null;
+        }
+        return EntityUtils.toString(response.getEntity());
+    }
+    
+      public static void main(String[] args) {
+        String url = "http://localhost:8081/lieni-app-inf-oa/resume/background/education/verify/sync";
+        String fileUrl = "C:/Users/xiangpeng/Pictures/QQ20170417204948.jpg";
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("operatorJobNumber", "102800038");
+        map.put("operatorEmail", "pengyuqian@aimsen.com1");
+        map.put("realed", "1");
+        map.put("resumeEducationBackgroundId", "6045");
+        try {
+            System.out.println(HttpCaller.post(url, "degreeIcon", new File(fileUrl), map));
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }  
+    
+    
+    
+    
+
+
+
+
+
+
+
