@@ -1,3 +1,40 @@
 https://github.com/zouzg/mybatis-generator-gui
 
 可以将代码直接存放到你的工程里面你指定的路径里面去 ，我去 ，太好了，事半功倍
+
+在issues里面查询了一下如何去掉 example ，  criteria，
+在 generate() 方法前面增加了四行语句：
+tableConfig.setCountByExampleStatementEnabled(false);
+tableConfig.setDeleteByExampleStatementEnabled(false);
+tableConfig.setSelectByExampleStatementEnabled(false);
+tableConfig.setUpdateByExampleStatementEnabled(false);
+仍然会在 model 中生成以 Example 结尾的类。
+
+public class MybatisGeneratorBridge {
+
+
+
+    public void generate() throws Exception {
+    	
+        Configuration configuration = new Configuration();
+        Context context = new Context(ModelType.CONDITIONAL);
+        configuration.addContext(context);
+        context.addProperty("javaFileEncoding", "UTF-8");
+	    String connectorLibPath = ConfigHelper.findConnectorLibPath(selectedDatabaseConfig.getDbType());
+	    _LOG.info("connectorLibPath: {}", connectorLibPath);
+	    configuration.addClasspathEntry(connectorLibPath);
+        // Table configuration
+        TableConfiguration tableConfig = new TableConfiguration(context);
+        tableConfig.setTableName(generatorConfig.getTableName());
+        tableConfig.setDomainObjectName(generatorConfig.getDomainObjectName());
+        /////////////////////////
+        tableConfig.setCountByExampleStatementEnabled(false);
+    	tableConfig.setDeleteByExampleStatementEnabled(false);
+    	tableConfig.setSelectByExampleStatementEnabled(false);
+    	tableConfig.setUpdateByExampleStatementEnabled(false);
+
+
+
+
+
+
