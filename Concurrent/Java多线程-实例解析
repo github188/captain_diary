@@ -35,3 +35,10 @@ synchronized(object){}
 分别用Runnable和Thread方法实现，展示各个方法的
 
 实现Runnable实现多线程的方法
+
+
+
+
+
+
+
