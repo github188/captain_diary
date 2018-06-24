@@ -1,3 +1,8 @@
+
+拿到json字符串，需要取出中间某一个key值对应的value值，往往感觉比较头疼。其实两种思路。第一转成JsonObject然后。用get来取，代码类似于map，
+还一种思路，转成map，罗红用gson处理，也是这个思路。
+https://blog.csdn.net/superit401/article/details/51727739  
+
 package com.zkn.newlearn.json;
 
 import com.alibaba.fastjson.JSON;
