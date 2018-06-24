@@ -7,7 +7,7 @@
 1.选中工程名，右键-team-pull,若有冲突，会提示checkout conflict with 哪些files,同时会有"向下箭头 1"出现，表示远端该分支下有一次commit的
 代码未更新到本地。
 2.将本地代码commit到本地仓库中。
-3.选中工程名，team - merge ,mergeoptions选中第二个 No commits .....
+3.选中工程名，team - merge ,mergeoptions选中第二个 No commits .....  （解决冲突好像使用team - sync workspace 也可以）
 4.手动解决冲突文件
 5.选中修改文件-右键-add to index（本地缓存区），非常重要不能省略。
 6.commit,(commit message 出现 merge ..... 同时向下箭头消失，向上箭头加1)
