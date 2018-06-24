@@ -14,9 +14,9 @@ Map<String, String> params = JSONObject.parseObject(obj.toJSONString(), new Type
 System.out.println(params);
 
 假设这里面value不完全是String，这里就要用 new TypeReference<Map<String, Object>>(){}
-
+--------
 //输出：{key3=value3, key2=value2, key1=value1}
-
+--------------------------------------------------------------------------------------------
 https://blog.csdn.net/superit401/article/details/51727739  
 
 package com.zkn.newlearn.json;
