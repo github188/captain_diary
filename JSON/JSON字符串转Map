@@ -2,6 +2,21 @@
 拿到json字符串，需要取出中间某一个key值对应的value值，往往感觉比较头疼。其实两种思路。第一转成JsonObject然后。用get来取，代码类似于map，
 还一种思路，转成map，罗红用gson处理，也是这个思路。
 
+这里还提供了一种解决办法  
+com.alibaba.fastjson把JSONObject转换为Map<String, String>对象
+JSONObject obj = new JSONObject();
+{
+obj.put("key1", "value1");
+obj.put("key2", "value2");
+obj.put("key3", "value3");
+}
+Map<String, String> params = JSONObject.parseObject(obj.toJSONString(), new TypeReference<Map<String, String>>(){});
+System.out.println(params);
+
+假设这里面value不完全是String，这里就要用 new TypeReference<Map<String, Object>>(){}
+
+//输出：{key3=value3, key2=value2, key1=value1}
+
 https://blog.csdn.net/superit401/article/details/51727739  
 
 package com.zkn.newlearn.json;
