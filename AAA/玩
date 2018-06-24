@@ -65,7 +65,7 @@ dont cry  枪炮玫瑰这首歌，真他娘好听    这雷柏键盘敲得也真
 
 
 今天想谈点什么呢？ mvc里面controller，service层的代码怎么写，之前在捷顺养成一个坏习惯，代码都往controller写，不喜欢添加service层，其实用service层
-将一些代码封装一下挺好。
+将一些代码封装一下挺好。  不然controller里面代码乱七八糟。有时候是写着写着就写忘记了。有些http的client你总不能用controller去依赖吧。
 
 
 
