@@ -49,7 +49,7 @@ https://blog.csdn.net/pange1991/article/details/53860651
 阻塞状态有三种情况：1.wait，线程进入等待队列waiting queue  2，没有获取到锁，进入锁池，lock pool  3.因为sleep ，join或者线程发出IO请求，直至这些过程结束，而离开阻塞队列，转而进入就绪队列，去争抢cpu timeslice，
 
 
-
+目前没有什么项目能吸引自己
 
 
 
@@ -105,6 +105,7 @@ dont cry  枪炮玫瑰这首歌，真他娘好听    这雷柏键盘敲得也真
 简历写好是多么重要，不好人力都不给你面试机会。
 
 springboot 学了那么久，没干点什么东西出来。
+越是无聊，越是要有意思啊
 
 
 
