@@ -1,6 +1,4 @@
 
-
-
 ``` java
 /*
 * Copyright (c) 2015-2018 SHENZHEN  SCIENCE AND TECHNOLOGY DEVELOP CO., LTD. All rights reserved.  
@@ -320,15 +318,7 @@ public class QccrController extends BaseController {
 			}
 			log.info("返回报文：【{}】",result);
 	        return result;
-	    }
-	    
-	    
-	    
-	    
-
-
-		
-	    
+	    }	    
 }
 
 
