@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
- // 这个文件还是不能太大，刚才搞一个16M的4K图片，把eclipse都搞崩溃了
+ // 这个文件还是不能太大，刚才搞一个16M的4K图片，把eclipse都搞崩溃了，海鑫接口，如果app端清晰度太高，海信那边也会报数据无法解析的错误。
 public class Base64Test {
 	public static void main(String[] args) {
 //		String strImg = GetImageStr();
