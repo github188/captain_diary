@@ -139,3 +139,264 @@ https://www.cnblogs.com/tangyb/p/8971658.html   从今天安装好了八，我�
 在命令行里面敲命令，这不是你最爱干的事吗。
 
 mysqldba 对我的诱惑太大了
+
+Bluestone 和 Bluestone 在微信上的聊天记录如下，请查收。
+
+—————  2018-06-27  —————
+
+
+Bluestone  11:04
+
+https://blog.csdn.net/pange1991/article/details/53860651 
+
+Bluestone  11:15
+
+这个讲解线程的5个状态讲的比较清楚，只有就绪状态（runnable）才可以进入运行状态，阻塞状态需要重新回到就绪状态才可以进入运行状态，可以这样理解，只有就绪状态才会去争抢cpu timeslice，这样理解就很明朗了。
+
+Bluestone  11:21
+
+阻塞状态有三种情况：1.wait，线程进入等待队列waiting queue  2，没有获取到锁，进入锁池，lock pool  3.因为sleep ，join或者线程发出IO请求，直至这些过程结束，而离开阻塞队列，转而进入就绪队列，去争抢cpu timeslice，
+
+—————  2018-07-01  —————
+
+
+Bluestone  12:10
+
+https://www.cnblogs.com/tangyb/p/8971658.html
+
+Bluestone  12:10
+
+windows 64 安装mysql 8.0.11   据说比5.7快2倍   
+
+Bluestone  14:52
+
+select 中的统计函数，分组函数的值冲突问题， 只有group by后面有得字段，才能在select后面出现，否则其他字段在select后面只能用统计函数包起来。
+
+Bluestone  15:31
+
+mysql8.0 用什么图形客户端才能操作呢   否则的话就只能够用dos命令行来操作了。、
+
+Bluestone  15:41
+
+https://www.cnblogs.com/shiysin/p/shiysin.html   这个解决了navicat连接不了mysql8.0的问题
+
+Bluestone  17:38
+
+岗位职责:
+1.负责线上MySQL和redis集群的设计、管理、维护、备份、扩容等基础工作；
+2.负责重点项目数据库的方案设计、上线和日常运维；
+3.构建、优化线上数据库的监控、高可用、容灾体系，确保数据库7*24稳定运行；
+4.负责及时排除数据库故障，并对数据库进行持续性能优化；
+5.负责设计和开发DB运维平台，实现数据库运维的自动化、标准化、服务化
+
+任职资格:
+1.计算机相关专业本科及以上学历，三年以上数据库使用维护经验；
+2.精通MySQL管理、数据备份、优化，深入理解数据库引擎的实现机制，能根据相关机制优化数据库；
+3.熟练掌握MySQL数据库的高可用及分库分表的水平扩展方案，熟悉数据库中间件，熟悉redis sentinel和redis 集群；
+4.熟练使用Shell、Python、PHP、Go等开发语言，熟悉Django等常用Web框架
+5.高度的责任心、良好的沟通技巧和团队合作精神；
+6.良好的学习能力和对新技术的追求精神；
+
+Bluestone  17:38
+
+深圳市环球易购电子商务有限公司
+
+Bluestone  17:43
+
+https://www.lagou.com/jobs/list_mysql?city=%E6%B7%B1%E5%9C%B3&cl=false&fromSearch=true&labelWords=&suginput=
+
+Bluestone  17:43
+
+可以  往这个方向努力一下   以后不用这么费脑子去思考业务代码了
+
+Bluestone  17:44
+
+高业务代码 你搞不完的  
+
+Bluestone  17:44
+
+年纪大了  要考虑稳定的工作
+
+Bluestone  17:44
+
+一个公司的表结构搞清楚  mysql技术搞清楚 就可以吃这碗饭了  
+
+Bluestone  17:46
+
+无非  就是这些问题  不用那么去写java代码  代码是永远永无止境写不完的
+
+Bluestone  17:46
+
+年轻人 太多   
+
+Bluestone  17:46
+
+产品经理  产品部的想法  折腾 你受不了
+
+Bluestone  17:48
+
+所以 考虑到这些点  可以考虑  mysql dba
+
+Bluestone  17:49
+
+现在就可以做准备了   假设哪一天要huan岗位  或工作的时候就换了吧
+
+Bluestone  17:49
+
+mysql  是一个可以干到retired的工作  是把  
+
+Bluestone  17:52
+
+https://www.cnblogs.com/lms520/p/5427685.html
+
+Bluestone  17:52
+
+干这个吧  我决定了
+
+Bluestone  17:52
+
+说不定可以写一本书出来
+
+Bluestone  17:53
+
+像秋叶那样 将精力集中到一个点上去
+
+Bluestone  18:10
+
+https://blog.csdn.net/jc_benben/article/details/77833596
+
+Bluestone  18:14
+
+https://blog.csdn.net/jarvan_song/article/details/52977090
+
+Bluestone  18:18
+
+https://blog.csdn.net/yinyuehepijiu/article/details/50782442
+
+Bluestone  18:35
+
+https://www.2cto.com/database/201311/254385.html   这个文章写得太有意思了
+
+Bluestone  18:36
+
+关键是  不需要脱离技术 一直在技术岗位上混日子  
+
+Bluestone  18:36
+
+而且 都是在研究技术  业务让那帮码农去搞
+
+Bluestone  18:41
+
+https://www.cnblogs.com/huixuexidezhu/p/7059202.html   这篇文章好啊
+
+Bluestone  18:42
+
+这样的话  github  估计这下半年都可以一心一意趴在这上面了
+
+Bluestone  18:42
+
+https://www.cnblogs.com/huixuexidezhu/p/7059202.html   讲mysql复制的  讲的很清晰  面试前必读文章之一
+
+Bluestone  18:57
+
+https://www.linuxidc.com/Linux/2012-11/74359.htm   mysql三种binlog日志及各自特征  像捷顺那种公司 根本就问不出来啥技术问题出来
+
+Bluestone  19:01
+
+mysql——innodb事务日志详解
+  https://blog.csdn.net/donghaixiaolongwang/article/details/60961603
+
+Bluestone  19:04
+
+那你 经商去
+
+Bluestone  19:10
+
+innodb与myisam的索引实现方式    https://blog.csdn.net/z702143700/article/details/46049101
+
+Bluestone  19:16
+
+熟悉mysql高可用方案
+
+Bluestone  19:16
+
+我一般先问他现在管理的数据库架构是什么，如果他只说出了主从，而没有说任何ha的方案，那么我就可以判断出他没有实际的ha经验。不过这时候也不能就是断定他不懂mysql高可用，也许是没有实际机会去使用，那么我就要问mmm以及mha以及mm+keepalived等的原理实现方式以及它们之间的优势和不足了
+
+Bluestone  19:16
+
+ 对于简历中写有批量MySQL 数据库服务器的管理经验
+     这个如果他说有的话，我会先问他们现在实际线上的mysql数据库数量有多少，分多少个节点组，最后问这些节点组上面的slow log是如何组合在一起来统计分析的。如果这些他都答对了，那么我还有一问，就是现在手上有600台数据库，新来的机器，Mysql都安装好了，那么你如何在最快的时间里面把这600台mysql数据库的mysqld服务启动起来。这个重点在于最快的时间，而能准确回答出清晰思路的只有2个人
+
+Bluestone  19:36
+
+关于事物隔离级别。
+这个最起码你得知道那4个隔离级别的名字吧，以及之间的区别，还有你当前自己数据库里面设置的是哪个级别吧，可惜的是面试了那么多，能准备想都不用想的回答出的就只有一个，而且他只说出了前3个级别的名字。
+   https://www.cnblogs.com/huanongying/p/7021555.html
+
+Bluestone  19:36
+
+家里的打印机开动起来
+
+Bluestone  20:01
+
+关于熟悉mysql的锁机制。
+那么gap锁，next-key锁，以及innodb的行锁是怎么实现的，以及myisam的锁是怎么实现的等，可惜能准备说出这些的只有一个mysql dba。
+9  关于熟悉mysql集群的。
+我就问了ndbd的节点的启动先后顺序，再问配置参数中的内存配置几个重要的参数，再问sql节点中执行一个join表的select语句的实现流程是怎么走的？ok，能回答的也只有一个。
+10  关于有丰富的备份经验的
+就问mysqldump中备份出来的sql，如果我想sql文件中，一行只有一个insert .... value()的话，怎么办？如果备份需要带上master的复制点信息怎么办？或者xtrabackup中如何做到实时在线备份的？以及xtrabackup是如何做到带上master的复制点的信息的？ 当前xtrabackup做增量备份的时候有何缺陷？
+        能全部回答出来的没有一个，不过没有关系，只要回答出mysqldump或者xtrabackup其中一个的也可以。
+11 关于有丰富的线上恢复经验的
+就问你现在线上数据量有多大，如果是100G，你用mysqldump出来要多久，然后mysql进去又要多久，如果互联网不允许延时的话，你又怎么做到恢复单张表的时候保证nagios不报警。如果有人说mysqldump出来1个小时就ok了，那么我就要问问他db服务器是啥配置了，如果他说mysql进去50分钟搞定了，那么我也要问问他db机器啥配置了，如果是普通的吊丝pc server，那么真实性，大家懂得。
+然后如果你用xtrabackup备份要多久，恢复要多久，大家都知道copy-back这一步要很久，那么你有没有办法对这一块优化
+
+Bluestone  20:28
+
+https://www.cnblogs.com/aipiaoborensheng/p/5767459.html   如果mysql  dba是几篇博客就能搞定的事情 那就好了  
+
+Bluestone  20:35
+
+这些  东西都是死的 
+
+Bluestone  20:35
+
+死知识 是最好学的  而且就是一次学会 终身反反复复的用它   就跟你发布版本一样
+
+Bluestone  20:38
+
+我们现在在深圳   是在跟从国外回来的那些人在比武  就跟游泳一样 我感觉我的体能还是比较差的
+
+Bluestone  20:38
+
+体能方面跟别人 差距挺大的  有时候 某些方面没法跟人家比  没办法
+
+Bluestone  20:53
+
+mysqldba 工作中使用频率高低拍戏怎么排，ddl，dml，授权语句。  容灾，备份。
+
+Bluestone  20:55
+
+https://www.cnblogs.com/trymybesttoimp/p/6479805.html
+
+Bluestone  21:37
+
+[应用消息: 嘀嗒出行]
+
+—————  2018-07-02  —————
+
+
+Bluestone  20:45
+
+https://www.cnblogs.com/cxxjohnson/p/7491998.html   mysql备份  我很好奇 这个备份是每天都会去跑这个命令吗  mysqldump
+
+Bluestone  20:46
+
+mysqldump不是在mysql下面跑的命令  是直接在操作系统下面跑的
+
+Bluestone  20:55
+
+https://blog.csdn.net/qq_22929803/article/details/51254480
+
+
+
+
