@@ -9,8 +9,7 @@ CentOS 7的yum源中貌似没有正常安装MySQL时的mysql-sever文件，需�
 #rpm -ivh mysql-community-release-el7-5.noarch.rpm
 
  #yum install mysql-community-server
-2.
-service mysqld restart   
+2. service mysqld restart   
 
 3. 设置Mysql开机启动 
 chkconfig mysqld on  (腾讯实验室上跑，这个没有也没关系)
@@ -39,7 +38,7 @@ FLUSH PRIVILEGES;
 
 ------配置master数据库--------
 vim /etc/my.cnf
-在[mysqld]节点下加入两句话
+在[mysqld]节点下加入两句话  ，是在这个节点的尾部，不是文档的尾部，否则show master status 会没有结果
 >server-id=1
 
 >log-bin=mysql-bin       #启用二进制日志
