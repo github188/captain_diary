@@ -19,8 +19,8 @@ CentOS 7的yum源中貌似没有正常安装MySQL时的mysql-sever文件，需�
 chkconfig mysqld on  (腾讯实验室上跑，这个没有也没关系)
 4.
 /usr/bin/mysqladmin -u root password '123456'
-5.
-mysql -uroot -p123456
+
+5.mysql -uroot -p123456
 
 5.1 show databases;   看看刚安装好的mysql都有什么库实例
 5.2 use mysql ;  使用mysql库
