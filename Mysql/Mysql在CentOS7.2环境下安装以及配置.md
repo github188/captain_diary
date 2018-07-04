@@ -1,4 +1,5 @@
-这样安装不行啊，退出之后，就进不来了，密码错误   用这个试试看，装的是5.7
+这样安装不行啊，退出之后，就进不来了，密码错误   用这个试试看  https://www.linuxidc.com/Linux/2016-09/135288.htm ，装的是5.7
+5.7 重启 不能用service mysql restart   要用 service mysqld restart;
 
 1.  非常好，这里直接配置了主从复制
 yum install mysql-server -y
