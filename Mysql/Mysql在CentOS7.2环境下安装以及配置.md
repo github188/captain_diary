@@ -43,9 +43,8 @@ FLUSH PRIVILEGES;
 ------配置master数据库--------
 vim /etc/my.cnf
 在[mysqld]节点下加入两句话  ，是在这个节点的尾部，不是文档的尾部，否则show master status 会没有结果
->server-id=1
-
->log-bin=mysql-bin       #启用二进制日志
+server-id=1
+log-bin=mysql-bin       #启用二进制日志
 
 重启服务：service mysql restart 
 登录mysql：mysql -uroot -p123456 
