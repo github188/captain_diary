@@ -12,6 +12,7 @@ log-bin=mysql-bin
 service restart mysql
 
 show variables like '%log_bin%'; 用这个命令查看binlog状态以及binlog存放位置
+=====================================
 
 
 
