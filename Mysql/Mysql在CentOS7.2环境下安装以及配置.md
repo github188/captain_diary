@@ -1,3 +1,27 @@
+
+
+最好的，最规范的安装步骤    数据库加密这个步骤可以跳过
+https://blog.csdn.net/yougoule/article/details/56680952
+然后是给mysql开启binlog   
+vim /etc/mycnf
+[mysqld]下面
+添加   
+server-id=1
+log-bin=mysql-bin
+
+service restart mysql
+
+
+
+
+
+
+
+
+
+
+
+
 这样安装不行啊，退出之后，就进不来了，密码错误   用这个试试看  https://www.linuxidc.com/Linux/2016-09/135288.htm ，装的是5.7
 5.7 重启 不能用service mysql restart   要用 service mysqld restart;
 终于把安装5.7的这个大问题给解决了。
