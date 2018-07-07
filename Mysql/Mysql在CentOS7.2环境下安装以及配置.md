@@ -22,6 +22,9 @@ chkconfig mysqld on  (腾讯实验室上跑，这个没有也没关系)
 
 5.mysql -uroot -p123456
 
+5.5 先修改密码 
+set password for 'root'@'localhost'=password('123456');
+
 5.1 show databases;   看看刚安装好的mysql都有什么库实例
 5.2 use mysql ;  使用mysql库
 5.3 show tables;
