@@ -14,6 +14,10 @@ service restart mysql
 show variables like '%log_bin%'; 用这个命令查看binlog状态以及binlog存放位置
 =====================================
 
+https://www.cnblogs.com/it-cen/p/5234345.html 这篇博客详细写了如何用mysql恢复数据  
+
+http://www.cnblogs.com/it-cen/articles/4245385.html  这个系列博客都非常不错 值得学习
+
 
 
 
