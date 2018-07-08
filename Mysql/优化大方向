@@ -1,0 +1,4 @@
+df -h
+free -g
+top  
+观察server服务器CPU,IO周期性情况。
