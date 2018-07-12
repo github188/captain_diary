@@ -448,5 +448,7 @@ eclipse git切换分支的时候，用第一个按钮 new branch  非常好用�
 
 mysql四个隔离级别  read uncommited ,  read commited ,  repeatable read(default) , serializable
 
+read-committed  , read-uncomitted  ,   repeatable-read  , 中间不是下划线，是减号. committed double t
+
 
 
