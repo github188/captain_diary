@@ -450,7 +450,7 @@ mysql四个隔离级别  read uncommited ,  read commited ,  repeatable read(def
 
 read-committed  , read-uncomitted  ,   repeatable-read  , 中间不是下划线，是减号. committed double t
 
-
+办公电脑上面安装了mysql8.0.11 在办公电脑上面不管怎么设置事务都没用，都是read uncommitted.
 
 
 
