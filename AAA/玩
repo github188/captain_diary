@@ -452,6 +452,6 @@ read-committed  , read-uncomitted  ,   repeatable-read  , 中间不是下划线�
 
 办公电脑上面安装了mysql8.0.11 在办公电脑上面不管怎么设置事务都没用，都是read uncommitted.
 
-
+mysql 5.5 好像事务没啥问题，跟课本上讲的一模一样，但是为什么mysql8就不行了呢。是不是mysql8不支持这样去在单个客户端上面去设置事务隔离级别。
 
 
